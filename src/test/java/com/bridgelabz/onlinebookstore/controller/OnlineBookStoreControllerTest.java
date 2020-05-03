@@ -30,7 +30,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
-        bookDTO=new BookDTO("Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","bfjadlbfajlal",2002);
+        bookDTO=new BookDTO( 1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","bfjadlbfajlal",2002);
         String jsonDto=gson.toJson(bookDTO);
         BookDetails bookDetails=new BookDetails(bookDTO);
         when(onlineBookStoreService.addBook(any())).thenReturn(bookDetails);

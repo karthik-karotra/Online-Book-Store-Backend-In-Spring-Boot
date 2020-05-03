@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.dto;
 
 public class BookDTO {
 
+    private int isbn;
     private String bookName;
     private String authorName;
     private double bookPrice;
@@ -10,7 +11,8 @@ public class BookDTO {
     private String bookImageSource;
     private int publishingYear;
 
-    public BookDTO(String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
+    public BookDTO(int isbn, String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
+        this.isbn = isbn;
         this.bookName = bookName;
         this.authorName = authorName;
         this.bookPrice = bookPrice;
@@ -18,6 +20,10 @@ public class BookDTO {
         this.bookDetails = bookDetails;
         this.bookImageSource = bookImageSource;
         this.publishingYear = publishingYear;
+    }
+
+    public int getIsbn() {
+        return isbn;
     }
 
     public String getBookName() {
