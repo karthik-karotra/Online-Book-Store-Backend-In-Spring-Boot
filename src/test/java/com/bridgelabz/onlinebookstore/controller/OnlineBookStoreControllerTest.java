@@ -14,7 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
 public class OnlineBookStoreControllerTest {
@@ -38,5 +40,38 @@ public class OnlineBookStoreControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(200, status);
+    }
+
+    @Test
+    public void givenIncorrectUrlPath_ShouldReturnURLNotFound() throws Exception {
+        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        String jsonDto = gson.toJson(bookDTO);
+        this.mockMvc.perform(post("/index/addvirtualbook").content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void givenDataWithoutJsonConversion_ShouldReturn400StatusCode() throws Exception {
+        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        MvcResult mvcResult = this.mockMvc.perform(post("/onlinebookstore/addbook").content(String.valueOf(bookDTO))
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        Assert.assertEquals(400, status);
+    }
+
+    @Test
+    public void givenContentTypeOfAnotherType_ShouldReturnUnsupporteMediaType() throws Exception {
+        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        String jsonDto = gson.toJson(bookDTO);
+        this.mockMvc.perform(post("/onlinebookstore/addbook").content(jsonDto)
+                .contentType(MediaType.APPLICATION_ATOM_XML_VALUE)).andExpect(status().isUnsupportedMediaType());
+    }
+
+    @Test
+    public void givenIncorrectRequestBody_ShouldReturnMethodNotAllowed() throws Exception {
+        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        String jsonDto = gson.toJson(bookDTO);
+        this.mockMvc.perform(get("/onlinebookstore/addbook").content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isMethodNotAllowed());
     }
 }
