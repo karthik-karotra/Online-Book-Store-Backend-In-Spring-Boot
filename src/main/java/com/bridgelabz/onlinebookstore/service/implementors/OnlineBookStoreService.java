@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class OnlineBookStoreService implements IOnlineBookStoreService {
 
@@ -20,6 +22,12 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     @Override
     public BookDetails addBook(BookDTO bookDTO) {
         BookDetails bookDetails = modelMapper.map(bookDTO, BookDetails.class);
+        Optional<BookDetails> byIsbn = onlineBookStoreRepository.findByIsbn(bookDTO.getIsbn());
+        if(byIsbn.isPresent()){
+            bookDetails.setQuantity(byIsbn.get().getQuantity()+bookDTO.getQuantity());
+            bookDetails.setBookPrice(bookDTO.getBookPrice());
+            bookDetails.setId(byIsbn.get().getId());
+        }
         return onlineBookStoreRepository.save(bookDetails);
     }
 }

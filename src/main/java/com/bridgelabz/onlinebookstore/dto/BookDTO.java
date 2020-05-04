@@ -58,4 +58,5 @@ public class BookDTO {
     public int getPublishingYear() {
         return publishingYear;
     }
+
 }
