@@ -1,5 +1,10 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
 public class BookDTO {
 
     private int isbn;

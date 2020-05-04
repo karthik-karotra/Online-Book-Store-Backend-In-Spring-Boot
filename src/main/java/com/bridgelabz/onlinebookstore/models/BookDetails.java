@@ -1,9 +1,14 @@
 package com.bridgelabz.onlinebookstore.models;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity
 @Table
 public class BookDetails {
@@ -20,57 +25,17 @@ public class BookDetails {
     public int publishingYear;
     public double bookPrice;
 
-    public BookDetails() {
-    }
-
     public BookDetails(BookDTO bookDTO) {
         this.isbn = bookDTO.getIsbn();
         this.bookName = bookDTO.getBookName();
         this.authorName = bookDTO.getAuthorName();
+        this.bookPrice = bookDTO.getBookPrice();
         this.quantity = bookDTO.getQuantity();
         this.bookDetails = bookDTO.getBookDetails();
         this.bookImage = bookDTO.getBookImageSource();
         this.publishingYear = bookDTO.getPublishingYear();
-        this.bookPrice = bookDTO.getBookPrice();
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setBookPrice(double bookPrice) {
-        this.bookPrice = bookPrice;
-    }
-
-    public int getIsbn() {
-        return isbn;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public String getBookDetails() {
-        return bookDetails;
-    }
-
-    public String getBookImage() {
-        return bookImage;
-    }
-
-    public int getPublishingYear() {
-        return publishingYear;
-    }
-
-    public double getBookPrice() {
-        return bookPrice;
+    public BookDetails(){
     }
 }
