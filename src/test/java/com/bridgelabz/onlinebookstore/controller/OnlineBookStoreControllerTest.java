@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,7 +29,7 @@ public class OnlineBookStoreControllerTest {
     @MockBean
     private IOnlineBookStoreService onlineBookStoreService;
 
-    Gson gson=new Gson();
+    Gson gson = new Gson();
 
     BookDTO bookDTO;
 
@@ -40,7 +41,7 @@ public class OnlineBookStoreControllerTest {
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
         String jsonResponseDto = gson.toJson(responseDTO);
         when(onlineBookStoreService.addBook(any())).thenReturn(bookDetails);
-        mockMvc.perform(post("/onlinebookstore/addbook")
+        mockMvc.perform(post("/admin/book")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -49,7 +50,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenIncorrectUrlPath_ShouldReturnURLNotFound() throws Exception {
-        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
         this.mockMvc.perform(post("/index/addvirtualbook").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
@@ -57,8 +58,8 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     void givenDataWithoutJsonConversion_ShouldReturn400StatusCode() throws Exception {
-        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
-        MvcResult mvcResult = this.mockMvc.perform(post("/onlinebookstore/addbook").content(String.valueOf(bookDTO))
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
+        MvcResult mvcResult = this.mockMvc.perform(post("/admin/book").content(String.valueOf(bookDTO))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         Assert.assertEquals(400, status);
@@ -66,17 +67,17 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenContentTypeOfAnotherType_ShouldReturnUnsupporteMediaType() throws Exception {
-        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
-        this.mockMvc.perform(post("/onlinebookstore/addbook").content(jsonDto)
+        this.mockMvc.perform(post("/admin/book").content(jsonDto)
                 .contentType(MediaType.APPLICATION_ATOM_XML_VALUE)).andExpect(status().isUnsupportedMediaType());
     }
 
     @Test
     public void givenIncorrectRequestBody_ShouldReturnMethodNotAllowed() throws Exception {
-        bookDTO = new BookDTO(1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","book_image",2002);
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
-        this.mockMvc.perform(get("/onlinebookstore/addbook").content(jsonDto)
+        this.mockMvc.perform(get("/admin/book").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isMethodNotAllowed());
     }
 }

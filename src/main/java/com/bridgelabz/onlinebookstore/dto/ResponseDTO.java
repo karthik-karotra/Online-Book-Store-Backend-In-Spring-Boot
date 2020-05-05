@@ -10,5 +10,4 @@ public class ResponseDTO {
         this.message = message;
         this.bookDetails = bookDetails;
     }
-
 }
