@@ -2,16 +2,40 @@ package com.bridgelabz.onlinebookstore.dto;
 
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 @Setter
 public class BookDTO {
 
+    @NotNull
+    @Pattern(regexp = "^([1-9]{1})([0-9]{3})$")
     private int isbn;
+
+    @NotNull
+    @Pattern(regexp = "^([a-zA-Z]+[ ]*[a-zA-Z]*)$")
     private String bookName;
+
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z]+[ ]*[a-zA-Z]*$")
     private String authorName;
+
+    @NotNull
+    @Pattern(regexp = "^([1-9]{1,})([0-9]*)$")
     private double bookPrice;
+
+    @NotNull
+    @Pattern(regexp = "^([1-9]{1,})([0-9]*)$")
     private int quantity;
+
+    @NotNull
     private String bookDetails;
+
+    @NotNull
     private String bookImageSource;
+
+    @NotNull
+    @Pattern(regexp = "^([1-9]{1})([0-9]{3})$")
     private int publishingYear;
 
     public BookDTO(int isbn, String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
