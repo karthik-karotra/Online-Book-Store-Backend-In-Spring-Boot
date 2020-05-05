@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
+import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import com.google.gson.Gson;
@@ -16,6 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
@@ -32,14 +34,17 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
-        bookDTO=new BookDTO( 1000,"Mrutyunjay","Shivaji Sawant",400.0,10,"Devotional","bfjadlbfajlal",2002);
-        String jsonDto=gson.toJson(bookDTO);
-        BookDetails bookDetails=new BookDetails(bookDTO);
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        String jsonDto = gson.toJson(bookDetails);
+        ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
+        String jsonResponseDto = gson.toJson(responseDTO);
         when(onlineBookStoreService.addBook(any())).thenReturn(bookDetails);
-        MvcResult mvcResult = this.mockMvc.perform(post("/onlinebookstore/addbook").content(jsonDto)
-                .contentType(MediaType.APPLICATION_JSON)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        Assert.assertEquals(200, status);
+        mockMvc.perform(post("/onlinebookstore/addbook")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonResponseDto));
     }
 
     @Test
