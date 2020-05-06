@@ -40,7 +40,7 @@ public class OnlineBookStoreControllerTest {
         String jsonDto = gson.toJson(bookDetails);
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.addBook(any())).thenReturn(bookDetails);
+        when(onlineBookStoreService.saveBook(any())).thenReturn(bookDetails);
         mockMvc.perform(post("/admin/book")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))

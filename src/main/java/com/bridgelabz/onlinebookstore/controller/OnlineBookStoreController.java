@@ -18,8 +18,8 @@ public class OnlineBookStoreController {
     IOnlineBookStoreService onlineBookStoreService;
 
     @PostMapping("/book")
-    public ResponseEntity<ResponseDTO> addBook1(@RequestBody BookDTO bookDTO) {
-        BookDetails bookDetails = onlineBookStoreService.addBook(bookDTO);
+    public ResponseEntity<ResponseDTO> saveBook(@RequestBody BookDTO bookDTO) {
+        BookDetails bookDetails = onlineBookStoreService.saveBook(bookDTO);
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

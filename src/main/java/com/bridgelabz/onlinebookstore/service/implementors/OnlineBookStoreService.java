@@ -8,20 +8,19 @@ import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
 public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Autowired
-    IOnlineBookStoreRepository onlineBookStoreRepository;
+    private IOnlineBookStoreRepository onlineBookStoreRepository;
 
     @Autowired
     ModelMapper modelMapper;
 
     @Override
-    public BookDetails addBook(BookDTO bookDTO) {
+    public BookDetails saveBook(BookDTO bookDTO) {
         BookDetails bookDetails = modelMapper.map(bookDTO, BookDetails.class);
         Optional<BookDetails> byIsbn = onlineBookStoreRepository.findByIsbn(bookDTO.getIsbn());
         Optional<BookDetails> byBookNameAndAuthorName = onlineBookStoreRepository.findByBookNameAndAuthorName(bookDTO.getBookName(), bookDTO.getAuthorName());

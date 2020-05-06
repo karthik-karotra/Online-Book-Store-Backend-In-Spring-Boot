@@ -1,7 +1,6 @@
 package com.bridgelabz.onlinebookstore.dto;
 
 import lombok.Setter;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -9,7 +8,7 @@ import javax.validation.constraints.Pattern;
 public class BookDTO {
 
     @NotNull
-    @Pattern(regexp = "^([1-9]{1})([0-9]{3})$")
+    @Pattern(regexp = "^([1-9])([0-9]{3})$")
     private int isbn;
 
     @NotNull
@@ -21,11 +20,11 @@ public class BookDTO {
     private String authorName;
 
     @NotNull
-    @Pattern(regexp = "^([1-9]{1,})([0-9]*)$")
+    @Pattern(regexp = "^([1-9]+)([0-9]*)$")
     private double bookPrice;
 
     @NotNull
-    @Pattern(regexp = "^([1-9]{1,})([0-9]*)$")
+    @Pattern(regexp = "^([1-9]+)([0-9]*)$")
     private int quantity;
 
     @NotNull
@@ -35,7 +34,7 @@ public class BookDTO {
     private String bookImageSource;
 
     @NotNull
-    @Pattern(regexp = "^([1-9]{1})([0-9]{3})$")
+    @Pattern(regexp = "^([1-9])([0-9]{3})$")
     private int publishingYear;
 
     public BookDTO(int isbn, String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
@@ -80,5 +79,4 @@ public class BookDTO {
     public int getPublishingYear() {
         return publishingYear;
     }
-
 }
