@@ -4,14 +4,14 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
-import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
+import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class OnlineBookStoreService implements IOnlineBookStoreService {
+public class AdminBookStoreService implements IAdminBookStoreService {
 
     @Autowired
     private IOnlineBookStoreRepository onlineBookStoreRepository;

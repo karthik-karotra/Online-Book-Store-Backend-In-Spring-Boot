@@ -3,7 +3,7 @@ package com.bridgelabz.onlinebookstore.controller;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
+import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -22,12 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class OnlineBookStoreControllerTest {
+public class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private IOnlineBookStoreService onlineBookStoreService;
+    private IAdminBookStoreService onlineBookStoreService;
 
     Gson gson = new Gson();
 
