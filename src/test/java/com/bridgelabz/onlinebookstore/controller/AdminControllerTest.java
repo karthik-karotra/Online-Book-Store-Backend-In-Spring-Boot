@@ -8,7 +8,9 @@ import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,13 +23,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private IAdminBookStoreService onlineBookStoreService;
+    private IAdminBookStoreService adminBookStoreService;
 
     Gson gson = new Gson();
 
@@ -40,7 +43,7 @@ public class AdminControllerTest {
         String jsonDto = gson.toJson(bookDetails);
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.saveBook(any())).thenReturn(bookDetails);
+        when(adminBookStoreService.saveBook(any())).thenReturn(bookDetails);
         mockMvc.perform(post("/admin/book")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))

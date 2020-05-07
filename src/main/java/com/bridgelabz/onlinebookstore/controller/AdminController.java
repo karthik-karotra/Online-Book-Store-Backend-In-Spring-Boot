@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     @Autowired
-    IAdminBookStoreService onlineBookStoreService;
+    IAdminBookStoreService adminBookStoreService;
 
     @PostMapping("/book")
     public ResponseEntity<ResponseDTO> saveBook(@RequestBody BookDTO bookDTO) {
-        BookDetails bookDetails = onlineBookStoreService.saveBook(bookDTO);
+        BookDetails bookDetails = adminBookStoreService.saveBook(bookDTO);
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY", bookDetails);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
