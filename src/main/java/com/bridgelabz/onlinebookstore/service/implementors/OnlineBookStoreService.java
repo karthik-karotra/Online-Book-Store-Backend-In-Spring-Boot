@@ -20,6 +20,7 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public Integer getCountOfBooks() {
-        return null;
+        List list=onlineBookStoreRepository.findAll();
+        return list.size();
     }
 }
