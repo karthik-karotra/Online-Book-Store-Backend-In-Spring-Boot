@@ -41,10 +41,10 @@ public class AdminBookStoreServiceTest {
     @Test
     void givenBookDetailsToAdd_WhenAddedSameIsbnNumber_ShouldThrowException() {
         try {
-        bookDTO = new BookDTO(1111, "Java For Dummies", "Barry A. Burd", 500.0, 7, "Programming And Software Development", "Ms", 2007);
-        BookDetails bookDetails = new BookDetails(bookDTO);
-        when(onlineBookStoreRepository.findByIsbn(1111)).thenReturn(Optional.of(bookDetails));
-        adminBookStoreService.saveBook(bookDTO);
+            bookDTO = new BookDTO(1111, "Java For Dummies", "Barry A. Burd", 500.0, 7, "Programming And Software Development", "Ms", 2007);
+            BookDetails bookDetails = new BookDetails(bookDTO);
+            when(onlineBookStoreRepository.findByIsbn(1111)).thenReturn(Optional.of(bookDetails));
+            adminBookStoreService.saveBook(bookDTO);
         } catch (OnlineBookStoreException e) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.ISBN_NO_ALREADY_EXISTS, e.type);
         }
@@ -55,7 +55,7 @@ public class AdminBookStoreServiceTest {
         try {
             bookDTO = new BookDTO(2222, "Java For Dummies", "Barry A. Burd", 500.0, 7, "Programming And Software Development", "Ms", 2007);
             BookDetails bookDetails = new BookDetails(bookDTO);
-            when(onlineBookStoreRepository.findByBookNameAndAuthorName("Java For Dummies","Barry A. Burd")).thenReturn(Optional.of(bookDetails));
+            when(onlineBookStoreRepository.findByBookNameAndAuthorName("Java For Dummies", "Barry A. Burd")).thenReturn(Optional.of(bookDetails));
             adminBookStoreService.saveBook(bookDTO);
         } catch (OnlineBookStoreException e) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.BOOK_AND_AUTHOR_NAME_ALREADY_EXISTS, e.type);

@@ -19,4 +19,9 @@ public class OnlineBookStoreController {
     public List<BookDetails> getBook() {
         return onlineBookStoreService.getAllBooks();
     }
+
+    @GetMapping("/count")
+    public Integer getCount() {
+        return onlineBookStoreService.getCountOfBooks();
+    }
 }

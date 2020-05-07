@@ -17,4 +17,9 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     public List<BookDetails> getAllBooks() {
         return onlineBookStoreRepository.findAll();
     }
+
+    @Override
+    public Integer getCountOfBooks() {
+        return null;
+    }
 }

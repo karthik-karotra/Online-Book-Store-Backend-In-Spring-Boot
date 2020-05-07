@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -70,6 +69,28 @@ public class OnlineBookStoreControllerTest {
         booksList.add(bookDetails);
         when(onlineBookStoreService.getAllBooks()).thenReturn(booksList);
         this.mockMvc.perform(post("/bookstore/list")).andExpect(status().isMethodNotAllowed());
+    }
+
+    @Test
+    public void givenRequestToGetCountOfBooksInDatabase_ShouldReturnCountOfBooksInDatabase() throws Exception {
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        List booksList = new ArrayList();
+        booksList.add(bookDetails);
+        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
+        MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
+        Assert.assertEquals("1",mvcResult.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void givenRequestToGetCountOfBooksInDatabase_WhenGetCount_ShouldReturnStatusOk() throws Exception {
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        List booksList = new ArrayList();
+        booksList.add(bookDetails);
+        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
+        MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
+        Assert.assertEquals(200,mvcResult.getResponse().getStatus());
     }
 
 }

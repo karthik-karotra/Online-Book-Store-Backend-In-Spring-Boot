@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface IOnlineBookStoreService {
     List<BookDetails> getAllBooks();
+
+    Integer getCountOfBooks();
 }
