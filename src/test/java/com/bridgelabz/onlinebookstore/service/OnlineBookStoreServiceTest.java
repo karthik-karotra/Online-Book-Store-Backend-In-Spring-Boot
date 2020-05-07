@@ -38,4 +38,15 @@ public class OnlineBookStoreServiceTest {
         List<BookDetails> allBooks = onlineBookStoreService.getAllBooks();
         Assert.assertEquals(booksList, allBooks);
     }
+
+    @Test
+    public void givenRequestToGetCountOfBooksInDatabase_WhenGetResponse_ShouldReturnCountOfBooks() {
+        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        List booksList = new ArrayList();
+        booksList.add(bookDetails);
+        when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
+        Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
+        Assert.assertEquals("1",countOfBooks.toString());
+    }
 }
