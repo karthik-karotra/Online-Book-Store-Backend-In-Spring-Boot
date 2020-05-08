@@ -49,4 +49,5 @@ public class OnlineBookStoreServiceTest {
         Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
         Assert.assertEquals("1",countOfBooks.toString());
     }
+
 }

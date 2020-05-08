@@ -15,7 +15,8 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public List<BookDetails> getAllBooks() {
-        return onlineBookStoreRepository.findAll();
+        List<BookDetails> bookList=onlineBookStoreRepository.findAll();
+        return bookList;
     }
 
     @Override
