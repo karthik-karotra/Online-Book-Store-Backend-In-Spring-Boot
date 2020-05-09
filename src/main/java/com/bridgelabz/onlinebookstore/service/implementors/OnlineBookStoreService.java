@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.service.implementors;
 
+import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
@@ -16,6 +17,9 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     @Override
     public List<BookDetails> getAllBooks() {
         List<BookDetails> bookList=onlineBookStoreRepository.findAll();
+        if(bookList.size()==0) {
+            throw new OnlineBookStoreException("No Books Were Found In Database", OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND);
+        }
         return bookList;
     }
 

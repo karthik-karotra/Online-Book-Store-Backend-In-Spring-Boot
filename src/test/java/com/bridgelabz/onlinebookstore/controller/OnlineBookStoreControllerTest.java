@@ -104,5 +104,4 @@ public class OnlineBookStoreControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
         Assert.assertEquals(200,mvcResult.getResponse().getStatus());
     }
-
 }
