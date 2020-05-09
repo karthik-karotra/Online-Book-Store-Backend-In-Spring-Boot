@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.service;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
+import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
@@ -48,5 +49,17 @@ public class OnlineBookStoreServiceTest {
         when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
         Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
         Assert.assertEquals("1",countOfBooks.toString());
+    }
+
+    @Test
+    public void givenRequestToGetListOfBookDetailsFromDatabase_WhenNoBooksFound_ShouldThrowException() {
+        try {
+            List booksList = new ArrayList();
+            when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
+            onlineBookStoreService.getAllBooks();
+        } catch (OnlineBookStoreException ex) {
+            Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+
     }
 }
