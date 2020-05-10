@@ -3,7 +3,7 @@ package com.bridgelabz.onlinebookstore.service;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
+import com.bridgelabz.onlinebookstore.repository.IAdminRepository;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -11,15 +11,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OnlineBookStoreServiceTest {
 
     @Mock
-    IOnlineBookStoreRepository onlineBookStoreRepository;
+    IAdminRepository onlineBookStoreRepository;
 
     @Mock
     ModelMapper mapper;
@@ -36,7 +38,7 @@ public class OnlineBookStoreServiceTest {
         List booksList = new ArrayList();
         booksList.add(bookDetails);
         when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-        List<BookDetails> allBooks = onlineBookStoreService.getAllBooks();
+        List<BookDetails> allBooks = onlineBookStoreService.getAllBooks(0, 10);
         Assert.assertEquals(booksList, allBooks);
     }
 
@@ -47,8 +49,8 @@ public class OnlineBookStoreServiceTest {
         List booksList = new ArrayList();
         booksList.add(bookDetails);
         when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-        Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
-        Assert.assertEquals("1",countOfBooks.toString());
+        Integer countOfBooks = onlineBookStoreService.getCountOfBooks(0, 10);
+        Assert.assertEquals("1", countOfBooks.toString());
     }
 
     @Test
@@ -56,7 +58,7 @@ public class OnlineBookStoreServiceTest {
         try {
             List booksList = new ArrayList();
             when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-            onlineBookStoreService.getAllBooks();
+            onlineBookStoreService.getAllBooks(0, 10);
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }

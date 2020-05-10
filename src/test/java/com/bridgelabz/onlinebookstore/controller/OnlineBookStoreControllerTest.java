@@ -14,8 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,12 +45,12 @@ public class OnlineBookStoreControllerTest {
         List bookList = new ArrayList();
         bookList.add(bookDetails);
         String jsonDto = gson.toJson(bookList);
-        ResponseDTO responseDTO = new ResponseDTO(bookList,"Response Successful");
+        ResponseDTO responseDTO = new ResponseDTO(bookList, "Response Successful");
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.getAllBooks()).thenReturn(bookList);
-       this.mockMvc.perform(get("/bookstore/list")
-               .content(jsonDto)
-               .contentType(MediaType.APPLICATION_JSON))
+        when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(bookList);
+        this.mockMvc.perform(get("/bookstore/list")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonResponseDto));
     }
@@ -59,7 +61,7 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getAllBooks()).thenReturn(booksList);
+        when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(booksList);
         this.mockMvc.perform(get("/bookstore/list")).andExpect(status().isOk());
     }
 
@@ -79,7 +81,7 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getAllBooks()).thenReturn(booksList);
+        when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(booksList);
         this.mockMvc.perform(post("/bookstore/list")).andExpect(status().isMethodNotAllowed());
     }
 
@@ -89,9 +91,9 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
+        when(onlineBookStoreService.getCountOfBooks(0, 10)).thenReturn(booksList.size());
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
-        Assert.assertEquals("1",mvcResult.getResponse().getContentAsString());
+        Assert.assertEquals("1", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -100,8 +102,8 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
+        when(onlineBookStoreService.getCountOfBooks(0, 10)).thenReturn(booksList.size());
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
-        Assert.assertEquals(200,mvcResult.getResponse().getStatus());
+        Assert.assertEquals(200, mvcResult.getResponse().getStatus());
     }
 }
