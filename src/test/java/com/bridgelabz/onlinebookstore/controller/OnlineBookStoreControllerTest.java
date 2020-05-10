@@ -38,7 +38,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToFetchListOfBookDetailsFromDatabase_ShouldReturnListOfBookDetailsInDatabase() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List bookList = new ArrayList();
         bookList.add(bookDetails);
@@ -55,7 +55,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToFetchListOfBooksFromDatabase_WhenGetResponse_ThenShouldReturnCorrectStatus() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
@@ -65,7 +65,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToFetchListOfBooksFromDatabase_WhenSendIncorrectUrlPath_ThenShouldReturnUrlNotFoundStatus() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
@@ -75,7 +75,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToFetchListOfBooksFromDatabase_WhenSendIncorrectRequestBody_ThenShouldReturnMethodNotAllowedStatus() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
@@ -85,7 +85,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToGetCountOfBooksInDatabase_ShouldReturnCountOfBooksInDatabase() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
@@ -96,7 +96,7 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     public void givenRequestToGetCountOfBooksInDatabase_WhenGetCount_ShouldReturnStatusOk() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);

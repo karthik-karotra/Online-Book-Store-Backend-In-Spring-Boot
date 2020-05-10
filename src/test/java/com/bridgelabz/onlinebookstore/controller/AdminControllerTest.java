@@ -35,7 +35,7 @@ public class AdminControllerTest {
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         String jsonDto = gson.toJson(bookDetails);
         ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY",null);
@@ -50,7 +50,7 @@ public class AdminControllerTest {
 
     @Test
     public void givenIncorrectUrlPath_ShouldReturnURLNotFound() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
         this.mockMvc.perform(post("/index/addvirtualbook").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
@@ -58,7 +58,7 @@ public class AdminControllerTest {
 
     @Test
     void givenDataWithoutJsonConversion_ShouldReturn400StatusCode() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         MvcResult mvcResult = this.mockMvc.perform(post("/admin/book").content(String.valueOf(bookDTO))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         int status = mvcResult.getResponse().getStatus();
@@ -67,7 +67,7 @@ public class AdminControllerTest {
 
     @Test
     public void givenContentTypeOfAnotherType_ShouldReturnUnsupporteMediaType() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
         this.mockMvc.perform(post("/admin/book").content(jsonDto)
                 .contentType(MediaType.APPLICATION_ATOM_XML_VALUE)).andExpect(status().isUnsupportedMediaType());
@@ -75,7 +75,7 @@ public class AdminControllerTest {
 
     @Test
     public void givenIncorrectRequestBody_ShouldReturnMethodNotAllowed() throws Exception {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book_image", 2002);
         String jsonDto = gson.toJson(bookDTO);
         this.mockMvc.perform(get("/admin/book").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isMethodNotAllowed());

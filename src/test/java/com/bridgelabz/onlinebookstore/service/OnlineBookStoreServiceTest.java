@@ -31,7 +31,7 @@ public class OnlineBookStoreServiceTest {
 
     @Test
     public void givenRequestToGetListOfBookDetailsFromDatabase_WhenGetResponse_ShouldReturnListOfBookDetails() {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
@@ -42,7 +42,7 @@ public class OnlineBookStoreServiceTest {
 
     @Test
     public void givenRequestToGetCountOfBooksInDatabase_WhenGetResponse_ShouldReturnCountOfBooks() {
-        bookDTO = new BookDTO(1000, "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);

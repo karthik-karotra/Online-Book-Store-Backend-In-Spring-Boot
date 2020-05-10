@@ -1,7 +1,6 @@
 package com.bridgelabz.onlinebookstore.exceptions;
 
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
-import com.bridgelabz.onlinebookstore.models.BookDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,6 +1,8 @@
 package com.bridgelabz.onlinebookstore.dto;
 
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -8,23 +10,24 @@ import javax.validation.constraints.Pattern;
 public class BookDTO {
 
     @NotNull
-    @Pattern(regexp = "^([1-9])([0-9]{3})$")
-    private int isbn;
+    @Length(min=10, max=10, message = "ISBN Number Should Be Of 10 Digit")
+    @Pattern(regexp="^[1-9][0-9]{9}$")
+    private String isbn;
 
     @NotNull
-    @Pattern(regexp = "^([a-zA-Z]+[ ]*[a-zA-Z]*)$")
+    @Pattern(regexp = "^([a-zA-Z]{3,}[ ]*[a-zA-Z]*[ ]*[a-zA-Z]*[ ]*[a-zA-Z]*[ ]*[a-zA-Z]*[ ]*[a-zA-Z]*[ ]*[a-zA-Z]*)$")
     private String bookName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]+[ ]*[a-zA-Z]*$")
+    @Pattern(regexp = "^.{3,50}$")
     private String authorName;
 
     @NotNull
-    @Pattern(regexp = "^([1-9]+)([0-9]*)$")
+    @Range(min = 1, message = "Book Price Should Be Greater Than Zero")
     private double bookPrice;
 
     @NotNull
-    @Pattern(regexp = "^([1-9]+)([0-9]*)$")
+    @Range(min = 1, message = "Quantity Shoud Be Greater Than Zero")
     private int quantity;
 
     @NotNull
@@ -34,10 +37,10 @@ public class BookDTO {
     private String bookImageSource;
 
     @NotNull
-    @Pattern(regexp = "^([1-9])([0-9]{3})$")
+    @Range(min = 1000, message = "Publishing Year Should Be Greater Than 999")
     private int publishingYear;
 
-    public BookDTO(int isbn, String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
+    public BookDTO(String isbn, String bookName, String authorName, double bookPrice, int quantity, String bookDetails, String bookImageSource, int publishingYear) {
         this.isbn = isbn;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -48,7 +51,7 @@ public class BookDTO {
         this.publishingYear = publishingYear;
     }
 
-    public int getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 

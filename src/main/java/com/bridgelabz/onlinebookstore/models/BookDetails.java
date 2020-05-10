@@ -14,7 +14,7 @@ public class BookDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id;
-    public int isbn;
+    public String isbn;
     public String bookName;
     public String authorName;
     public int quantity;
