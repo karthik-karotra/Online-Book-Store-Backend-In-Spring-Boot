@@ -46,8 +46,8 @@ public class OnlineBookStoreControllerTest {
         String jsonDto = gson.toJson(bookList);
         ResponseDTO responseDTO = new ResponseDTO(bookList, "Response Successful");
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.getAllBooks(anyInt(), anyInt())).thenReturn(bookList);
-        this.mockMvc.perform(get("/books")
+        when(onlineBookStoreService.getAllBooks(anyInt(),anyInt())).thenReturn(bookList);
+        this.mockMvc.perform(get("/books/0")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ public class OnlineBookStoreControllerTest {
         List booksList = new ArrayList();
         booksList.add(bookDetails);
         when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(booksList);
-        this.mockMvc.perform(get("/books")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/books/0")).andExpect(status().isOk());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class OnlineBookStoreControllerTest {
         List booksList = new ArrayList();
         booksList.add(bookDetails);
         when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(booksList);
-        this.mockMvc.perform(post("/books")).andExpect(status().isMethodNotAllowed());
+        this.mockMvc.perform(post("/books/0")).andExpect(status().isMethodNotAllowed());
     }
 
     @Test

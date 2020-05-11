@@ -3,7 +3,7 @@ package com.bridgelabz.onlinebookstore.service;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
+import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class OnlineBookStoreServiceTest {
 
     @Mock
-    IOnlineBookStoreRepository onlineBookStoreRepository;
+    OnlineBookStoreRepository onlineBookStoreRepository;
 
     @InjectMocks
     OnlineBookStoreService onlineBookStoreService;

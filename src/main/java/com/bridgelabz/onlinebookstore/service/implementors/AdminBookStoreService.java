@@ -3,7 +3,7 @@ package com.bridgelabz.onlinebookstore.service.implementors;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.repository.IAdminRepository;
+import com.bridgelabz.onlinebookstore.repository.AdminRepository;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class AdminBookStoreService implements IAdminBookStoreService {
 
     @Autowired
-    private IAdminRepository adminRepository;
+    private AdminRepository adminRepository;
 
     @Override
     public String saveBook(BookDTO bookDTO) {

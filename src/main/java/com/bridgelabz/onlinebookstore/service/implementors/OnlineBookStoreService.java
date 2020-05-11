@@ -2,7 +2,7 @@ package com.bridgelabz.onlinebookstore.service.implementors;
 
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.repository.IOnlineBookStoreRepository;
+import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import java.util.List;
 public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Autowired
-    private IOnlineBookStoreRepository onlineBookStoreRepository;
+    private OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Override
     public List<BookDetails> getAllBooks(Integer pageNo, Integer pageSize) {
