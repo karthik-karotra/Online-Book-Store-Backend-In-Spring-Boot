@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
 public class OnlineBookStoreController {
 
     @Autowired
     IOnlineBookStoreService onlineBookStoreService;
 
-    @GetMapping("/")
+    @GetMapping("/books")
     public ResponseEntity<ResponseDTO> getBook(@RequestParam(defaultValue = "0") Integer pageNo,
                                                @RequestParam(defaultValue = "10") Integer pageSize) {
         List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, pageSize);
@@ -29,7 +28,7 @@ public class OnlineBookStoreController {
     }
 
 
-    @GetMapping("/count")
+    @GetMapping("/books/count")
     public Integer getCount(@RequestParam(defaultValue = "1") Integer pageNo,
                             @RequestParam(defaultValue = "10") Integer pageSize) {
         return onlineBookStoreService.getCountOfBooks();
