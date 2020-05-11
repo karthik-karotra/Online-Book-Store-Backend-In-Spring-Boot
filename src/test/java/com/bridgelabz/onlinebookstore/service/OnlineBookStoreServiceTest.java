@@ -43,7 +43,7 @@ public class OnlineBookStoreServiceTest {
         List booksList = new ArrayList();
         booksList.add(bookDetails);
         when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-        Integer countOfBooks = onlineBookStoreService.getCountOfBooks(0, 10);
+        Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
         Assert.assertEquals("1", countOfBooks.toString());
     }
 

@@ -32,6 +32,6 @@ public class OnlineBookStoreController {
     @GetMapping("/count")
     public Integer getCount(@RequestParam(defaultValue = "1") Integer pageNo,
                             @RequestParam(defaultValue = "10") Integer pageSize) {
-        return onlineBookStoreService.getCountOfBooks(pageNo, pageSize);
+        return onlineBookStoreService.getCountOfBooks();
     }
 }

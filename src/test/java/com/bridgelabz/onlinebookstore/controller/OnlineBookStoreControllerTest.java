@@ -92,7 +92,7 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getCountOfBooks(anyInt(), anyInt())).thenReturn(booksList.size());
+        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
         Assert.assertEquals("1", mvcResult.getResponse().getContentAsString());
     }
@@ -103,7 +103,7 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getCountOfBooks(0, 10)).thenReturn(booksList.size());
+        when(onlineBookStoreService.getCountOfBooks()).thenReturn(booksList.size());
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
         Assert.assertEquals(200, mvcResult.getResponse().getStatus());
     }
