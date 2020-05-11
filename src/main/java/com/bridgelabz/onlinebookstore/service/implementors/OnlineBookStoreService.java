@@ -29,9 +29,7 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public Integer getCountOfBooks() {
-        List list=onlineBookStoreRepository.findAll();
-        if(list.size() == 0)
-            throw new OnlineBookStoreException("No Books Were Found In Database", OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND);
+        List list = onlineBookStoreRepository.findAll();
         return list.size();
     }
 }

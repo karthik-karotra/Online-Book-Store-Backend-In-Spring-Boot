@@ -7,6 +7,7 @@ import com.bridgelabz.onlinebookstore.repository.IAdminRepository;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -16,7 +17,7 @@ public class AdminBookStoreService implements IAdminBookStoreService {
     private IAdminRepository adminRepository;
 
     @Override
-    public BookDetails saveBook(BookDTO bookDTO) {
+    public String saveBook(BookDTO bookDTO) {
         BookDetails bookDetails = new BookDetails(bookDTO);
         Optional<BookDetails> byIsbn = adminRepository.findByIsbn(bookDTO.isbn);
         Optional<BookDetails> byBookNameAndAuthorName = adminRepository.findByBookNameAndAuthorName(bookDTO.bookName, bookDTO.authorName);
@@ -26,6 +27,7 @@ public class AdminBookStoreService implements IAdminBookStoreService {
         if (byBookNameAndAuthorName.isPresent()) {
             throw new OnlineBookStoreException("Book And Author Name Already Exists", OnlineBookStoreException.ExceptionType.BOOK_AND_AUTHOR_NAME_ALREADY_EXISTS);
         }
-        return adminRepository.save(bookDetails);
+        adminRepository.save(bookDetails);
+        return "ADDED SUCCESSFULLY";
     }
 }

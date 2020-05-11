@@ -30,8 +30,9 @@ public class AdminBookStoreServiceTest {
         bookDTO = new BookDTO("4321", "abc", "xyz", 500.0, 7, "Programming And Software Development", "Ms", 2007);
         BookDetails bookDetails = new BookDetails(bookDTO);
         when(onlineBookStoreRepository.save(any())).thenReturn(bookDetails);
-        BookDetails saveBook = adminBookStoreService.saveBook(bookDTO);
-        Assert.assertEquals(bookDetails, saveBook);
+        String message = "ADDED SUCCESSFULLY";
+        String saveBook = adminBookStoreService.saveBook(bookDTO);
+        Assert.assertEquals(message, saveBook);
     }
 
     @Test

@@ -9,7 +9,12 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.Mockito.when;
@@ -29,10 +34,12 @@ public class OnlineBookStoreServiceTest {
     public void givenRequestToGetListOfBookDetailsFromDatabase_WhenGetResponse_ShouldReturnListOfBookDetails() {
         bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
-        List booksList = new ArrayList();
+        List<BookDetails> booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-        List<BookDetails> allBooks = onlineBookStoreService.getAllBooks(0, 1);
+        Pageable paging = PageRequest.of(0, 10);
+        Page<BookDetails> page = new PageImpl(booksList);
+        Mockito.when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(page);
+        List<BookDetails> allBooks = onlineBookStoreService.getAllBooks(0, 10);
         Assert.assertEquals(booksList, allBooks);
     }
 
@@ -51,11 +58,11 @@ public class OnlineBookStoreServiceTest {
     public void givenRequestToGetListOfBookDetailsFromDatabase_WhenNoBooksFound_ShouldThrowException() {
         try {
             List booksList = new ArrayList();
-            when(onlineBookStoreRepository.findAll()).thenReturn(booksList);
-            onlineBookStoreService.getAllBooks(0, 10);
+            Pageable paging = PageRequest.of(0, 10);
+            Page<BookDetails> page = new PageImpl(booksList);
+            Mockito.when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(page);
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
-
     }
 }

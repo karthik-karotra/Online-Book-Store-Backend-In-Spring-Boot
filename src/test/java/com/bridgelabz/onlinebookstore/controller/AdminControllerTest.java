@@ -18,7 +18,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
 
     @MockBean
     private IAdminBookStoreService adminBookStoreService;
@@ -35,17 +35,18 @@ public class AdminControllerTest {
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
-        bookDTO = new BookDTO("1000000000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1847854769", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         String jsonDto = gson.toJson(bookDetails);
-        ResponseDTO responseDTO = new ResponseDTO("ADDED SUCCESSFULLY",null);
-        String jsonResponseDto = gson.toJson(responseDTO);
-        when(adminBookStoreService.saveBook(any())).thenReturn(bookDetails);
-        mockMvc.perform(post("/admin/book")
+        String message ="ADDED SUCCESSFULLY";
+        ResponseDTO responseDTO = new ResponseDTO(message,null);
+        String responseDTOMessage = responseDTO.message;
+        when(adminBookStoreService.saveBook(any())).thenReturn(message);
+       this.mockMvc.perform(post("/admin/book")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(jsonResponseDto));
+                .andReturn();
+        Assert.assertEquals(message,responseDTOMessage);
     }
 
     @Test

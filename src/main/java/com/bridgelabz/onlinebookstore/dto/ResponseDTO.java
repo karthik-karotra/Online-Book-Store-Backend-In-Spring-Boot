@@ -1,7 +1,6 @@
 package com.bridgelabz.onlinebookstore.dto;
 
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-
 import java.util.List;
 
 public class ResponseDTO {
