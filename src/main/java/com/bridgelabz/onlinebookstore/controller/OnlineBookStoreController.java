@@ -6,30 +6,30 @@ import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class OnlineBookStoreController {
 
     @Autowired
     IOnlineBookStoreService onlineBookStoreService;
 
-    @GetMapping("/books")
-    public ResponseEntity<ResponseDTO> getBook(@RequestParam(defaultValue = "0") Integer pageNo,
-                                               @RequestParam(defaultValue = "10") Integer pageSize) {
-        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, pageSize);
+    @GetMapping("/books/{pageNo}")
+    public ResponseEntity<ResponseDTO> getBook(@PathVariable Integer pageNo) {
+        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, 10);
         ResponseDTO responseDTO = new ResponseDTO(bookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
 
     @GetMapping("/books/count")
-    public Integer getCount(@RequestParam(defaultValue = "1") Integer pageNo,
-                            @RequestParam(defaultValue = "10") Integer pageSize) {
+    public Integer getCount() {
         return onlineBookStoreService.getCountOfBooks();
     }
 }

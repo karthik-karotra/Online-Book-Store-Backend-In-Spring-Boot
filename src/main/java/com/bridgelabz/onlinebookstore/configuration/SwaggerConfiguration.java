@@ -16,7 +16,7 @@ public class SwaggerConfiguration {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.bridgelabz.onlinebookstore"))
                 .paths(PathSelectors.any())
                 .build()
                 .pathMapping("/");
