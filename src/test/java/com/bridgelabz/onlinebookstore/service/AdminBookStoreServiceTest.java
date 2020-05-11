@@ -9,11 +9,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -22,9 +19,6 @@ public class AdminBookStoreServiceTest {
 
     @Mock
     IAdminRepository onlineBookStoreRepository;
-
-    @Mock
-    ModelMapper mapper;
 
     @InjectMocks
     AdminBookStoreService adminBookStoreService;

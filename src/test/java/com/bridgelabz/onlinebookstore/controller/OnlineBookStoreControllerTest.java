@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +48,7 @@ public class OnlineBookStoreControllerTest {
         String jsonDto = gson.toJson(bookList);
         ResponseDTO responseDTO = new ResponseDTO(bookList, "Response Successful");
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.getAllBooks(0, 10)).thenReturn(bookList);
+        when(onlineBookStoreService.getAllBooks(anyInt(), anyInt())).thenReturn(bookList);
         this.mockMvc.perform(get("/bookstore/list")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -91,7 +92,7 @@ public class OnlineBookStoreControllerTest {
         bookDetails = new BookDetails(bookDTO);
         List booksList = new ArrayList();
         booksList.add(bookDetails);
-        when(onlineBookStoreService.getCountOfBooks(0, 10)).thenReturn(booksList.size());
+        when(onlineBookStoreService.getCountOfBooks(anyInt(), anyInt())).thenReturn(booksList.size());
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/count")).andReturn();
         Assert.assertEquals("1", mvcResult.getResponse().getContentAsString());
     }

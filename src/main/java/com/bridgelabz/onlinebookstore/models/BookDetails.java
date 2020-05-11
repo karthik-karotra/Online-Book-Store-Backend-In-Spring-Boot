@@ -1,12 +1,8 @@
 package com.bridgelabz.onlinebookstore.models;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
-import lombok.Getter;
-import lombok.Setter;
 import javax.persistence.*;
 
-@Setter
-@Getter
 @Entity
 @Table
 public class BookDetails {
@@ -24,14 +20,14 @@ public class BookDetails {
     public double bookPrice;
 
     public BookDetails(BookDTO bookDTO) {
-        this.isbn = bookDTO.getIsbn();
-        this.bookName = bookDTO.getBookName();
-        this.authorName = bookDTO.getAuthorName();
-        this.bookPrice = bookDTO.getBookPrice();
-        this.quantity = bookDTO.getQuantity();
-        this.bookDetails = bookDTO.getBookDetails();
-        this.bookImage = bookDTO.getBookImageSource();
-        this.publishingYear = bookDTO.getPublishingYear();
+        this.isbn = bookDTO.isbn;
+        this.bookName = bookDTO.bookName;
+        this.authorName = bookDTO.authorName;
+        this.bookPrice = bookDTO.bookPrice;
+        this.quantity = bookDTO.quantity;
+        this.bookDetails = bookDTO.bookDetails;
+        this.bookImage = bookDTO.bookImageSource;
+        this.publishingYear = bookDTO.publishingYear;
     }
 
     public BookDetails() {
