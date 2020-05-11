@@ -22,7 +22,8 @@ public class AdminBookStoreService implements IAdminBookStoreService {
         Optional<BookDetails> byBookNameAndAuthorName = adminRepository.findByBookNameAndAuthorName(bookDTO.bookName, bookDTO.authorName);
         if (byIsbn.isPresent()) {
             throw new OnlineBookStoreException("ISBN No Already Exists", OnlineBookStoreException.ExceptionType.ISBN_NO_ALREADY_EXISTS);
-        } else if (byBookNameAndAuthorName.isPresent()) {
+        }
+        if (byBookNameAndAuthorName.isPresent()) {
             throw new OnlineBookStoreException("Book And Author Name Already Exists", OnlineBookStoreException.ExceptionType.BOOK_AND_AUTHOR_NAME_ALREADY_EXISTS);
         }
         return adminRepository.save(bookDetails);
