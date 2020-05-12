@@ -34,8 +34,9 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     }
 
     @Override
-    public List<BookDetails> searchBook(String name) {
-      List list=  onlineBookStoreRepository.findByAttribute(name);
-      return list;
+    public Page<BookDetails> searchBooks(Pageable pageable, String searchText) {
+        return onlineBookStoreRepository.findAllBooks(pageable, searchText);
+
     }
+
 }

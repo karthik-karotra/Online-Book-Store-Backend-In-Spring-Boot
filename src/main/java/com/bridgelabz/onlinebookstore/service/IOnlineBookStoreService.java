@@ -1,6 +1,9 @@
 package com.bridgelabz.onlinebookstore.service;
 
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface IOnlineBookStoreService {
@@ -8,5 +11,5 @@ public interface IOnlineBookStoreService {
 
     Integer getCountOfBooks();
 
-    List<BookDetails> searchBook(String name);
+    Page<BookDetails> searchBooks(Pageable pageable, String searchText);
 }
