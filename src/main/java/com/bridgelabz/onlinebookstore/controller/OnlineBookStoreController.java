@@ -27,7 +27,6 @@ public class OnlineBookStoreController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-
     @GetMapping("/books/count")
     public Integer getCount() {
         return onlineBookStoreService.getCountOfBooks();

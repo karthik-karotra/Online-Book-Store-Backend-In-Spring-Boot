@@ -32,4 +32,10 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
         List list = onlineBookStoreRepository.findAll();
         return list.size();
     }
+
+    @Override
+    public List<BookDetails> searchBook(String name) {
+      List list=  onlineBookStoreRepository.findByAttribute(name);
+      return list;
+    }
 }

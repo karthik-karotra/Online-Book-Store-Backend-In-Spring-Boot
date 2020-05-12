@@ -7,4 +7,6 @@ public interface IOnlineBookStoreService {
     List<BookDetails> getAllBooks(Integer pageNo, Integer pageSize);
 
     Integer getCountOfBooks();
+
+    List<BookDetails> searchBook(String name);
 }

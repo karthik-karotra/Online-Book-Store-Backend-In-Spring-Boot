@@ -15,8 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -64,5 +68,16 @@ public class OnlineBookStoreServiceTest {
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
+    }
+
+    @Test
+    public void givenRequestToSearchByBookName_WhenSearchBooks_ShouldReturnSeachedBooks(){
+        bookDTO=new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails=new BookDetails(bookDTO);
+        List<BookDetails> searchBooks=new ArrayList();
+        searchBooks.add(bookDetails);
+        when(onlineBookStoreRepository.findByAttribute(any())).thenReturn(searchBooks);
+        List<BookDetails> search=onlineBookStoreService.searchBook("Mrutyunjay");
+        Assert.assertEquals(search,searchBooks);
     }
 }
