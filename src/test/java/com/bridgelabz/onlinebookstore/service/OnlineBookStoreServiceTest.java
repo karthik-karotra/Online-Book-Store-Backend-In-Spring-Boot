@@ -96,4 +96,17 @@ public class OnlineBookStoreServiceTest {
         }
     }
 
+    @Test
+    public void givenRequestToFilterBooks_WhenFiltered_ShouldReturnBookDetails() {
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        List<BookDetails> booksList = new ArrayList();
+        booksList.add(bookDetails);
+        Pageable paging = PageRequest.of(0, 10);
+        Page<BookDetails> page = new PageImpl(booksList);
+        when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(page);
+        Page<BookDetails> page1 = onlineBookStoreService.sortByAttribute(paging);
+        Assert.assertEquals(page,page1);
+    }
+
 }

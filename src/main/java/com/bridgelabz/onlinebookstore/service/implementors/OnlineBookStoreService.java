@@ -45,6 +45,6 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public Page<BookDetails> sortByAttribute(Pageable pageable) {
-        return null;
+        return onlineBookStoreRepository.findAll(pageable);
     }
 }
