@@ -82,4 +82,17 @@ public class OnlineBookStoreServiceTest {
         Page<BookDetails> page1 = onlineBookStoreService.searchBooks(paging, "Mrutyunjay");
         Assert.assertEquals(page, page1);
     }
+
+    @Test
+    public void givenRequestToSearchBooks_WhenNotFound_ShouldThrowException() {
+        try {
+            List<BookDetails> booksList = new ArrayList();
+            Pageable paging = PageRequest.of(0, 10);
+            Page page = new PageImpl(booksList);
+            when(this.onlineBookStoreRepository.findAllBooks(any(), any())).thenReturn(page);
+            onlineBookStoreService.searchBooks(paging, "Mrutyunjay");
+        } catch (OnlineBookStoreException ex) {
+            Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+    }
 }
