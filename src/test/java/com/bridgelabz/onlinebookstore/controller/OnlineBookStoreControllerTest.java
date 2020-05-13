@@ -110,4 +110,16 @@ public class OnlineBookStoreControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(get("/books/count")).andReturn();
         Assert.assertEquals(200, mvcResult.getResponse().getStatus());
     }
+
+    @Test
+    void givenRequestToSearchBooks_WhenFound_ShouldReturnTrue() throws Exception {
+        bookDTO=new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        List bookList = new ArrayList();
+        bookList.add(bookDetails);
+        Page<BookDetails> page = new PageImpl(bookList);
+        when(onlineBookStoreService.searchBooks(any(),any())).thenReturn(page);
+        MvcResult mvcResult=this.mockMvc.perform(get("/search/0/Mrutyunjay")).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
+    }
 }
