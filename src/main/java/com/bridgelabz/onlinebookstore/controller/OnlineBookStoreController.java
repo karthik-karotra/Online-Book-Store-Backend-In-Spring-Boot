@@ -44,8 +44,12 @@ public class OnlineBookStoreController {
 
     @GetMapping("order/{pageNumber}/{sortBy}/{sortDirection}")
     public ResponseEntity<Page<BookDetails>> sort(@PathVariable int pageNumber, @PathVariable String sortBy, @PathVariable String sortDirection) {
-        Page<BookDetails> page = onlineBookStoreService.sortByAttribute(null);
-        return null;
+        Page<BookDetails> page = onlineBookStoreService.sortByAttribute( PageRequest.of(
+                pageNumber, 12,
+                sortDirection.equalsIgnoreCase("ascending") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending()
+                )
+        );
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
 }
