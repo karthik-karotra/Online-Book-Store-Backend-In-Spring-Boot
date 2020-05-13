@@ -36,6 +36,10 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public Page<BookDetails> searchBooks(Pageable pageable, String searchText) {
-        return onlineBookStoreRepository.findAllBooks(pageable, searchText);
+        Page<BookDetails> searchedBooks = onlineBookStoreRepository.findAllBooks(pageable, searchText);
+        if (!searchedBooks.hasContent()){
+            throw new OnlineBookStoreException("No Books Found", OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND);
+        }
+        return searchedBooks;
     }
 }
