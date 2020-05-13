@@ -71,13 +71,15 @@ public class OnlineBookStoreServiceTest {
     }
 
     @Test
-    public void givenRequestToSearchByBookName_WhenSearchBooks_ShouldReturnSeachedBooks(){
-        bookDTO=new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        BookDetails bookDetails=new BookDetails(bookDTO);
-        List<BookDetails> searchBooks=new ArrayList();
-        searchBooks.add(bookDetails);
-        when(onlineBookStoreRepository.findByAttribute(any())).thenReturn(searchBooks);
-        List<BookDetails> search=onlineBookStoreService.searchBook("Mrutyunjay");
-        Assert.assertEquals(search,searchBooks);
+    public void givenRequestToSearchBooks_WhenFound_ShouldReturnSearchedBooks() {
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        List<BookDetails> booksList = new ArrayList();
+        booksList.add(bookDetails);
+        Pageable paging = PageRequest.of(0, 10);
+        Page<BookDetails> page = new PageImpl(booksList);
+        when(this.onlineBookStoreRepository.findAllBooks(any(), any())).thenReturn(page);
+        Page<BookDetails> page1 = onlineBookStoreService.searchBooks(paging, "Mrutyunjay");
+        Assert.assertEquals(page, page1);
     }
 }

@@ -11,11 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,7 +51,7 @@ public class OnlineBookStoreControllerTest {
         String jsonDto = gson.toJson(bookList);
         ResponseDTO responseDTO = new ResponseDTO(bookList, "Response Successful");
         String jsonResponseDto = gson.toJson(responseDTO);
-        when(onlineBookStoreService.getAllBooks(anyInt(),anyInt())).thenReturn(bookList);
+        when(onlineBookStoreService.getAllBooks(anyInt(), anyInt())).thenReturn(bookList);
         this.mockMvc.perform(get("/books/0")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
