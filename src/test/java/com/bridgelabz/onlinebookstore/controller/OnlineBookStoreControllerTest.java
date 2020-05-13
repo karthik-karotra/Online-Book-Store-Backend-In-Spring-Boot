@@ -122,4 +122,16 @@ public class OnlineBookStoreControllerTest {
         MvcResult mvcResult=this.mockMvc.perform(get("/search/0/Mrutyunjay")).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
     }
+
+    @Test
+    public void givenRequestToFilterBooks_WhenFiltered_ShouldReturnBookDetails() throws Exception{
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        List bookList = new ArrayList();
+        bookList.add(bookDetails);
+        Page<BookDetails> page = new PageImpl(bookList);
+        when(onlineBookStoreService.sortByAttribute(any())).thenReturn(page);
+        MvcResult mvcResult = this.mockMvc.perform(get("/order/0/bookPrice/ascending")).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("1000"));
+    }
 }

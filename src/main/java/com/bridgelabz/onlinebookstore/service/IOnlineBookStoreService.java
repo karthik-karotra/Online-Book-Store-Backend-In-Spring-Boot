@@ -12,4 +12,6 @@ public interface IOnlineBookStoreService {
     Integer getCountOfBooks();
 
     Page<BookDetails> searchBooks(Pageable pageable, String searchText);
+
+    Page<BookDetails> sortByAttribute(Pageable pageable);
 }

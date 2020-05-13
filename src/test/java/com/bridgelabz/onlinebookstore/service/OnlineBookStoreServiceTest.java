@@ -95,4 +95,5 @@ public class OnlineBookStoreServiceTest {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
     }
+
 }

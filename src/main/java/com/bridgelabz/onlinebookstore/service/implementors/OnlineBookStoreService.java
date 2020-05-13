@@ -42,4 +42,9 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
         }
         return searchedBooks;
     }
+
+    @Override
+    public Page<BookDetails> sortByAttribute(Pageable pageable) {
+        return null;
+    }
 }

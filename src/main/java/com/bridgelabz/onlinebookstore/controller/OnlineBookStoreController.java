@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,6 +40,12 @@ public class OnlineBookStoreController {
     public ResponseEntity<Page<BookDetails>> findAll(@PathVariable Integer pageNo, @PathVariable String searchText) {
         Pageable pageable = PageRequest.of(pageNo, 12);
         return new ResponseEntity<>(onlineBookStoreService.searchBooks(pageable, searchText), HttpStatus.OK);
+    }
+
+    @GetMapping("order/{pageNumber}/{sortBy}/{sortDirection}")
+    public ResponseEntity<Page<BookDetails>> sort(@PathVariable int pageNumber, @PathVariable String sortBy, @PathVariable String sortDirection) {
+        Page<BookDetails> page = onlineBookStoreService.sortByAttribute(null);
+        return null;
     }
 
 }
