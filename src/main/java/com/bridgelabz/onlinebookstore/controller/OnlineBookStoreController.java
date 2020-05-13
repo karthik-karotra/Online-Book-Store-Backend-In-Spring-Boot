@@ -25,7 +25,7 @@ public class OnlineBookStoreController {
 
     @GetMapping("/books/{pageNo}")
     public ResponseEntity<ResponseDTO> getBook(@PathVariable Integer pageNo) {
-        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, 10);
+        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, 12);
         ResponseDTO responseDTO = new ResponseDTO(bookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class OnlineBookStoreController {
 
     @GetMapping("/search/{pageNo}/{searchText}")
     public ResponseEntity<Page<BookDetails>> findAll(@PathVariable Integer pageNo, @PathVariable String searchText) {
-        Pageable pageable = PageRequest.of(pageNo, 2);
+        Pageable pageable = PageRequest.of(pageNo, 12);
         return new ResponseEntity<>(onlineBookStoreService.searchBooks(pageable, searchText), HttpStatus.OK);
     }
 
