@@ -1,16 +1,12 @@
 package com.bridgelabz.onlinebookstore.filterenums;
 
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum  FilterAttributes {
+public enum FilterAttributes {
     LOW_TO_HIGH {
         @Override
         public List<BookDetails> getSortedData(List<BookDetails> sortedBookList) {
@@ -18,12 +14,11 @@ public enum  FilterAttributes {
                     .sorted(Comparator.comparing(bookDetails -> bookDetails.bookPrice))
                     .collect(Collectors.toList());
         }
-
     },
     HIGH_TO_LOW {
         @Override
         public List<BookDetails> getSortedData(List<BookDetails> sortedBookList) {
-            List<BookDetails> allBooks= sortedBookList.stream()
+            List<BookDetails> allBooks = sortedBookList.stream()
                     .sorted(Comparator.comparing(bookDetails -> bookDetails.bookPrice))
                     .collect(Collectors.toList());
             Collections.reverse(allBooks);
@@ -33,7 +28,7 @@ public enum  FilterAttributes {
     NEWEST_ARRIVALS {
         @Override
         public List<BookDetails> getSortedData(List<BookDetails> sortedBookList) {
-            List<BookDetails> allBooks= sortedBookList.stream()
+            List<BookDetails> allBooks = sortedBookList.stream()
                     .sorted(Comparator.comparing(bookDetails -> bookDetails.publishingYear))
                     .collect(Collectors.toList());
             Collections.reverse(allBooks);

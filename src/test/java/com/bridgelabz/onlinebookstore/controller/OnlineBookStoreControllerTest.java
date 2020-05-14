@@ -2,7 +2,6 @@ package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
-import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
 import com.google.gson.Gson;
@@ -17,10 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -32,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class OnlineBookStoreControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,7 +39,6 @@ public class OnlineBookStoreControllerTest {
     BookDTO bookDTO;
     BookDetails bookDetails;
     Gson gson = new Gson();
-
 
     @Test
     public void givenRequestToFetchListOfBookDetailsFromDatabase_ShouldReturnListOfBookDetailsInDatabase() throws Exception {
@@ -114,25 +111,24 @@ public class OnlineBookStoreControllerTest {
 
     @Test
     void givenRequestToSearchBooks_WhenFound_ShouldReturnTrue() throws Exception {
-        bookDTO=new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        bookDetails = new BookDetails(bookDTO);
-        List bookList = new ArrayList();
-        bookList.add(bookDetails);
-        Page<BookDetails> page = new PageImpl(bookList);
-        when(onlineBookStoreService.searchBooks(any(),any())).thenReturn(page);
-        MvcResult mvcResult=this.mockMvc.perform(get("/search/0/Mrutyunjay")).andReturn();
-        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
-    }
-
-    @Test
-    public void givenRequestToFilterBooksOnSearchedString_WhenFiltered_ShouldReturnBookDetails() throws Exception{
         bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List bookList = new ArrayList();
         bookList.add(bookDetails);
-        when(onlineBookStoreService.findAllBooks(any(),anyInt(),any())).thenReturn(bookList);
+        Page<BookDetails> page = new PageImpl(bookList);
+        when(onlineBookStoreService.searchBooks(any(), any())).thenReturn(page);
+        MvcResult mvcResult = this.mockMvc.perform(get("/search/0/Mrutyunjay")).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
+    }
+
+    @Test
+    public void givenRequestToFilterBooksOnSearchedString_WhenFiltered_ShouldReturnBookDetails() throws Exception {
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        List bookList = new ArrayList();
+        bookList.add(bookDetails);
+        when(onlineBookStoreService.findAllBooks(any(), anyInt(), any())).thenReturn(bookList);
         MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8080/sort/0/Mrutyunjay/LOW_TO_HIGH")).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("1000"));
     }
-
 }

@@ -16,11 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -105,8 +102,7 @@ public class OnlineBookStoreServiceTest {
         List<BookDetails> booksList = new ArrayList();
         booksList.add(bookDetails);
         when(this.onlineBookStoreRepository.findAllBooks(anyString())).thenReturn(booksList);
-        List<BookDetails> bookList1 = onlineBookStoreService.findAllBooks("Mrutyunjay",0, FilterAttributes.LOW_TO_HIGH);
-        Assert.assertEquals(booksList,bookList1);
+        List<BookDetails> bookList1 = onlineBookStoreService.findAllBooks("Mrutyunjay", 0, FilterAttributes.LOW_TO_HIGH);
+        Assert.assertEquals(booksList, bookList1);
     }
-
 }

@@ -8,8 +8,8 @@ import javax.validation.constraints.Pattern;
 public class BookDTO {
 
     @NotNull
-    @Length(min=10, max=10, message = "ISBN Number Should Be Of 10 Digit")
-    @Pattern(regexp="^[1-9][0-9]{9}$")
+    @Length(min = 10, max = 10, message = "ISBN Number Should Be Of 10 Digit")
+    @Pattern(regexp = "^[1-9][0-9]{9}$")
     public String isbn;
 
     @NotNull
@@ -48,6 +48,4 @@ public class BookDTO {
         this.bookImageSource = bookImageSource;
         this.publishingYear = publishingYear;
     }
-
-
 }

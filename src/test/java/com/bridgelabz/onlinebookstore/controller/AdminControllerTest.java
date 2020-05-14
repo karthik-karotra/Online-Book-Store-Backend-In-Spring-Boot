@@ -23,9 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AdminControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
-
 
     @MockBean
     private IAdminBookStoreService adminBookStoreService;
@@ -38,15 +38,15 @@ public class AdminControllerTest {
         bookDTO = new BookDTO("1847854769", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         String jsonDto = gson.toJson(bookDetails);
-        String message ="ADDED SUCCESSFULLY";
-        ResponseDTO responseDTO = new ResponseDTO(message,null);
+        String message = "ADDED SUCCESSFULLY";
+        ResponseDTO responseDTO = new ResponseDTO(message, null);
         String responseDTOMessage = responseDTO.message;
         when(adminBookStoreService.saveBook(any())).thenReturn(message);
-       this.mockMvc.perform(post("/admin/book")
+        this.mockMvc.perform(post("/admin/book")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        Assert.assertEquals(message,responseDTOMessage);
+        Assert.assertEquals(message, responseDTOMessage);
     }
 
     @Test

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -39,7 +38,7 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     @Override
     public Page<BookDetails> searchBooks(Pageable pageable, String searchText) {
         Page<BookDetails> searchedBooks = onlineBookStoreRepository.findAllBooks(pageable, searchText);
-        if (!searchedBooks.hasContent()){
+        if (!searchedBooks.hasContent()) {
             throw new OnlineBookStoreException("No Books Found", OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND);
         }
         return searchedBooks;
@@ -47,12 +46,15 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
 
     @Override
     public List<BookDetails> findAllBooks(String searchText, int pageNo, FilterAttributes filterAttributes) {
-        List<BookDetails> allBooks =null;
-        if(searchText.trim().equals("")) {
+        List<BookDetails> allBooks = null;
+        if (searchText.trim().equals("")) {
             allBooks = onlineBookStoreRepository.findAll();
         }
-        if(!searchText.trim().equals("")) {
-         allBooks = onlineBookStoreRepository.findAllBooks(searchText);
+        if (!searchText.trim().equals("")) {
+            allBooks = onlineBookStoreRepository.findAllBooks(searchText);
+            if (allBooks.size() == 0) {
+                throw new OnlineBookStoreException("No Books Found", OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND);
+            }
         }
         List<BookDetails> sortedData = filterAttributes.getSortedData(allBooks);
         PagedListHolder page = new PagedListHolder(sortedData);

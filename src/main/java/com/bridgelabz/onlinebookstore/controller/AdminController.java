@@ -19,8 +19,8 @@ public class AdminController {
 
     @PostMapping("/book")
     public ResponseEntity<ResponseDTO> saveBook(@Valid @RequestBody BookDTO bookDTO) {
-        String message=adminBookStoreService.saveBook(bookDTO);
-        ResponseDTO responseDTO = new ResponseDTO(message,null);
+        String message = adminBookStoreService.saveBook(bookDTO);
+        ResponseDTO responseDTO = new ResponseDTO(message, null);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
