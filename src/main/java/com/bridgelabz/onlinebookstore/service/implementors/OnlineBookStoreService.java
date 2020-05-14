@@ -1,10 +1,12 @@
 package com.bridgelabz.onlinebookstore.service.implementors;
 
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
+import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,4 +49,15 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
     public Page<BookDetails> sortByAttribute(Pageable pageable) {
         return onlineBookStoreRepository.findAll(pageable);
     }
+
+    @Override
+    public List<BookDetails> findAllBooks(String searchText, int pageNo, FilterAttributes filterAttributes) {
+        List<BookDetails> allBooks = onlineBookStoreRepository.findAllBooks(searchText);
+        List<BookDetails> sortedData = filterAttributes.getSortedData(allBooks);
+        PagedListHolder page = new PagedListHolder(sortedData);
+        page.setPageSize(12);
+        page.setPage(pageNo);
+        return page.getPageList();
+    }
+
 }

@@ -1,9 +1,12 @@
 package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.IOnlineBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +23,9 @@ import java.util.List;
 @CrossOrigin
 @RestController
 public class OnlineBookStoreController {
+
+    @Autowired
+    OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Autowired
     IOnlineBookStoreService onlineBookStoreService;
@@ -44,7 +50,8 @@ public class OnlineBookStoreController {
 
     @GetMapping("order/{pageNumber}/{sortBy}/{sortDirection}")
     public ResponseEntity<Page<BookDetails>> sort(@PathVariable int pageNumber, @PathVariable String sortBy, @PathVariable String sortDirection) {
-        Page<BookDetails> page = onlineBookStoreService.sortByAttribute( PageRequest.of(
+
+        Page<BookDetails> page = onlineBookStoreService.sortByAttribute(PageRequest.of(
                 pageNumber, 12,
                 sortDirection.equalsIgnoreCase("ascending") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending()
                 )
@@ -52,4 +59,8 @@ public class OnlineBookStoreController {
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
+    @GetMapping("/sort/{pageNo}/{searchText}/{filterAttributes}")
+    public List<BookDetails> sort(@PathVariable String searchText, @PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
+       return onlineBookStoreService.findAllBooks(searchText,pageNo,filterAttributes);
+    }
 }
