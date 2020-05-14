@@ -98,4 +98,15 @@ public class OnlineBookStoreServiceTest {
         }
     }
 
+    @Test
+    public void givenRequestToFilterBooksOnSearchedString_WhenFiltered_ShouldReturnBookDetails() {
+        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        List<BookDetails> booksList = new ArrayList();
+        booksList.add(bookDetails);
+        when(this.onlineBookStoreRepository.findAllBooks(anyString())).thenReturn(booksList);
+        List<BookDetails> bookList1 = onlineBookStoreService.findAllBooks("Mrutyunjay",0, FilterAttributes.LOW_TO_HIGH);
+        Assert.assertEquals(booksList,bookList1);
+    }
+
 }
