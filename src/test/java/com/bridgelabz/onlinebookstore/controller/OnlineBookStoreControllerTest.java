@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
 import com.google.gson.Gson;
@@ -134,4 +135,5 @@ public class OnlineBookStoreControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(get("/order/0/bookPrice/ascending")).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("1000"));
     }
+
 }

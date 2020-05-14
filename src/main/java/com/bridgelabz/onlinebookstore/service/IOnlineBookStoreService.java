@@ -15,7 +15,7 @@ public interface IOnlineBookStoreService {
 
     Page<BookDetails> searchBooks(Pageable pageable, String searchText);
 
-    Page<BookDetails> sortByAttribute(Pageable pageable);
+    List<BookDetails> sortByAttribute(int pageNo, FilterAttributes filterAttributes);
 
     List<BookDetails> findAllBooks(String text, int pageNo, FilterAttributes filterAttributes);
 }
