@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.service;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
+import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -94,19 +96,6 @@ public class OnlineBookStoreServiceTest {
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
-    }
-
-    @Test
-    public void givenRequestToFilterBooks_WhenFiltered_ShouldReturnBookDetails() {
-        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        BookDetails bookDetails = new BookDetails(bookDTO);
-        List<BookDetails> booksList = new ArrayList();
-        booksList.add(bookDetails);
-        Pageable paging = PageRequest.of(0, 10);
-        Page<BookDetails> page = new PageImpl(booksList);
-        when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(page);
-        Page<BookDetails> page1 = onlineBookStoreService.sortByAttribute(paging);
-        Assert.assertEquals(page,page1);
     }
 
 }

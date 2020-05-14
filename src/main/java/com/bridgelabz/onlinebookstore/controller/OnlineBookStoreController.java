@@ -48,11 +48,6 @@ public class OnlineBookStoreController {
         return new ResponseEntity<>(onlineBookStoreService.searchBooks(pageable, searchText), HttpStatus.OK);
     }
 
-    @GetMapping("order/{pageNo}/{filterAttributes}")
-    public List<BookDetails> sort(@PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
-        return onlineBookStoreService.sortByAttribute(pageNo,filterAttributes);
-    }
-
     @GetMapping("/sort/{pageNo}/{searchText}/{filterAttributes}")
     public List<BookDetails> sort(@PathVariable String searchText, @PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
        return onlineBookStoreService.findAllBooks(searchText,pageNo,filterAttributes);

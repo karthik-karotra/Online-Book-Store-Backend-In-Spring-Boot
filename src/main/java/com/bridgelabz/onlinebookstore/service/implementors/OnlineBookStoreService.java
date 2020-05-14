@@ -45,16 +45,6 @@ public class OnlineBookStoreService implements IOnlineBookStoreService {
         return searchedBooks;
     }
 
-     @Override
-    public List<BookDetails> sortByAttribute(int pageNo, FilterAttributes filterAttributes) {
-         List<BookDetails> allBooks = onlineBookStoreRepository.findAll();
-         List<BookDetails> sortedData = filterAttributes.getSortedData(allBooks);
-         PagedListHolder page = new PagedListHolder(sortedData);
-         page.setPageSize(12);
-         page.setPage(pageNo);
-         return page.getPageList();
-    }
-
     @Override
     public List<BookDetails> findAllBooks(String searchText, int pageNo, FilterAttributes filterAttributes) {
         List<BookDetails> allBooks =null;
