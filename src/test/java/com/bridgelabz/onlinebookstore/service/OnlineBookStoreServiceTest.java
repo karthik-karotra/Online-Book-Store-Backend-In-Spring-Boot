@@ -105,4 +105,15 @@ public class OnlineBookStoreServiceTest {
         List<BookDetails> bookList1 = onlineBookStoreService.findAllBooks("Mrutyunjay", 0, FilterAttributes.LOW_TO_HIGH);
         Assert.assertEquals(booksList, bookList1);
     }
+
+    @Test
+    public void givenRequestToFilterBooksOnSearchedString_WhenNoBookFound_ShouldThrowException() {
+        try {
+            List<BookDetails> booksList = new ArrayList();
+            when(this.onlineBookStoreRepository.findAllBooks(anyString())).thenReturn(booksList);
+            onlineBookStoreService.findAllBooks("Ravinder", 0, FilterAttributes.LOW_TO_HIGH);
+        } catch (OnlineBookStoreException ex) {
+            Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+    }
 }
