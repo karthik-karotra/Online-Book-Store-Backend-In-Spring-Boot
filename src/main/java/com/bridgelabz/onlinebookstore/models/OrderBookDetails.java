@@ -8,6 +8,7 @@ import javax.persistence.*;
 public class OrderBookDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer id;
     public Integer orderId;
     public Integer bookId;
     public Integer quantity;

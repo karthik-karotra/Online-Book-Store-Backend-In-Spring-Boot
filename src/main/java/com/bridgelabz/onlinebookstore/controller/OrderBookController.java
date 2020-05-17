@@ -23,8 +23,8 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order")
-    public ResponseEntity<ResponseDTO> addOrderedBook(@Valid @RequestBody OrderBookDTO orderBookDTO) {
-        OrderBookDetails orderBookDetails = orderBookService.addOrderSummary(orderBookDTO);
+    public ResponseEntity<ResponseDTO> addOrderedBook(@Valid @RequestBody OrderBookDTO... orderBookDTO) {
+        Integer orderBookDetails = orderBookService.addOrderSummary(orderBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Added Successfully", orderBookDetails);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

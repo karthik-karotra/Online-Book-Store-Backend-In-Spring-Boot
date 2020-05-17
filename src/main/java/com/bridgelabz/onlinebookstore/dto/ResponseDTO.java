@@ -9,7 +9,7 @@ public class ResponseDTO {
     public String message;
     public BookDetails bookDetails;
     public List<BookDetails> bookList;
-    public OrderBookDetails orderBookDetails;
+    public Integer orderBookDetails;
 
     public ResponseDTO(String message, BookDetails bookDetails) {
         this.message = message;
@@ -21,7 +21,7 @@ public class ResponseDTO {
         this.bookList = bookList;
     }
 
-    public ResponseDTO(String message, OrderBookDetails orderBookDetails) {
+    public ResponseDTO(String message, Integer orderBookDetails) {
         this.message=message;
         this.orderBookDetails=orderBookDetails;
     }

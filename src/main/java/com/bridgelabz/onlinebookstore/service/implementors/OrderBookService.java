@@ -7,6 +7,11 @@ import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class OrderBookService implements IOrderBookService {
 
@@ -14,10 +19,26 @@ public class OrderBookService implements IOrderBookService {
     OrderBookRepository orderBookRepository;
 
     @Override
-    public OrderBookDetails addOrderSummary(OrderBookDTO orderBookDTO) {
-        OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
-        OrderBookDetails orderSummary = orderBookRepository.save(orderBookDetails);
-        return orderSummary;
+    public Integer addOrderSummary(OrderBookDTO... orderBookDTO) {
+        Integer orderId = getOrderId();
+        List<OrderBookDetails> data = Arrays.stream(orderBookDTO).map(value -> {
+            OrderBookDetails orderBookDetails = new OrderBookDetails(value);
+            orderBookDetails.orderId = orderId;
+            return orderBookRepository.save(orderBookDetails);
+        }).collect(Collectors.toList());
+        return data.get(0).orderId;
+    }
+
+    private Integer getOrderId() {
+        boolean isUnique = false;
+        Integer orderId = 0;
+        while(!isUnique){
+            orderId = (int) Math.floor(100000 + Math.random() * 900000);
+            Optional<OrderBookDetails> byId = orderBookRepository.findByOrderId(orderId);
+            if( !byId.isPresent())
+                isUnique = true;
+        }
+        return orderId;
     }
 
 }
