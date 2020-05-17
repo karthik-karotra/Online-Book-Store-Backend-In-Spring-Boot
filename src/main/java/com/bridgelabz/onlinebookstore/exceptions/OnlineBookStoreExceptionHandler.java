@@ -11,7 +11,6 @@ public class OnlineBookStoreExceptionHandler {
 
     @ExceptionHandler(OnlineBookStoreException.class)
     public ResponseEntity<Object> onlineBookStoreExceptionHandler(OnlineBookStoreException ex) {
-       // ResponseDTO responseDTO = new ResponseDTO(ex.getMessage(), null);
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
 }
