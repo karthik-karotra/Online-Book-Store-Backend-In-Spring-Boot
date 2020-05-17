@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.service.implementors;
 
 import com.bridgelabz.onlinebookstore.dto.OrderBookDTO;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
+import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.repository.OrderBookRepository;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class OrderBookService implements IOrderBookService {
     @Autowired
     OrderBookRepository orderBookRepository;
 
+    @Autowired
+    private OnlineBookStoreRepository onlineBookStoreRepository;
+
+
     @Override
     public Integer addOrderSummary(OrderBookDTO... orderBookDTO) {
         Integer orderId = getOrderId();
@@ -26,6 +31,7 @@ public class OrderBookService implements IOrderBookService {
             orderBookDetails.orderId = orderId;
             return orderBookRepository.save(orderBookDetails);
         }).collect(Collectors.toList());
+        updateQuantityOfBooks(data);
         return data.get(0).orderId;
     }
 
@@ -40,5 +46,12 @@ public class OrderBookService implements IOrderBookService {
         }
         return orderId;
     }
+
+    private void updateQuantityOfBooks(List<OrderBookDetails> orderBookDetails) {
+        orderBookDetails.stream().forEach(value -> {
+            onlineBookStoreRepository.updateStock( value.quantity, value.bookId);
+        });
+    }
+
 
 }
