@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class OrderBookDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int orderId;
+    public Integer orderId;
     public Integer bookId;
     public Integer quantity;
     public Double orderPrice;

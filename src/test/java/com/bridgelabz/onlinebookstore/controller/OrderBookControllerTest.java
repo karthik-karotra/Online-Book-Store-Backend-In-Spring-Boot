@@ -34,7 +34,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenCustomerOrderDetailsToAddInDatabase_WhenAdded_ShouldReturnCorrectDetails() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);
@@ -45,7 +45,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenCustomerOrderDetailsToAddInDatabase_WhenAdded_ShouldReturnStatusOk() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);
@@ -57,7 +57,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenIncorrectUrlPathForOrderBook_ShouldReturnURLNotFound() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);
@@ -69,7 +69,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenDataWithoutJsonConversionForOrderBook_ShouldReturn400StatusCode() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         // String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);
@@ -83,7 +83,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenContentTypeOfAnotherTypeForOrderBook_ShouldReturnUnsupporteMediaType() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Avatar", "8108541248", "416523", "Sindhudurga", "Vengurla", "Vengurla", "Arebian Sea", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);
@@ -95,7 +95,7 @@ public class OrderBookControllerTest {
 
     @Test
     void givenIncorrectRequestBodyForOrderBook_ShouldReturnMethodNotAllowed() throws Exception {
-        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "810854124", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
+        orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Avatar", "8108541248", "416523", "Sindhudurga", "Vengurla", "Vengurla", "Arebian Sea", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails(orderBookDTO);
         when(orderBookService.addOrderSummary(any())).thenReturn(orderBookDetails);

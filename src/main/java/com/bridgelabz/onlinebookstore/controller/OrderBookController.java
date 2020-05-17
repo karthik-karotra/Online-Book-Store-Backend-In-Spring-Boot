@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/bookstore")
 public class OrderBookController {
@@ -21,7 +23,7 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order")
-    public ResponseEntity<ResponseDTO> addOrderedBook(@RequestBody OrderBookDTO orderBookDTO) throws OnlineBookStoreException {
+    public ResponseEntity<ResponseDTO> addOrderedBook(@Valid @RequestBody OrderBookDTO orderBookDTO) {
         OrderBookDetails orderBookDetails = orderBookService.addOrderSummary(orderBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Added Successfully", orderBookDetails);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
