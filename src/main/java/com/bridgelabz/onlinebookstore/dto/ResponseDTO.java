@@ -1,12 +1,15 @@
 package com.bridgelabz.onlinebookstore.dto;
 
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
+
 import java.util.List;
 
 public class ResponseDTO {
     public String message;
     public BookDetails bookDetails;
     public List<BookDetails> bookList;
+    public OrderBookDetails orderBookDetails;
 
     public ResponseDTO(String message, BookDetails bookDetails) {
         this.message = message;
@@ -16,5 +19,10 @@ public class ResponseDTO {
     public ResponseDTO(List<BookDetails> bookList,String message) {
         this.message = message;
         this.bookList = bookList;
+    }
+
+    public ResponseDTO(String message, OrderBookDetails orderBookDetails) {
+        this.message=message;
+        this.orderBookDetails=orderBookDetails;
     }
 }

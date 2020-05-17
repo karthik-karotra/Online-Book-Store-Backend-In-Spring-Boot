@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,12 @@ public class AdminController {
     @Autowired
     IAdminBookStoreService adminBookStoreService;
 
+    BookDetails bookDetails=new BookDetails();
+
     @PostMapping("/book")
     public ResponseEntity<ResponseDTO> saveBook(@Valid @RequestBody BookDTO bookDTO) {
         String message = adminBookStoreService.saveBook(bookDTO);
-        ResponseDTO responseDTO = new ResponseDTO(message, null);
+        ResponseDTO responseDTO = new ResponseDTO(message, bookDetails);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }

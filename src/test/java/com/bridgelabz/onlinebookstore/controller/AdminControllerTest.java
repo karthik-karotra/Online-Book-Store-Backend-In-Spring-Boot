@@ -39,7 +39,7 @@ public class AdminControllerTest {
         BookDetails bookDetails = new BookDetails(bookDTO);
         String jsonDto = gson.toJson(bookDetails);
         String message = "ADDED SUCCESSFULLY";
-        ResponseDTO responseDTO = new ResponseDTO(message, null);
+        ResponseDTO responseDTO = new ResponseDTO(message, bookDetails);
         String responseDTOMessage = responseDTO.message;
         when(adminBookStoreService.saveBook(any())).thenReturn(message);
         this.mockMvc.perform(post("/admin/book")
