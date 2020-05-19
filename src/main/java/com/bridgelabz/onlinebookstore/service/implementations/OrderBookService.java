@@ -1,4 +1,4 @@
-package com.bridgelabz.onlinebookstore.service.implementors;
+package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.dto.OrderBookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;

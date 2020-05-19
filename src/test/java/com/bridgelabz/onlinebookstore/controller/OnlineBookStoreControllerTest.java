@@ -3,7 +3,7 @@ package com.bridgelabz.onlinebookstore.controller;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
+import com.bridgelabz.onlinebookstore.service.implementations.OnlineBookStoreService;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

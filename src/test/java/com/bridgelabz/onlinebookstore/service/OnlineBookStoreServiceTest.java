@@ -5,7 +5,7 @@ import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
-import com.bridgelabz.onlinebookstore.service.implementors.OnlineBookStoreService;
+import com.bridgelabz.onlinebookstore.service.implementations.OnlineBookStoreService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

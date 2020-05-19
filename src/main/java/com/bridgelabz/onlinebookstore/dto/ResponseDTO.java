@@ -1,28 +1,15 @@
 package com.bridgelabz.onlinebookstore.dto;
 
-import com.bridgelabz.onlinebookstore.models.BookDetails;
-import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
-
-import java.util.List;
-
 public class ResponseDTO {
     public String message;
-    public BookDetails bookDetails;
-    public List<BookDetails> bookList;
-    public Integer orderBookDetails;
+    public Object data;
 
-    public ResponseDTO(String message, BookDetails bookDetails) {
+    public ResponseDTO(String message) {
         this.message = message;
-        this.bookDetails = bookDetails;
     }
 
-    public ResponseDTO(List<BookDetails> bookList,String message) {
+    public ResponseDTO(Object data, String message) {
         this.message = message;
-        this.bookList = bookList;
-    }
-
-    public ResponseDTO(String message, Integer orderBookDetails) {
-        this.message=message;
-        this.orderBookDetails=orderBookDetails;
+        this.data = data;
     }
 }

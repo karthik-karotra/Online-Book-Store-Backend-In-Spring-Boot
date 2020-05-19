@@ -1,6 +1,5 @@
 package com.bridgelabz.onlinebookstore.exceptions;
 
-import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,4 +12,10 @@ public class OnlineBookStoreExceptionHandler {
     public ResponseEntity<Object> onlineBookStoreExceptionHandler(OnlineBookStoreException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
+
+    @ExceptionHandler(AdminException.class)
+    public ResponseEntity<Object> adminExceptionHandler(AdminException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
+    }
+
 }

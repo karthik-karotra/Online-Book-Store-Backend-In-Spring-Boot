@@ -32,7 +32,7 @@ public class OrderBookControllerTest {
     OrderBookDTO orderBookDTO;
     Gson gson = new Gson();
 
-    @Test
+   /* @Test
     void givenCustomerOrderDetailsToAddInDatabase_WhenAdded_ShouldReturnCorrectDetails() throws Exception {
         orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
@@ -41,9 +41,9 @@ public class OrderBookControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(post("/bookstore/order").content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Karthik"));
-    }
+    }*/
 
-    @Test
+  /*  @Test
     void givenCustomerOrderDetailsToAddInDatabase_WhenAdded_ShouldReturnStatusOk() throws Exception {
         orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
@@ -53,9 +53,9 @@ public class OrderBookControllerTest {
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-    }
+    }*/
 
-    @Test
+  /*  @Test
     void givenIncorrectUrlPathForOrderBook_ShouldReturnURLNotFound() throws Exception {
         orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         String jsonDto = gson.toJson(orderBookDTO);
@@ -65,9 +65,9 @@ public class OrderBookControllerTest {
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-    }
+    }*/
 
-    @Test
+   /* @Test
     void givenDataWithoutJsonConversionForOrderBook_ShouldReturn400StatusCode() throws Exception {
         orderBookDTO = new OrderBookDTO(1, 5, 2500.0, "Karthik", "8108541248", "400754", "Vashi", "Sector 17,Mon Biju", "Navi Mumbai", "Navratna Hotel", "Home");
         // String jsonDto = gson.toJson(orderBookDTO);
@@ -103,5 +103,5 @@ public class OrderBookControllerTest {
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isMethodNotAllowed());
-    }
+    }*/
 }
