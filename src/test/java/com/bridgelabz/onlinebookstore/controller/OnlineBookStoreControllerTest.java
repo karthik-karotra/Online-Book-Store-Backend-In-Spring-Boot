@@ -3,19 +3,25 @@ package com.bridgelabz.onlinebookstore.controller;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.service.implementations.OnlineBookStoreService;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,8 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(OnlineBookStoreController.class)
 public class OnlineBookStoreControllerTest {
 
     @Autowired
@@ -36,18 +41,21 @@ public class OnlineBookStoreControllerTest {
     @MockBean
     OnlineBookStoreService onlineBookStoreService;
 
+    @MockBean
+    public ApplicationProperties applicationProperties;
+
     BookDTO bookDTO;
     BookDetails bookDetails;
     Gson gson = new Gson();
 
     @Test
     public void givenRequestToFetchListOfBookDetailsFromDatabase_ShouldReturnListOfBookDetailsInDatabase() throws Exception {
-        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
+        bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         bookDetails = new BookDetails(bookDTO);
         List bookList = new ArrayList();
         bookList.add(bookDetails);
         String jsonDto = gson.toJson(bookList);
-        ResponseDTO responseDTO = new ResponseDTO(bookList, "Response Successful");
+        ResponseDTO responseDTO = new ResponseDTO("Response Successful");
         String jsonResponseDto = gson.toJson(responseDTO);
         when(onlineBookStoreService.getAllBooks(anyInt(), anyInt())).thenReturn(bookList);
         this.mockMvc.perform(get("/books/0")
@@ -110,25 +118,28 @@ public class OnlineBookStoreControllerTest {
     }
 
     @Test
-    void givenRequestToSearchBooks_WhenFound_ShouldReturnTrue() throws Exception {
-        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        bookDetails = new BookDetails(bookDTO);
-        List bookList = new ArrayList();
-        bookList.add(bookDetails);
-        Page<BookDetails> page = new PageImpl(bookList);
-        when(onlineBookStoreService.searchBooks(any(), any())).thenReturn(page);
-        MvcResult mvcResult = this.mockMvc.perform(get("/search/0/Mrutyunjay")).andReturn();
-        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
-    }
-
-    @Test
     public void givenRequestToFilterBooksOnSearchedString_WhenFiltered_ShouldReturnBookDetails() throws Exception {
         bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
         bookDetails = new BookDetails(bookDTO);
         List bookList = new ArrayList();
         bookList.add(bookDetails);
-        when(onlineBookStoreService.findAllBooks(any(), anyInt(), any())).thenReturn(bookList);
+        Pageable paging = PageRequest.of(0, 10);
+        Page<BookDetails> page = new PageImpl(bookList);
+        when(onlineBookStoreService.findAllBooks(any(), anyInt(), any())).thenReturn(page);
         MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8080/sort/0/Mrutyunjay/LOW_TO_HIGH")).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("1000"));
+    }
+
+    @Test
+    void givenFileName_WhenFound_ShouldReturnFile() throws Exception {
+        String fileName = "1-world-best-bf.jpg";
+        String imagePath = "\\src\\main\\resources\\Images\\";
+        String fileBasePath = System.getProperty("user.dir") + imagePath;
+        Path path = Paths.get(fileBasePath + fileName);
+        Resource resource = new UrlResource(path.toUri());
+        when(onlineBookStoreService.loadFileAsResource(any())).thenReturn(resource);
+        MvcResult result = this.mockMvc.perform(get("/book/fileName?fileName=1-world-best-bf.jpg"))
+                .andReturn();
+        Assert.assertEquals(200, result.getResponse().getStatus());
     }
 }

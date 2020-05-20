@@ -4,32 +4,40 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.filterenums.FilterAttributes;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.OnlineBookStoreRepository;
 import com.bridgelabz.onlinebookstore.service.implementations.OnlineBookStoreService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class OnlineBookStoreServiceTest {
 
-    @Mock
+    @MockBean
     OnlineBookStoreRepository onlineBookStoreRepository;
 
-    @InjectMocks
+    @Autowired
     OnlineBookStoreService onlineBookStoreService;
+
+    @MockBean
+    ApplicationProperties applicationProperties;
 
     BookDTO bookDTO;
 
@@ -70,43 +78,6 @@ public class OnlineBookStoreServiceTest {
     }
 
     @Test
-    public void givenRequestToSearchBooks_WhenFound_ShouldReturnSearchedBooks() {
-        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        BookDetails bookDetails = new BookDetails(bookDTO);
-        List<BookDetails> booksList = new ArrayList();
-        booksList.add(bookDetails);
-        Pageable paging = PageRequest.of(0, 10);
-        Page<BookDetails> page = new PageImpl(booksList);
-        when(this.onlineBookStoreRepository.findAllBooks(any(), any())).thenReturn(page);
-        Page<BookDetails> page1 = onlineBookStoreService.searchBooks(paging, "Mrutyunjay");
-        Assert.assertEquals(page, page1);
-    }
-
-    @Test
-    public void givenRequestToSearchBooks_WhenNotFound_ShouldThrowException() {
-        try {
-            List<BookDetails> booksList = new ArrayList();
-            Pageable paging = PageRequest.of(0, 10);
-            Page page = new PageImpl(booksList);
-            when(this.onlineBookStoreRepository.findAllBooks(any(), any())).thenReturn(page);
-            onlineBookStoreService.searchBooks(paging, "Mrutyunjay");
-        } catch (OnlineBookStoreException ex) {
-            Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
-        }
-    }
-
-    @Test
-    public void givenRequestToFilterBooksOnSearchedString_WhenFiltered_ShouldReturnBookDetails() {
-        bookDTO = new BookDTO("1000", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "bfjadlbfajlal", 2002);
-        BookDetails bookDetails = new BookDetails(bookDTO);
-        List<BookDetails> booksList = new ArrayList();
-        booksList.add(bookDetails);
-        when(this.onlineBookStoreRepository.findAllBooks(anyString())).thenReturn(booksList);
-        List<BookDetails> bookList1 = onlineBookStoreService.findAllBooks("Mrutyunjay", 0, FilterAttributes.LOW_TO_HIGH);
-        Assert.assertEquals(booksList, bookList1);
-    }
-
-    @Test
     public void givenRequestToFilterBooksOnSearchedString_WhenNoBookFound_ShouldThrowException() {
         try {
             List<BookDetails> booksList = new ArrayList();
@@ -115,5 +86,27 @@ public class OnlineBookStoreServiceTest {
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
+    }
+
+    @Test
+    void givenImageEmail_WhenImageFound_ShouldReturnTrue() throws MalformedURLException {
+        Path path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/Images/1-world-best-bf.jpg");
+        Resource resource = new UrlResource(path.toUri());
+        when(this.applicationProperties.getUploadDirectory()).thenReturn("/src/main/resources/Images/");
+        Resource imageResponse = onlineBookStoreService.loadFileAsResource("1-world-best-bf.jpg");
+        Assert.assertEquals(resource, imageResponse);
+    }
+
+    @Test
+    void givenImageEmail_WhenImageNotFound_ShouldThrowException() throws MalformedURLException {
+        try {
+            Path path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/Images/1-world-best-bf.jpg");
+            Resource resource = new UrlResource(path.toUri());
+            when(this.applicationProperties.getUploadDirectory()).thenReturn("/src/main/resources/Images/");
+            Resource imageResponse = onlineBookStoreService.loadFileAsResource("1-abc.jpg");
+        } catch (OnlineBookStoreException ex) {
+            Assert.assertEquals(OnlineBookStoreException.ExceptionType.FILE_NOT_FOUND, ex.type);
+        }
+
     }
 }
