@@ -18,4 +18,9 @@ public class OnlineBookStoreExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
 
+    @ExceptionHandler(CartException.class)
+    public ResponseEntity<Object> cartExceptionHandler(CartException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
+    }
+
 }

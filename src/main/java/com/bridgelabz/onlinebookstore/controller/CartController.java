@@ -1,0 +1,26 @@
+package com.bridgelabz.onlinebookstore.controller;
+
+import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.models.BookCart;
+import com.bridgelabz.onlinebookstore.service.ICartService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@CrossOrigin
+@RestController
+public class CartController {
+
+    @Autowired
+    ICartService cartService;
+
+    @PostMapping("/cart/{quantity}/{bookId}")
+    public ResponseEntity<ResponseDTO> saveBook(@PathVariable Integer quantity, @PathVariable Integer bookId ,@RequestHeader(value = "token", required = false) String token) {
+        String message = cartService.saveBooksToCart(quantity, bookId, token);
+        ResponseDTO responseDTO = new ResponseDTO(message);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+}
