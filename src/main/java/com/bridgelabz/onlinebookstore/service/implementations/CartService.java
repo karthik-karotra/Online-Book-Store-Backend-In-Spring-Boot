@@ -49,6 +49,16 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public List<BookCart> getAllBooks(String token) {
+        UserDetails userDetails = isUserPresent(token);
+        CartDetails cartDetails = cartRepository.findByUser(userDetails).get();
+        List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
+        if (bookCartList.size() == 0)
+            throw new CartException("No Books Found In Cart", CartException.ExceptionType.NO_BOOK_FOUND);
+        return bookCartList;
+    }
+
+    @Override
     public String saveBooksToCart(Integer quantity, Integer bookId, String token) {
         UserDetails userDetails = isUserPresent(token);
         Optional<BookDetails> optionalBookDetails = onlineBookStoreRepository.findById(bookId);

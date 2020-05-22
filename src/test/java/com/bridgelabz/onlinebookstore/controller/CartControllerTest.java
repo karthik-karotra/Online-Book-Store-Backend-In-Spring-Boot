@@ -61,5 +61,24 @@ public class CartControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void givenRequestToFetchListOfBookDetailsFromCart_ShouldReturnListOfBookDetailsInCart() throws Exception {
+        List<BookCart> bookList = new ArrayList();
+        BookDTO bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
+        BookDetails bookDetails = new BookDetails(bookDTO);
+        BookCart bookCart = new BookCart(bookDetails, 3);
+        bookList.add(bookCart);
+        String jsonDto = gson.toJson(bookList);
+        when(cartService.getAllBooks(any())).thenReturn(bookList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/cart")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
+    }
+
+
 }
 

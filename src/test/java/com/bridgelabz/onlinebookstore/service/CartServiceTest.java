@@ -93,5 +93,28 @@ public class CartServiceTest {
         }
     }
 
+    @Test
+    void givenRequestToFetchAllBooksFromCart_WhenGetResponse_ShouldReturnCorrectResponseMessage() {
+        when(tokenGenerator.getId(any())).thenReturn(1);
+        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+        when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+        when(bookCartRepository.findAllByCart(cartDetails)).thenReturn(bookCartList);
+        List<BookCart> bookCartList1 = cartService.getAllBooks("token");
+        Assert.assertEquals(bookCartList, bookCartList1);
+    }
+
+    @Test
+    void givenRequestToFetchAllBooksFromCart_WhenNoBookFound_ShouldThrowException() {
+        try {
+            when(tokenGenerator.getId(any())).thenReturn(1);
+            when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+            when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+            when(bookCartRepository.findAllByCart(cartDetails)).thenThrow(new CartException("No Books Found In Cart", CartException.ExceptionType.NO_BOOK_FOUND));
+            cartService.getAllBooks("token");
+        } catch (CartException ex) {
+            Assert.assertEquals(CartException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+    }
+
 }
 

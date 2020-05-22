@@ -23,4 +23,11 @@ public class CartController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/cart")
+    public ResponseEntity<ResponseDTO> getBooks(@RequestHeader(value = "token", required = false) String token) {
+        List<BookCart> cartDetailsList = cartService.getAllBooks(token);
+        ResponseDTO responseDTO = new ResponseDTO(cartDetailsList, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 }
