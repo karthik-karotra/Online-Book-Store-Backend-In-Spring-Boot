@@ -116,5 +116,30 @@ public class CartServiceTest {
         }
     }
 
+    @Test
+    void givenBookCartIdAndQuantityToUpdateQuantityOfBookInCart_WhenUpdated_ShouldReturnCorrectResponseMessage() {
+        when(tokenGenerator.getId(any())).thenReturn(1);
+        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+        when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+        when(bookCartRepository.findById(1)).thenReturn(Optional.ofNullable(bookCart));
+        when(cartRepository.save(any())).thenReturn(new BookCart());
+        String message = cartService.updateQuantity(1, 2, "token");
+        Assert.assertEquals("Cart Updated Successfully", message);
+    }
+
+    @Test
+    void givenBookCartIdAndQuantityToUpdateQuantityOfBookInCart_WhenBookNotFound_ShouldThrowException() {
+        try {
+            when(tokenGenerator.getId(any())).thenReturn(1);
+            when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+            when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+            when(bookCartRepository.findById(1)).thenThrow(new CartException("No Book Found At Given Id", CartException.ExceptionType.NO_BOOK_FOUND));
+            when(cartRepository.save(any())).thenReturn(new BookCart());
+            cartService.updateQuantity(1, 2, "token");
+        } catch (CartException ex) {
+            Assert.assertEquals(CartException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+    }
+
 }
 

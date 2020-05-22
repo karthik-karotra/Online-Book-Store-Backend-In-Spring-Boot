@@ -79,6 +79,18 @@ public class CartControllerTest {
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
     }
 
+    @Test
+    public void givenRequestToUpdateQuantityOfBookInCart_ShouldUpdateQuantityInCart() throws Exception {
+        String message = "Cart Updated Successfully";
+        String jsonString = gson.toJson(message);
+        ResponseDTO responseDTO = new ResponseDTO(message);
+        String jsonResponseDTO = gson.toJson(responseDTO);
+        when(cartService.updateQuantity(anyInt(), anyInt(), any())).thenReturn(message);
+        this.mockMvc.perform(put("/cart/1/2")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(jsonResponseDTO));
+    }
 
 }
 

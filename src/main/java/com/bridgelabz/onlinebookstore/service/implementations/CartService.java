@@ -80,6 +80,18 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public String updateQuantity(Integer bookCartId, Integer quantity, String token) {
+        isUserPresent(token);
+        Optional<BookCart> optionalBookCart = bookCartRepository.findById(bookCartId);
+        if (!optionalBookCart.isPresent())
+            throw new CartException("No Book Found At Given Id", CartException.ExceptionType.NO_BOOK_FOUND);
+        BookCart bookCart = optionalBookCart.get();
+        bookCart.setQuantity(quantity);
+        bookCartRepository.save(bookCart);
+        return "Cart Updated Successfully";
+    }
+
+    @Override
     public CartDetails createCart(UserDetails userDetails) {
         CartDetails cart = new CartDetails();
         cart.setUser(userDetails);

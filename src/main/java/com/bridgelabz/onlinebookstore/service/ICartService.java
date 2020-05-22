@@ -8,5 +8,6 @@ import java.util.List;
 public interface ICartService {
     List<BookCart> getAllBooks(String token);
     String saveBooksToCart(Integer quantity, Integer bookId, String token);
+    String updateQuantity(Integer bookCartId, Integer quantity, String token);
 
 }
