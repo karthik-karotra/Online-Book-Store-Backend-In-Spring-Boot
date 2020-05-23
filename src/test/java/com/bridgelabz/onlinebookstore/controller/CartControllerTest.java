@@ -92,5 +92,18 @@ public class CartControllerTest {
                 .andExpect(content().json(jsonResponseDTO));
     }
 
+    @Test
+    public void givenRequestToDeleteBookFromCart_ShouldDeleteBookFromCart() throws Exception {
+        String message = "Deleted Successfully";
+        String jsonString = gson.toJson(message);
+        ResponseDTO responseDTO = new ResponseDTO(message);
+        String jsonResponseDTO = gson.toJson(responseDTO);
+        when(cartService.deleteBookFromCart(anyInt(), any())).thenReturn(message);
+        this.mockMvc.perform(delete("/cart/1")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(jsonResponseDTO));
+    }
+
 }
 

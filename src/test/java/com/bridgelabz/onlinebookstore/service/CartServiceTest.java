@@ -141,5 +141,28 @@ public class CartServiceTest {
         }
     }
 
+    @Test
+    void givenRequestToDeleteBookFromCart_WhenDeleted_ShouldReturnCorrectResponseMessage() {
+        when(tokenGenerator.getId(any())).thenReturn(1);
+        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+        when(bookCartRepository.findById(1)).thenReturn(Optional.ofNullable(bookCart));
+        when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+        String message = cartService.deleteBookFromCart(1, "token");
+        Assert.assertEquals("Deleted Successfully", message);
+    }
+
+    @Test
+    void givenRequestToDeleteBookFromCart_WhenNoBookFoundAtId_ShouldThrowException() {
+        try {
+            when(tokenGenerator.getId(any())).thenReturn(1);
+            when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+            when(bookCartRepository.findById(1)).thenThrow(new CartException("No Book Found At Given Id", CartException.ExceptionType.NO_BOOK_FOUND));
+            when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+            cartService.deleteBookFromCart(1, "token");
+        } catch (CartException ex) {
+            Assert.assertEquals(CartException.ExceptionType.NO_BOOK_FOUND, ex.type);
+        }
+    }
+
 }
 

@@ -92,6 +92,17 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public String deleteBookFromCart(Integer id, String token) {
+        isUserPresent(token);
+        Optional<BookCart> optionalBookCart = bookCartRepository.findById(id);
+        if (!optionalBookCart.isPresent())
+            throw new CartException("No Book Found At Given Id", CartException.ExceptionType.NO_BOOK_FOUND);
+        BookCart bookCart = optionalBookCart.get();
+        bookCartRepository.delete(bookCart);
+        return "Deleted Successfully";
+    }
+
+    @Override
     public CartDetails createCart(UserDetails userDetails) {
         CartDetails cart = new CartDetails();
         cart.setUser(userDetails);

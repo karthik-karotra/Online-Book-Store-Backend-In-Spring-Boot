@@ -30,11 +30,20 @@ public class CartController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @DeleteMapping("/cart/{id}")
+    public ResponseEntity<ResponseDTO> deleteFromCart(@PathVariable Integer id, @RequestHeader(value = "token", required = false) String token) {
+        String message = cartService.deleteBookFromCart(id, token);
+        ResponseDTO responseDto = new ResponseDTO(message);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
     @PutMapping("/cart/{bookCartId}/{quantity}")
     public ResponseEntity updateQuantity(@PathVariable Integer bookCartId, @PathVariable Integer quantity, @RequestHeader(value = "token", required = false) String token) {
         String message = cartService.updateQuantity(bookCartId, quantity, token);
         ResponseDTO responseDto = new ResponseDTO(message);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+
 
 }
