@@ -50,4 +50,22 @@ public class CustomerDetailsControllerTest {
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Customer Details Added Successfully"));
     }
 
+    @Test
+    public void givenRequestToFetchCustomerDetailsFromDatabase_ShouldReturnCorrectData() throws Exception {
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "8754212154", false);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        CustomerDTO customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400704", "Navratna Hotel", "Vashi", "HOME");
+        CustomerDetails customerDetails = new CustomerDetails(customerDTO);
+        List<CustomerDetails> customerDetailsList = new ArrayList<>();
+        customerDetailsList.add(customerDetails);
+        userDetails.setCustomerDetails(customerDetailsList);
+        String jsonDto = gson.toJson(userDetails);
+        when(customerDetailsService.getAllCustomers(any())).thenReturn(userDetails);
+        MvcResult mvcResult = this.mockMvc.perform(get("/customer")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Sai Prerah Apt"));
+    }
 }

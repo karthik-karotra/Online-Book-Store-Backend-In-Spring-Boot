@@ -34,4 +34,9 @@ public class CustomerDetailsService implements ICustomerDetailsService {
         return "Customer Details Added Successfully";
     }
 
+    @Override
+    public UserDetails getAllCustomers(String token) {
+        Integer userId = cartService.isUserPresent(token).getId();
+        return userRepository.findById(userId).get();
+    }
 }

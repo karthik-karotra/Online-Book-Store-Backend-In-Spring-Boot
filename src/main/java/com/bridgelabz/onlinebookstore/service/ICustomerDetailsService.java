@@ -5,4 +5,5 @@ import com.bridgelabz.onlinebookstore.models.UserDetails;
 
 public interface ICustomerDetailsService {
     String addCustomerDetails(CustomerDTO customerDTO, String token);
+    UserDetails getAllCustomers(String token);
 }

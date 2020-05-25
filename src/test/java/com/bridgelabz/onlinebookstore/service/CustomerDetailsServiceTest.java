@@ -26,14 +26,22 @@ public class CustomerDetailsServiceTest {
     @MockBean
     CustomerDetailsRepository customerDetailsRepository;
 
+    @MockBean
+    UserRepository userRepository;
+
     @Autowired
     CustomerDetailsService customerDetailsService;
 
     @MockBean
     ApplicationProperties applicationProperties;
 
+    @MockBean
+    ITokenGenerator tokenGenerator;
+
     CustomerDTO customerDTO;
     List<CustomerDetails> customerDetailsList = new ArrayList<>();
+    UserRegistrationDTO userRegistrationDTO;
+    UserDetails userDetails;
     CustomerDetails customerDetails;
 
     public CustomerDetailsServiceTest() {
@@ -54,4 +62,12 @@ public class CustomerDetailsServiceTest {
         Assert.assertEquals("Customer Details Added Successfully", message);
     }
 
+    @Test
+    void givenRequestToFetchCustomerDetails__ShouldReturnCustomerDetails() {
+        when(tokenGenerator.getId(any())).thenReturn(1);
+        when(userRepository.findById(any())).thenReturn(Optional.of(userDetails));
+        when(customerDetailsRepository.findById(any())).thenReturn(Optional.of(customerDetails));
+        UserDetails userDetails1 = customerDetailsService.getAllCustomers("authorization");
+        Assert.assertEquals(userDetails, userDetails1);
+    }
 }
