@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.service.IUserService;
@@ -31,4 +32,15 @@ public class UserController {
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@Valid @RequestBody UserLoginDTO userLoginDTO, BindingResult bindingResult, HttpServletResponse httpServletResponse) {
+        if (bindingResult.hasErrors()) {
+            throw new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA);
+        }
+        String token = userService.userLogin(userLoginDTO);
+        httpServletResponse.setHeader("Authorization", token);
+        return new ResponseEntity("LOGIN SUCCESSFUL", HttpStatus.OK);
+    }
+
 }

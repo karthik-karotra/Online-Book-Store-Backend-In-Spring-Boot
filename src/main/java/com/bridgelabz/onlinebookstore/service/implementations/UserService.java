@@ -1,6 +1,6 @@
 package com.bridgelabz.onlinebookstore.service.implementations;
 
-
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
@@ -9,7 +9,6 @@ import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.UserRepository;
 import com.bridgelabz.onlinebookstore.service.ICartService;
 import com.bridgelabz.onlinebookstore.service.IUserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class UserService implements IUserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     @Autowired
     HttpServletRequest httpServletRequest;
 
@@ -43,7 +41,19 @@ public class UserService implements IUserService {
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.password = password;
         userRepository.save(userDetails);
-        return "Registration Successfull !! ";
+        return "Registration Successfull !! Please Check Your Registered Email For Email Verification";
     }
 
+    @Override
+    public String userLogin(UserLoginDTO userLoginDTO) {
+        Optional<UserDetails> userDetailsByEmail = userRepository.findByEmail(userLoginDTO.email);
+        if (userDetailsByEmail.isPresent() && userDetailsByEmail.get().status) {
+            boolean password = bCryptPasswordEncoder.matches(userLoginDTO.password, userDetailsByEmail.get().password);
+            if (!password) {
+                throw new UserException("Invalid Password!!!Please Enter Correct Password", UserException.ExceptionType.PASSWORD_INVALID);
+            }
+            return "Login Successful";
+        }
+        throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
+    }
 }

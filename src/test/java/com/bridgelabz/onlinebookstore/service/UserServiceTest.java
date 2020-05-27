@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.service;
 
 
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -44,10 +45,12 @@ public class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     UserRegistrationDTO userRegistrationDTO;
+    UserLoginDTO userLoginDTO;
 
 
     public UserServiceTest() {
         userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
 
     }
 
@@ -74,4 +77,41 @@ public class UserServiceTest {
             Assert.assertEquals(UserException.ExceptionType.USER_ALREADY_EXISTS, ex.type);
         }
     }
+
+    @Test
+    void givenUserDetailsToLoginUser_WhenUserLoggedIn_ShouldReturnCorrectMessage() {
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        userDetails.status = true;
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        userDetails.id = 1;
+        when(userRepository.findByEmail(any())).thenReturn(java.util.Optional.of(userDetails));
+        when(bCryptPasswordEncoder.matches(any(), any())).thenReturn(true);
+        String token = userService.userLogin(userLoginDTO);
+        Assert.assertEquals("token1", token);
+    }
+
+    @Test
+    void givenUserDetailsToLoginUser_WhenIncorrectPasswordEntered_ShouldThrowException() {
+        UserDetails userDetails = new UserDetails(userLoginDTO);
+        userDetails.status = true;
+        try {
+            when(userRepository.findByEmail(userLoginDTO.email)).thenReturn(java.util.Optional.of(userDetails));
+            when(bCryptPasswordEncoder.matches(userLoginDTO.password, userDetails.password)).thenReturn(false);
+            userService.userLogin(userLoginDTO);
+        } catch (UserException ex) {
+            Assert.assertEquals(UserException.ExceptionType.PASSWORD_INVALID, ex.type);
+        }
+    }
+
+    @Test
+    void givenUserDetailsToLoginUser_WhenIncorrectEmailEntered_ShouldThrowException() {
+        try {
+            when(userRepository.findByEmail(userLoginDTO.email)).thenThrow(new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND));
+            userService.userLogin(userLoginDTO);
+        } catch (UserException ex) {
+            Assert.assertEquals(UserException.ExceptionType.EMAIL_NOT_FOUND, ex.type);
+        }
+    }
+
 }

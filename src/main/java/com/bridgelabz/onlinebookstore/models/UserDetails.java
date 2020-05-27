@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.models;
 
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -37,5 +38,10 @@ public class UserDetails {
         this.password = userRegistrationDTO.password;
         this.phoneNo = userRegistrationDTO.phoneNo;
         this.status = userRegistrationDTO.status;
+    }
+
+    public UserDetails(UserLoginDTO userLoginDTO) {
+        this.email = userLoginDTO.email;
+        this.password = userLoginDTO.password;
     }
 }

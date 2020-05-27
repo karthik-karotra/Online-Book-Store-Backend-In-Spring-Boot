@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.controller;
 
 
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
@@ -51,6 +52,30 @@ public class UserControllerTest {
         String toJson = gson.toJson(userRegistrationDTO);
         when(userService.addUser(any())).thenThrow(new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA));
         MvcResult mvcResult = this.mockMvc.perform(post("/user/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson)).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Invalid Data!!!!! Please Enter Valid Data"));
+    }
+
+    @Test
+    public void givenUserDetailsToLoginUser_WhenValidData_ShouldReturnCorrectMessage() throws Exception {
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        String toJson = gson.toJson(userLoginDTO);
+        String message = "LOGIN SUCCESSFUL";
+        when(userService.userLogin(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson)).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("LOGIN SUCCESSFUL"));
+    }
+
+    @Test
+    public void givenUserDetailsToLoginUser_WhenInvalidData_ShouldThrowException() throws Exception {
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        String toJson = gson.toJson(userLoginDTO);
+        String message = "LOGIN SUCCESSFUL";
+        when(userService.userLogin(any())).thenThrow(new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA));
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson)).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Invalid Data!!!!! Please Enter Valid Data"));
