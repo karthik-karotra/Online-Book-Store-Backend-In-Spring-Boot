@@ -9,6 +9,7 @@ import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.UserRepository;
 import com.bridgelabz.onlinebookstore.service.ICartService;
 import com.bridgelabz.onlinebookstore.service.IUserService;
+import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class UserService implements IUserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    ITokenGenerator tokenGenerator;
+
+    @Autowired
+    ApplicationProperties applicationProperties;
 
     @Autowired
     HttpServletRequest httpServletRequest;
@@ -52,7 +59,8 @@ public class UserService implements IUserService {
             if (!password) {
                 throw new UserException("Invalid Password!!!Please Enter Correct Password", UserException.ExceptionType.PASSWORD_INVALID);
             }
-            return "Login Successful";
+            String token = tokenGenerator.generateToken(userDetailsByEmail.get().id, applicationProperties.getJwtLoginExpiration());
+            return token;
         }
         throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
     }

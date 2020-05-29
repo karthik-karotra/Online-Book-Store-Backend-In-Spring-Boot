@@ -9,5 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "app")
 public class ApplicationProperties {
     private String uploadDirectory;
+    private String jwtSecret;
+    private Integer jwtLoginExpiration;
 
 }
