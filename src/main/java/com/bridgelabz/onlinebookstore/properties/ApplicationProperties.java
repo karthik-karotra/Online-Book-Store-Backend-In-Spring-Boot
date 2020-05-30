@@ -11,5 +11,6 @@ public class ApplicationProperties {
     private String uploadDirectory;
     private String jwtSecret;
     private Integer jwtLoginExpiration;
+    private Integer jwtVerificationExpiration;
 
 }
