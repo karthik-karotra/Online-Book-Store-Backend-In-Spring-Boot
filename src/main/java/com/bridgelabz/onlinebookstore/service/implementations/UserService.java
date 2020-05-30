@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
+import com.bridgelabz.onlinebookstore.exceptions.JWTException;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -68,6 +69,20 @@ public class UserService implements IUserService {
             return token;
         }
         throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
+    }
+
+    @Override
+    public String emailVerification(String token) {
+        int id = tokenGenerator.getId(token);
+        Optional<UserDetails> userDetailsById = userRepository.findById(id);
+        if (!userDetailsById.isPresent()){
+            throw new JWTException("User With Same Email Id Already Exists", JWTException.ExceptionType.USER_NOT_FOUND);
+        }
+        UserDetails userDetails = userDetailsById.get();
+        userDetails.setStatus(true);
+        userRepository.save(userDetails);
+        cartService.createCart(userDetails);
+        return "Account Verified";
     }
 
     public void sendEmail(String email, String urlAddress){

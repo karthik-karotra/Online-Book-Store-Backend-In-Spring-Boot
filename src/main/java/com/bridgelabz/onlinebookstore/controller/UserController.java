@@ -43,4 +43,10 @@ public class UserController {
         return new ResponseEntity("LOGIN SUCCESSFUL", HttpStatus.OK);
     }
 
+    @GetMapping("/register/confirmation")
+    public ResponseEntity accountConfirmation(@RequestParam("token") String token){
+        String message = userService.emailVerification(token);
+        return new ResponseEntity(message,HttpStatus.OK);
+    }
+
 }
