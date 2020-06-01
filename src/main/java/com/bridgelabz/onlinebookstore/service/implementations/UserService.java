@@ -85,6 +85,17 @@ public class UserService implements IUserService {
         return "Account Verified";
     }
 
+    @Override
+    public String resendConfirmation(String email) {
+        Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
+        if (!optionalUserDetails.isPresent()){
+            throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
+        }
+        String urlAddress = httpServletRequest.getHeader("origin");
+        sendEmail(email,urlAddress);
+        return "Verification Link Has Been Sent To Your Account";
+    }
+
     public void sendEmail(String email, String urlAddress){
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
         String token = tokenGenerator.generateToken(optionalUserDetails.get().id,applicationProperties.getJwtVerificationExpiration());

@@ -8,4 +8,6 @@ public interface IUserService {
     String addUser(UserRegistrationDTO userRegistrationDTO);
     String userLogin(UserLoginDTO userLoginDTO);
     String emailVerification(String token);
+    String resendConfirmation(String email);
+
 }

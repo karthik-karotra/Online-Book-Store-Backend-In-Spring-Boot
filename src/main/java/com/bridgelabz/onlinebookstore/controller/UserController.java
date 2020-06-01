@@ -49,4 +49,10 @@ public class UserController {
         return new ResponseEntity(message,HttpStatus.OK);
     }
 
+    @PostMapping("/register/resend/confirmation/{email}")
+    public ResponseEntity resendConfirmation(@PathVariable String email){
+        String message = userService.resendConfirmation(email);
+        return new ResponseEntity(message,HttpStatus.OK);
+    }
+
 }
