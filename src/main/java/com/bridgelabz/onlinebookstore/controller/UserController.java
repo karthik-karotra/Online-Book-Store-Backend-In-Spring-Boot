@@ -55,4 +55,11 @@ public class UserController {
         return new ResponseEntity(message,HttpStatus.OK);
     }
 
+    @PostMapping("/forgot/password/{email}")
+    public ResponseEntity forgotPassword(@PathVariable String email, HttpServletRequest httpServletRequest){
+        String message = userService.forgotPassword(email, httpServletRequest);
+        return new ResponseEntity(message, HttpStatus.OK);
+    }
+
+
 }

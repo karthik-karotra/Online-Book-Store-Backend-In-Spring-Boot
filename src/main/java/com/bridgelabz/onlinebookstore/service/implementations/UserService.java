@@ -96,6 +96,19 @@ public class UserService implements IUserService {
         return "Verification Link Has Been Sent To Your Account";
     }
 
+    @Override
+    public String forgotPassword(String email, HttpServletRequest httpServletRequest) {
+        Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
+        if (!optionalUserDetails.isPresent()) {
+            throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
+        }
+        String token = tokenGenerator.generateToken(optionalUserDetails.get().getId(), applicationProperties.getJwtVerificationExpiration());
+        String url = httpServletRequest.getRequestURL().toString();
+        String urlAddress = url.substring(0, url.lastIndexOf("/")) + "/resetpassword/" + token;
+        emailService.notifyThroughEmail(email, "Reset Password", "Please click on below link to reset your password"+urlAddress);
+        return "We've Sent A Password Reset Link To Your Email Address";
+    }
+
     public void sendEmail(String email, String urlAddress){
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
         String token = tokenGenerator.generateToken(optionalUserDetails.get().id,applicationProperties.getJwtVerificationExpiration());
