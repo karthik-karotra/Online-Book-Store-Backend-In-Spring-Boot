@@ -1,6 +1,6 @@
 package com.bridgelabz.onlinebookstore.controller;
 
-
+import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
@@ -79,6 +79,54 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson)).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Invalid Data!!!!! Please Enter Valid Data"));
+    }
+
+    @Test
+    public void givenRequestToVerifyUser_WhenVerified_ThenReturnCorrectMessage() throws Exception {
+        String message = "Account Verified";
+        String jsonString = gson.toJson(message);
+        when(userService.emailVerification(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(get("/user/register/confirmation/?token=xyz123")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Account Verified"));
+    }
+
+    @Test
+    public void givenRequestToResendEmailForVerification_ThenReturnCorrectResponse() throws Exception {
+        String message = "Verification Link Has Been Sent To Your Account";
+        String jsonString = gson.toJson(message);
+        when(userService.resendConfirmation(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/register/resend/confirmation/ram@gmail.com")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Verification Link Has Been Sent To Your Account"));
+    }
+
+    @Test
+    public void givenRequestForForgetPassword_ThenReturnCorrectResponseMessage() throws Exception {
+        String message = "We've Sent A Password Reset Link To Your Email Address";
+        String jsonString = gson.toJson(message);
+        when(userService.forgotPassword(any(), any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/forgot/password/ram@gmail.com")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("We've Sent A Password Reset Link To Your Email Address"));
+    }
+
+    @Test
+    public void givenRequestForResetPassword_WhenPasswordResetted_ThenReturnCorrectResponseMessage() throws Exception {
+        ResetPasswordDTO resetPasswordDTO = new ResetPasswordDTO("Ram@12345");
+        String toJson = gson.toJson(resetPasswordDTO);
+        String message = "Password Reseted Successfully";
+        when(userService.resetPassword(any(), any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/user/reset/password/?token=abc123")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson)).andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Password Reseted Successfully"));
     }
 }
 

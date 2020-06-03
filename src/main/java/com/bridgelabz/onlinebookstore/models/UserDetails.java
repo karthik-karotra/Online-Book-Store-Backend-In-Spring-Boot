@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.models;
 
+import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,6 +39,10 @@ public class UserDetails {
         this.password = userRegistrationDTO.password;
         this.phoneNo = userRegistrationDTO.phoneNo;
         this.status = userRegistrationDTO.status;
+    }
+
+    public UserDetails(ResetPasswordDTO resetPasswordDTO) {
+        this.password=resetPasswordDTO.password;
     }
 
     public UserDetails(UserLoginDTO userLoginDTO) {

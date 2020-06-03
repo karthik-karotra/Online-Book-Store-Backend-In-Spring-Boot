@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.controller;
 
+import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
@@ -61,5 +62,9 @@ public class UserController {
         return new ResponseEntity(message, HttpStatus.OK);
     }
 
-
+    @PostMapping("/reset/password")
+    public ResponseEntity resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @RequestParam("token") String token){
+        String message = userService.resetPassword(resetPasswordDTO, token);
+        return new ResponseEntity(message,HttpStatus.OK);
+    }
 }

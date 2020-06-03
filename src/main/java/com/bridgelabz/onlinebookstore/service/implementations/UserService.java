@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.service.implementations;
 
+import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.JWTException;
@@ -34,14 +35,13 @@ public class UserService implements IUserService {
     ITokenGenerator tokenGenerator;
 
     @Autowired
-    ApplicationProperties applicationProperties;
+    IEmailService emailService;
 
     @Autowired
     HttpServletRequest httpServletRequest;
 
     @Autowired
-    IEmailService emailService;
-
+    ApplicationProperties applicationProperties;
 
     @Override
     public String addUser(UserRegistrationDTO userRegistrationDTO) {
@@ -92,6 +92,7 @@ public class UserService implements IUserService {
             throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
         String urlAddress = httpServletRequest.getHeader("origin");
+        System.out.println(urlAddress);
         sendEmail(email,urlAddress);
         return "Verification Link Has Been Sent To Your Account";
     }
@@ -107,6 +108,16 @@ public class UserService implements IUserService {
         String urlAddress = url.substring(0, url.lastIndexOf("/")) + "/resetpassword/" + token;
         emailService.notifyThroughEmail(email, "Reset Password", "Please click on below link to reset your password"+urlAddress);
         return "We've Sent A Password Reset Link To Your Email Address";
+    }
+
+    @Override
+    public String resetPassword(ResetPasswordDTO resetPasswordDTO, String token) {
+        int id = tokenGenerator.getId(token);
+        String encodePassword = bCryptPasswordEncoder.encode(resetPasswordDTO.password);
+        UserDetails userDetails = userRepository.findById(id).get();
+        userDetails.setPassword(encodePassword);
+        userRepository.save(userDetails);
+        return "Password Reseted Successfully";
     }
 
     public void sendEmail(String email, String urlAddress){
