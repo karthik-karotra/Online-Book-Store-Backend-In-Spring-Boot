@@ -1,20 +1,15 @@
 package com.bridgelabz.onlinebookstore.controller;
 
-import com.bridgelabz.onlinebookstore.dto.OrderBookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
-import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-import javax.validation.Valid;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/bookstore")
 public class OrderBookController {
@@ -23,9 +18,9 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order")
-    public ResponseEntity<ResponseDTO> addOrderedBook(@Valid @RequestBody OrderBookDTO... orderBookDTO) {
-        Integer orderBookDetails = orderBookService.addOrderSummary(orderBookDTO);
-        ResponseDTO responseDTO = new ResponseDTO("Added Successfully", orderBookDetails);
+    public ResponseEntity<ResponseDTO> addOrderedBooks(@RequestHeader(value = "token", required = false) String token) {
+        String message = orderBookService.addOrderSummary(token);
+        ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
