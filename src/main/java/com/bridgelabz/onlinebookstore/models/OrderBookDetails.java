@@ -29,4 +29,7 @@ public class OrderBookDetails {
     @JoinColumn(name = "user_id")
     private UserDetails userDetails;
 
+    @OneToMany(mappedBy = "orderBookDetails")
+    private List<OrderProduct> orderProduct;
+
 }

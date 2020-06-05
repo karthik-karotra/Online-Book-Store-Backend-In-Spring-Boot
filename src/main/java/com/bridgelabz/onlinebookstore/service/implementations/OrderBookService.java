@@ -27,6 +27,9 @@ public class OrderBookService implements IOrderBookService {
     CartRepository cartRepository;
 
     @Autowired
+    OrderProductRepository orderProductRepository;
+
+    @Autowired
     OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Autowired
@@ -50,8 +53,21 @@ public class OrderBookService implements IOrderBookService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
         orderBookRepository.save(orderBookDetails);
+        List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
+        addOrderProduct(bookCartList, orderBookDetails);
         return "Successfully Placed Order";
     }
+
+    private void addOrderProduct(List<BookCart> bookCartList, OrderBookDetails orderBookDetails) {
+        bookCartList.stream().forEach(value -> {
+            OrderProduct orderProduct = new OrderProduct();
+            orderProduct.setBook(value.getBook());
+            orderProduct.setQuantity(value.getQuantity());
+            orderProduct.setOrderBookDetails(orderBookDetails);
+            orderProductRepository.save(orderProduct);
+        });
+    }
+
 
     private Integer getOrderId() {
         boolean isOrderIdUnique = false;
