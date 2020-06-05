@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -71,6 +73,7 @@ public class OrderBookServiceTest {
         when(tokenGenerator.getId(any())).thenReturn(1);
         when(userRepository.findById(any())).thenReturn(java.util.Optional.of(userDetails));
         when(cartRepository.findByUser(any())).thenReturn(java.util.Optional.of(new CartDetails()));
+        doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(customerDetailsRepository.findByUserDetailsOrderByIdDesc(any())).thenReturn(customerDetailsList);
         String message = orderBookService.addOrderSummary("authorization");
         Assert.assertEquals("Successfully Placed Order", message);

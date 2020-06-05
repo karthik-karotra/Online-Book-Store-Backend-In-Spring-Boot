@@ -54,6 +54,7 @@ public class OrderBookService implements IOrderBookService {
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
         orderBookRepository.save(orderBookDetails);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
+        updateQuantityOfBooks(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
         return "Successfully Placed Order";
     }
@@ -65,6 +66,12 @@ public class OrderBookService implements IOrderBookService {
             orderProduct.setQuantity(value.getQuantity());
             orderProduct.setOrderBookDetails(orderBookDetails);
             orderProductRepository.save(orderProduct);
+        });
+    }
+
+    private void updateQuantityOfBooks(List<BookCart> bookCartList) {
+        bookCartList.stream().forEach(value -> {
+            onlineBookStoreRepository.updateStock(value.getQuantity(), value.getBook().id);
         });
     }
 
