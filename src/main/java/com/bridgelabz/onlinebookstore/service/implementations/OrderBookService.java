@@ -56,6 +56,7 @@ public class OrderBookService implements IOrderBookService {
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
         updateQuantityOfBooks(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
+        deleteBookCart(bookCartList);
         return "Successfully Placed Order";
     }
 
@@ -66,6 +67,12 @@ public class OrderBookService implements IOrderBookService {
             orderProduct.setQuantity(value.getQuantity());
             orderProduct.setOrderBookDetails(orderBookDetails);
             orderProductRepository.save(orderProduct);
+        });
+    }
+
+    private void deleteBookCart(List<BookCart> bookCartList) {
+        bookCartList.stream().forEach(value -> {
+            bookCartRepository.delete(value);
         });
     }
 

@@ -53,19 +53,29 @@ public class OrderBookServiceTest {
     @MockBean
     ITokenGenerator tokenGenerator;
 
+    BookDTO bookDTO;
+    BookDetails bookDetails;
     CustomerDTO customerDTO;
     CustomerDetails customerDetails;
     UserRegistrationDTO userRegistrationDTO;
     UserDetails userDetails;
     List<CustomerDetails> customerDetailsList;
+    BookCart bookCart;
+    List<BookCart> bookCartList;
 
     public OrderBookServiceTest() {
+        bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
+        bookDetails = new BookDetails(bookDTO);
+        bookDetails.id = 1;
         customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400703", "Navratna Hotel", "Vashi", "HOME");
         customerDetails = new CustomerDetails(customerDTO);
         userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false);
         userDetails = new UserDetails(userRegistrationDTO);
         customerDetailsList = new ArrayList<>();
         customerDetailsList.add(customerDetails);
+        bookCart = new BookCart(bookDetails, 1);
+        bookCartList = new ArrayList<>();
+        bookCartList.add(bookCart);
     }
 
     @Test
@@ -73,6 +83,7 @@ public class OrderBookServiceTest {
         when(tokenGenerator.getId(any())).thenReturn(1);
         when(userRepository.findById(any())).thenReturn(java.util.Optional.of(userDetails));
         when(cartRepository.findByUser(any())).thenReturn(java.util.Optional.of(new CartDetails()));
+        when(bookCartRepository.findAllByCart(any())).thenReturn(bookCartList);
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(customerDetailsRepository.findByUserDetailsOrderByIdDesc(any())).thenReturn(customerDetailsList);
         String message = orderBookService.addOrderSummary("authorization");
