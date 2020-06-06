@@ -55,9 +55,20 @@ public class OrderBookService implements IOrderBookService {
         orderBookRepository.save(orderBookDetails);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
         updateQuantityOfBooks(bookCartList);
+        Double totalPrice = calculateTotalPrice(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
         deleteBookCart(bookCartList);
         return "Successfully Placed Order";
+    }
+
+    private Double calculateTotalPrice(List<BookCart> bookCartList) {
+        Double totalPrice=0.0;
+        for (int i=0;i<bookCartList.size();i++) {
+            Double amountOfOneBook=0.0;
+            amountOfOneBook=bookCartList.get(i).getBook().bookPrice * bookCartList.get(i).getQuantity();
+            totalPrice=totalPrice+amountOfOneBook;
+        }
+        return totalPrice;
     }
 
     private void addOrderProduct(List<BookCart> bookCartList, OrderBookDetails orderBookDetails) {
