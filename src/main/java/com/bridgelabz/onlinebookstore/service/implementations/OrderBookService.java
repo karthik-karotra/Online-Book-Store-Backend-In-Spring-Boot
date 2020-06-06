@@ -57,6 +57,7 @@ public class OrderBookService implements IOrderBookService {
         updateQuantityOfBooks(bookCartList);
         Double totalPrice = calculateTotalPrice(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
+        sendOrderConfirmation(orderBookDetails,bookCartList,customerDetails,totalPrice);
         deleteBookCart(bookCartList);
         return "Successfully Placed Order";
     }
@@ -69,6 +70,13 @@ public class OrderBookService implements IOrderBookService {
             totalPrice=totalPrice+amountOfOneBook;
         }
         return totalPrice;
+    }
+
+    private void sendOrderConfirmation(OrderBookDetails orderBookDetails, List<BookCart> bookCartList, CustomerDetails customerDetails, Double totalPrice) {
+        String message = "Dear " + orderBookDetails.getUserDetails().fullName +
+                ",\n Hurray!!!! Your order is confirmed. \n The order id is #" + orderBookDetails.getOrderId()+
+                ".\n You can use this order id for further communication";
+        emailService.notifyThroughEmail(orderBookDetails.getUserDetails().email, "Order Confirmation", message);
     }
 
     private void addOrderProduct(List<BookCart> bookCartList, OrderBookDetails orderBookDetails) {

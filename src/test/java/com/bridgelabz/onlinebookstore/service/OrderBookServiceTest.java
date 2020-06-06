@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class OrderBookServiceTest {
 
     @MockBean
     UserRepository userRepository;
+
+    @MockBean
+    JavaMailSender javaMailSender;
 
     @MockBean
     CustomerDetailsRepository customerDetailsRepository;
@@ -86,6 +91,7 @@ public class OrderBookServiceTest {
         when(bookCartRepository.findAllByCart(any())).thenReturn(bookCartList);
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(customerDetailsRepository.findByUserDetailsOrderByIdDesc(any())).thenReturn(customerDetailsList);
+        when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
         String message = orderBookService.addOrderSummary("authorization");
         Assert.assertEquals("Successfully Placed Order", message);
     }
