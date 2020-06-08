@@ -52,5 +52,24 @@ public class OrderBookControllerTest {
                 .andExpect(content().json(jsonResponseDTO));
     }
 
+    @Test
+    public void givenRequestToFetchListOfOrderDetailsFromDatabase_ShouldReturnListOfOrderDetailsInDatabase() throws Exception {
+        List<OrderBookDetails> orderBookDetailsList = new ArrayList();
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        OrderBookDetails orderBookDetails = new OrderBookDetails();
+        orderBookDetails.setUserDetails(userDetails);
+        orderBookDetails.setOrderId(123456);
+        orderBookDetails.setCustomerDetails(new CustomerDetails());
+        orderBookDetailsList.add(orderBookDetails);
+        String jsonDto = gson.toJson(orderBookDetailsList);
+        when(orderBookService.getOrders(any())).thenReturn(orderBookDetailsList);
+        MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/order")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("123456"));
+    }
 }
 

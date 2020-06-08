@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface IOrderBookService {
     String addOrderSummary(String token);
+    List<OrderBookDetails> getOrders(String token);
 }

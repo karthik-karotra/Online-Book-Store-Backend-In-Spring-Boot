@@ -27,10 +27,10 @@ public class OrderBookService implements IOrderBookService {
     CartRepository cartRepository;
 
     @Autowired
-    OrderProductRepository orderProductRepository;
+    OnlineBookStoreRepository onlineBookStoreRepository;
 
     @Autowired
-    OnlineBookStoreRepository onlineBookStoreRepository;
+    OrderProductRepository orderProductRepository;
 
     @Autowired
     IEmailService emailService;
@@ -89,6 +89,7 @@ public class OrderBookService implements IOrderBookService {
         });
     }
 
+
     private void deleteBookCart(List<BookCart> bookCartList) {
         bookCartList.stream().forEach(value -> {
             bookCartRepository.delete(value);
@@ -101,6 +102,14 @@ public class OrderBookService implements IOrderBookService {
         });
     }
 
+    @Override
+    public List<OrderBookDetails> getOrders(String token) {
+        UserDetails userDetails = cartService.isUserPresent(token);
+        List<OrderBookDetails> orderBookDetailsList = orderBookRepository.findByUserDetails(userDetails);
+        if (orderBookDetailsList.size() == 0)
+            throw new OrderException("No Books Are Ordered Yet", OrderException.ExceptionType.NO_ORDER_PLACED);
+        return orderBookDetailsList;
+    }
 
     private Integer getOrderId() {
         boolean isOrderIdUnique = false;

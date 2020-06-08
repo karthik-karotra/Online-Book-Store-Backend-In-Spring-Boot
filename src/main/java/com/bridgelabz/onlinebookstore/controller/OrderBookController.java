@@ -23,4 +23,11 @@ public class OrderBookController {
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/order")
+    public ResponseEntity<ResponseDTO> getOrderDetails(@RequestHeader(value = "token", required = false) String token) {
+        List<OrderBookDetails> orderBookDetailsList = orderBookService.getOrders(token);
+        ResponseDTO responseDTO = new ResponseDTO(orderBookDetailsList, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
