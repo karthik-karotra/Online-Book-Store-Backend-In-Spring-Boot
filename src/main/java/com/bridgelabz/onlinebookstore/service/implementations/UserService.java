@@ -13,6 +13,7 @@ import com.bridgelabz.onlinebookstore.service.ICartService;
 import com.bridgelabz.onlinebookstore.service.IUserService;
 import com.bridgelabz.onlinebookstore.utils.IEmailService;
 import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
+import com.bridgelabz.onlinebookstore.utils.implementation.EmailVerificationTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,10 @@ public class UserService implements IUserService {
 
     @Autowired
     ApplicationProperties applicationProperties;
+
+    @Autowired
+    EmailVerificationTemplate emailVerificationTemplate;
+
 
     @Override
     public String addUser(UserRegistrationDTO userRegistrationDTO) {
@@ -97,6 +102,7 @@ public class UserService implements IUserService {
         return "Verification Link Has Been Sent To Your Account";
     }
 
+
     @Override
     public String forgotPassword(String email, HttpServletRequest httpServletRequest) {
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
@@ -123,10 +129,8 @@ public class UserService implements IUserService {
     public void sendEmail(String email, String urlAddress){
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
         String token = tokenGenerator.generateToken(optionalUserDetails.get().id,applicationProperties.getJwtVerificationExpiration());
-        urlAddress = urlAddress.contains("resendemail") ?
-                "<a href='" + urlAddress.substring(0, urlAddress.indexOf("r") - 1) + "/resendemail/?token=" + token + "'>" + "Email</a>" :
-                "<a href='" + urlAddress + "resendemail/?token=" + token + "'>" + "Email</a>";
-        emailService.notifyThroughEmail(email,"Email Verification","To confirm your account, please click here : "
-                +urlAddress);
+        urlAddress = urlAddress + "verification/?token=" + token;
+        String message = emailVerificationTemplate.getVerificationEmailTemplate(urlAddress, optionalUserDetails.get().fullName);
+        emailService.notifyThroughEmail(email,"Email Verification",message);
     }
 }
