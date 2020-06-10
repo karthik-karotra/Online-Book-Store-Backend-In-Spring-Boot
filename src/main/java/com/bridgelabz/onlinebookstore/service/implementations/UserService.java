@@ -14,6 +14,7 @@ import com.bridgelabz.onlinebookstore.service.IUserService;
 import com.bridgelabz.onlinebookstore.utils.IEmailService;
 import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
 import com.bridgelabz.onlinebookstore.utils.implementation.EmailVerificationTemplate;
+import com.bridgelabz.onlinebookstore.utils.implementation.ResetPasswordTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,8 @@ public class UserService implements IUserService {
     @Autowired
     EmailVerificationTemplate emailVerificationTemplate;
 
+    @Autowired
+    ResetPasswordTemplate resetPasswordTemplate;
 
     @Override
     public String addUser(UserRegistrationDTO userRegistrationDTO) {
@@ -102,7 +105,6 @@ public class UserService implements IUserService {
         return "Verification Link Has Been Sent To Your Account";
     }
 
-
     @Override
     public String forgotPassword(String email, HttpServletRequest httpServletRequest) {
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
@@ -110,9 +112,10 @@ public class UserService implements IUserService {
             throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
         String token = tokenGenerator.generateToken(optionalUserDetails.get().getId(), applicationProperties.getJwtVerificationExpiration());
-        String url = httpServletRequest.getRequestURL().toString();
-        String urlAddress = url.substring(0, url.lastIndexOf("/")) + "/resetpassword/" + token;
-        emailService.notifyThroughEmail(email, "Reset Password", "Please click on below link to reset your password"+urlAddress);
+        String url = httpServletRequest.getHeader("Referer");
+        String urlAddress = url.substring(0, url.indexOf("f") - 1) + "/resetpassword/?token=" + token;
+        String message = resetPasswordTemplate.getResetPasswordString(urlAddress, optionalUserDetails.get().fullName);
+        emailService.notifyThroughEmail(email, "Reset Password", message);
         return "We've Sent A Password Reset Link To Your Email Address";
     }
 
