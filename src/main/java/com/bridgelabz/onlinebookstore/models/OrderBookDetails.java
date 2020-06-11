@@ -31,5 +31,4 @@ public class OrderBookDetails {
 
     @OneToMany(mappedBy = "orderBookDetails")
     private List<OrderProduct> orderProduct;
-
 }

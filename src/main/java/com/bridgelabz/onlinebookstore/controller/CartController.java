@@ -43,7 +43,4 @@ public class CartController {
         ResponseDTO responseDto = new ResponseDTO(message);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
-
-
-
 }

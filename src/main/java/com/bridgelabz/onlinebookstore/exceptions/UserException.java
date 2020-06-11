@@ -6,9 +6,9 @@ public class UserException extends RuntimeException {
 
     }
 
-    public ExceptionType type;
+    public UserException.ExceptionType type;
 
-    public UserException(String message, ExceptionType type) {
+    public UserException(String message, UserException.ExceptionType type) {
         super(message);
         this.type = type;
     }

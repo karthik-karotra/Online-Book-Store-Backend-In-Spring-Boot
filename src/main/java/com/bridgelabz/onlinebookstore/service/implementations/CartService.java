@@ -55,7 +55,7 @@ public class CartService implements ICartService {
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
         if (bookCartList.size() == 0)
             throw new CartException("No Books Found In Cart", CartException.ExceptionType.NO_BOOK_FOUND);
-        return bookCartList;
+       return bookCartList;
     }
 
     @Override

@@ -104,6 +104,5 @@ public class CartControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(jsonResponseDTO));
     }
-
 }
 

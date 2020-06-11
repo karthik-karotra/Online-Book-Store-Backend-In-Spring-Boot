@@ -5,6 +5,7 @@ import com.bridgelabz.onlinebookstore.models.*;
 import com.bridgelabz.onlinebookstore.repository.*;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import com.bridgelabz.onlinebookstore.utils.IEmailService;
+import com.bridgelabz.onlinebookstore.utils.implementation.OrderSuccessfulEmailTemplateGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -37,6 +38,9 @@ public class OrderBookService implements IOrderBookService {
 
     @Autowired
     CustomerDetailsRepository customerDetailsRepository;
+
+    @Autowired
+    OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
 
     @Override
@@ -73,9 +77,7 @@ public class OrderBookService implements IOrderBookService {
     }
 
     private void sendOrderConfirmation(OrderBookDetails orderBookDetails, List<BookCart> bookCartList, CustomerDetails customerDetails, Double totalPrice) {
-        String message = "Dear " + orderBookDetails.getUserDetails().fullName +
-                ",\n Hurray!!!! Your order is confirmed. \n The order id is #" + orderBookDetails.getOrderId()+
-                ".\n You can use this order id for further communication";
+        String message = emailTemplateGenerator.getEmailTemplate(orderBookDetails.getUserDetails().getFullName(),bookCartList,customerDetails.getAddress()+ " "+customerDetails.getLandmark()+" "+customerDetails.getLocality()+" "+customerDetails.getCity()+"-"+customerDetails.getPincode(),totalPrice,orderBookDetails.getOrderId());
         emailService.notifyThroughEmail(orderBookDetails.getUserDetails().email, "Order Confirmation", message);
     }
 

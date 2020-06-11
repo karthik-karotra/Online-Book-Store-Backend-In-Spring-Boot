@@ -152,20 +152,6 @@ public class UserServiceTest {
     }
 
     @Test
-    void givenRequestOfForgetPassword_WhenVerificationLinkSend_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578",false);
-        UserDetails userDetails = new UserDetails(userRegistrationDTO);
-        HttpServletRequest httpServletRequest=null;
-        userDetails.id=1;
-        when(userRepository.findByEmail(any())).thenReturn(java.util.Optional.of(userDetails));
-        when(tokenGenerator.generateToken(anyInt(),anyInt())).thenReturn("token1");
-        when(httpServletRequest.getHeader(any())).thenReturn("mywebsite.com");
-        when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        String message = userService.forgotPassword("karthik@gmail.com",httpServletRequest);
-        Assert.assertEquals("Verification Link Has Been Sent To Your Account",message);
-    }
-
-    @Test
     void givenRequestOfForgetPassword_WhenEmailNotFound_ShouldThrowException() {
         try {
             HttpServletRequest httpServletRequest = null;

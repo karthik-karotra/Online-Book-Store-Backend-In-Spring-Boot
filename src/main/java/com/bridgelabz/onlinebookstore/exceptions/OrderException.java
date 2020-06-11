@@ -6,9 +6,9 @@ public class OrderException extends RuntimeException {
 
     }
 
-    public ExceptionType type;
+    public OrderException.ExceptionType type;
 
-    public OrderException(String message, ExceptionType type) {
+    public OrderException(String message, OrderException.ExceptionType type) {
         super(message);
         this.type = type;
     }

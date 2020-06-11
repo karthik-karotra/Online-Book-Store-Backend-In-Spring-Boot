@@ -5,9 +5,9 @@ public class JWTException extends RuntimeException{
         SESSION_TIMEOUT, USER_NOT_FOUND
     }
 
-    public ExceptionType type;
+    public JWTException.ExceptionType type;
 
-    public JWTException(String message, ExceptionType type) {
+    public JWTException(String message, JWTException.ExceptionType type) {
         super(message);
         this.type = type;
     }

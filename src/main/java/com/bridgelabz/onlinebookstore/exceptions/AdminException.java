@@ -9,9 +9,9 @@ public class AdminException extends RuntimeException {
 
     }
 
-    public ExceptionType type;
+    public AdminException.ExceptionType type;
 
-    public AdminException(String message, ExceptionType type) {
+    public AdminException(String message, AdminException.ExceptionType type) {
         super(message);
         this.type = type;
     }

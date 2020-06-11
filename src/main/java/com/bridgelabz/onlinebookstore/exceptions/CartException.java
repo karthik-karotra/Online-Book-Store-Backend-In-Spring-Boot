@@ -7,9 +7,9 @@ public class CartException extends RuntimeException {
         NO_BOOK_FOUND
     }
 
-    public ExceptionType type;
+    public CartException.ExceptionType type;
 
-    public CartException(String message, ExceptionType type) {
+    public CartException(String message, CartException.ExceptionType type) {
         super(message);
         this.type = type;
     }

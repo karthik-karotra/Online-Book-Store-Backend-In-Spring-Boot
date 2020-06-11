@@ -11,9 +11,11 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailService implements IEmailService {
-
     @Autowired
     JavaMailSender javaMailSender;
+
+   @Autowired
+   OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
 
     @Override
@@ -29,5 +31,4 @@ public class EmailService implements IEmailService {
             e.printStackTrace();
         }
     }
-
 }

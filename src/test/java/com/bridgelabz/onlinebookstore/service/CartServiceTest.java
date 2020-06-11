@@ -69,9 +69,9 @@ public class CartServiceTest {
     @Test
     void givenRequestToAddBooksToCart_WhenGetResponse_ShouldReturnCorrectResponseMessage() {
         when(tokenGenerator.getId(any())).thenReturn(1);
-        when(userRepository.findById(any())).thenReturn(Optional.of(new UserDetails()));
-        when(onlineBookStoreRepository.findById(any())).thenReturn(Optional.of(bookDetails));
-        when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+        when(onlineBookStoreRepository.findById(any())).thenReturn(java.util.Optional.of(bookDetails));
+        when(cartRepository.findByUser(any())).thenReturn(java.util.Optional.of(cartDetails));
         when(cartRepository.save(any())).thenReturn(cartDetails);
         when(bookCartRepository.save(any())).thenReturn(bookCart);
         String message = cartService.saveBooksToCart(1, 1, "authorization");
@@ -82,9 +82,9 @@ public class CartServiceTest {
     void givenRequestToAddBooksToCart_WhenNoBookFound_ShouldThrowException() {
         try {
             when(tokenGenerator.getId(any())).thenReturn(1);
-            when(userRepository.findById(any())).thenReturn(Optional.of(new UserDetails()));
+            when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
             when(onlineBookStoreRepository.findById(any())).thenThrow(new CartException("Book Not Found", CartException.ExceptionType.NO_BOOK_FOUND));
-            when(cartRepository.findByUser(any())).thenReturn(Optional.of(cartDetails));
+            when(cartRepository.findByUser(any())).thenReturn(java.util.Optional.of(cartDetails));
             when(cartRepository.save(any())).thenReturn(cartDetails);
             when(bookCartRepository.save(any())).thenReturn(bookCart);
             cartService.saveBooksToCart(1, 1, "authorization");
@@ -163,6 +163,5 @@ public class CartServiceTest {
             Assert.assertEquals(CartException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }
     }
-
 }
 
