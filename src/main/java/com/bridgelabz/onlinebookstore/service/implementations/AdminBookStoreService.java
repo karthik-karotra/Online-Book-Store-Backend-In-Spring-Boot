@@ -2,7 +2,6 @@ package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
-import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.AdminRepository;

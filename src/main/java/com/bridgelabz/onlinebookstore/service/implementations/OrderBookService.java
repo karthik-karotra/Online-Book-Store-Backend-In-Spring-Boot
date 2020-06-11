@@ -42,7 +42,6 @@ public class OrderBookService implements IOrderBookService {
     @Autowired
     OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
-
     @Override
     public String addOrderSummary(String token) {
         Integer orderId = getOrderId();
@@ -61,23 +60,23 @@ public class OrderBookService implements IOrderBookService {
         updateQuantityOfBooks(bookCartList);
         Double totalPrice = calculateTotalPrice(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
-        sendOrderConfirmation(orderBookDetails,bookCartList,customerDetails,totalPrice);
+        sendOrderConfirmation(orderBookDetails, bookCartList, customerDetails, totalPrice);
         deleteBookCart(bookCartList);
         return "Successfully Placed Order";
     }
 
     private Double calculateTotalPrice(List<BookCart> bookCartList) {
-        Double totalPrice=0.0;
-        for (int i=0;i<bookCartList.size();i++) {
-            Double amountOfOneBook=0.0;
-            amountOfOneBook=bookCartList.get(i).getBook().bookPrice * bookCartList.get(i).getQuantity();
-            totalPrice=totalPrice+amountOfOneBook;
+        Double totalPrice = 0.0;
+        for (int i = 0; i < bookCartList.size(); i++) {
+            Double amountOfOneBook = 0.0;
+            amountOfOneBook = bookCartList.get(i).getBook().bookPrice * bookCartList.get(i).getQuantity();
+            totalPrice = totalPrice + amountOfOneBook;
         }
         return totalPrice;
     }
 
     private void sendOrderConfirmation(OrderBookDetails orderBookDetails, List<BookCart> bookCartList, CustomerDetails customerDetails, Double totalPrice) {
-        String message = emailTemplateGenerator.getEmailTemplate(orderBookDetails.getUserDetails().getFullName(),bookCartList,customerDetails.getAddress()+ " "+customerDetails.getLandmark()+" "+customerDetails.getLocality()+" "+customerDetails.getCity()+"-"+customerDetails.getPincode(),totalPrice,orderBookDetails.getOrderId());
+        String message = emailTemplateGenerator.getEmailTemplate(orderBookDetails.getUserDetails().getFullName(), bookCartList, customerDetails.getAddress() + " " + customerDetails.getLandmark() + " " + customerDetails.getLocality() + " " + customerDetails.getCity() + "-" + customerDetails.getPincode(), totalPrice, orderBookDetails.getOrderId());
         emailService.notifyThroughEmail(orderBookDetails.getUserDetails().email, "Order Confirmation", message);
     }
 
@@ -90,7 +89,6 @@ public class OrderBookService implements IOrderBookService {
             orderProductRepository.save(orderProduct);
         });
     }
-
 
     private void deleteBookCart(List<BookCart> bookCartList) {
         bookCartList.stream().forEach(value -> {

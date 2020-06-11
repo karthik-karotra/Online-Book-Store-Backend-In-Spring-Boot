@@ -68,21 +68,21 @@ public class EmailVerificationTemplate {
                 "</style>\n" +
                 "</head>\n" +
                 "<body>\t\n" +
-                "     <table style='width:100%;height:97vh'>\n"+
-                "           <tr>\n"+
-			    "               <th style='width:33.3%'></th>\n"+
-			    "               <th>\n"+
+                "     <table style='width:100%;height:97vh'>\n" +
+                "           <tr>\n" +
+                "               <th style='width:33.3%'></th>\n" +
+                "               <th>\n" +
                 "\t\t               <div class='container'>\n" +
                 "\t\t\t                 <div class='header'>The Country Bookshop</div>\n" +
                 "\t\t\t                 <div class='heading'>Verify your email</div>\n" +
-                "\t\t\t                 <div class='text'>Hi "+ fullName +" !</div>\n" +
+                "\t\t\t                 <div class='text'>Hi " + fullName + " !</div>\n" +
                 "\t\t\t                 <div class='text'>Use the link below to verify your email and start enjoy shopping</div>\n" +
-                "\t\t\t                 <div class='verify-button'><a href='"+token+"'><button class='button'>Verify Email</button></a></div>\n" +
+                "\t\t\t                 <div class='verify-button'><a href='" + token + "'><button class='button'>Verify Email</button></a></div>\n" +
                 "\t\t\t                 <div class='feedback'>Question ? Email us at <a href='#'>bookstore@gmail.com</a></div>\n" +
                 "\t\t               </div>\t\t\n" +
-                "               </th>"+
-		        "           </tr>"+
-                "       </table>"+
+                "               </th>" +
+                "           </tr>" +
+                "       </table>" +
                 "\t\n" +
                 "</body>\n" +
                 "</html>";

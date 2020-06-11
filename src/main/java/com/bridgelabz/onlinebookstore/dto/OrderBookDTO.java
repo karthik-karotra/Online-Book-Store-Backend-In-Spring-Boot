@@ -18,15 +18,15 @@ public class OrderBookDTO {
     public Double orderPrice;
 
     @NotNull
-    @Pattern(regexp ="^.{3,30}$",message = "Enter Valid Name")
+    @Pattern(regexp = "^.{3,30}$", message = "Enter Valid Name")
     public String customerName;
 
     @NotNull
-    @Pattern(regexp = "^[6-9]{1}[0-9]{9}$",message = "Enter Valid Mobile Number")
+    @Pattern(regexp = "^[6-9]{1}[0-9]{9}$", message = "Enter Valid Mobile Number")
     public String mobileNo;
 
     @NotNull
-    @Pattern(regexp = "^[1-9]{1}[0-9]{5}$",message = "Enter Valid Pincode")
+    @Pattern(regexp = "^[1-9]{1}[0-9]{5}$", message = "Enter Valid Pincode")
     public String pincode;
 
     @NotNull
@@ -41,7 +41,7 @@ public class OrderBookDTO {
     public String city;
 
     @NotNull
-    @Pattern(regexp ="^.{3,30}$",message = "Enter Valid LandMark")
+    @Pattern(regexp = "^.{3,30}$", message = "Enter Valid LandMark")
     public String landmark;
 
     public String type;

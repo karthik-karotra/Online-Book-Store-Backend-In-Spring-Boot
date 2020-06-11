@@ -2,7 +2,6 @@ package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.exceptions.CartException;
 import com.bridgelabz.onlinebookstore.exceptions.JWTException;
-import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookCart;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.CartDetails;
@@ -55,7 +54,7 @@ public class CartService implements ICartService {
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
         if (bookCartList.size() == 0)
             throw new CartException("No Books Found In Cart", CartException.ExceptionType.NO_BOOK_FOUND);
-       return bookCartList;
+        return bookCartList;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class CartService implements ICartService {
         if (!optionalBookDetails.isPresent())
             throw new CartException("Book Not Found", CartException.ExceptionType.NO_BOOK_FOUND);
         BookDetails bookDetails = optionalBookDetails.get();
-        if (quantity > bookDetails.quantity )
+        if (quantity > bookDetails.quantity)
             throw new CartException("Quantity Is Greater Than Stock", CartException.ExceptionType.ORDER_QUANTITY_GREATER_THEN_STOCK);
         BookCart bookCart = new BookCart(bookDetails, quantity);
         CartDetails cart = cartRepository.findByUser(userDetails).get();

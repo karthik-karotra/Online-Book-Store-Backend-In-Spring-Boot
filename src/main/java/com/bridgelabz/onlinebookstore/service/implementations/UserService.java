@@ -4,7 +4,6 @@ import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.JWTException;
-import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
@@ -61,7 +60,7 @@ public class UserService implements IUserService {
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.password = password;
         userRepository.save(userDetails);
-        sendEmail(userRegistrationDTO.email,httpServletRequest.getHeader("Referer"));
+        sendEmail(userRegistrationDTO.email, httpServletRequest.getHeader("Referer"));
         return "Registration Successfull !! Please Check Your Registered Email For Email Verification";
     }
 
@@ -83,7 +82,7 @@ public class UserService implements IUserService {
     public String emailVerification(String token) {
         int id = tokenGenerator.getId(token);
         Optional<UserDetails> userDetailsById = userRepository.findById(id);
-        if (!userDetailsById.isPresent()){
+        if (!userDetailsById.isPresent()) {
             throw new JWTException("User With Same Email Id Already Exists", JWTException.ExceptionType.USER_NOT_FOUND);
         }
         UserDetails userDetails = userDetailsById.get();
@@ -96,12 +95,12 @@ public class UserService implements IUserService {
     @Override
     public String resendConfirmation(String email) {
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
-        if (!optionalUserDetails.isPresent()){
+        if (!optionalUserDetails.isPresent()) {
             throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
         String urlAddress = httpServletRequest.getHeader("origin");
         System.out.println(urlAddress);
-        sendEmail(email,urlAddress);
+        sendEmail(email, urlAddress);
         return "Verification Link Has Been Sent To Your Account";
     }
 
@@ -129,11 +128,11 @@ public class UserService implements IUserService {
         return "Password Reseted Successfully";
     }
 
-    public void sendEmail(String email, String urlAddress){
+    public void sendEmail(String email, String urlAddress) {
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
-        String token = tokenGenerator.generateToken(optionalUserDetails.get().id,applicationProperties.getJwtVerificationExpiration());
+        String token = tokenGenerator.generateToken(optionalUserDetails.get().id, applicationProperties.getJwtVerificationExpiration());
         urlAddress = urlAddress + "verification/?token=" + token;
         String message = emailVerificationTemplate.getVerificationEmailTemplate(urlAddress, optionalUserDetails.get().fullName);
-        emailService.notifyThroughEmail(email,"Email Verification",message);
+        emailService.notifyThroughEmail(email, "Email Verification", message);
     }
 }
