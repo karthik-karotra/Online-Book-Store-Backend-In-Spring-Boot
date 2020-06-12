@@ -1,8 +1,11 @@
 package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
+import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import com.google.gson.Gson;
@@ -11,13 +14,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import java.util.ArrayList;
+import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AdminController.class)
@@ -32,39 +40,45 @@ public class AdminControllerTest {
     @MockBean
     public ApplicationProperties applicationProperties;
 
+    HttpHeaders httpHeaders = new HttpHeaders();
     Gson gson = new Gson();
     BookDTO bookDTO;
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectMessage() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
         bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         String toJson = gson.toJson(bookDTO);
         String message = "Book Added Successfully";
-        when(adminBookStoreService.saveBook(any())).thenReturn(message);
+        when(adminBookStoreService.saveBook(any(), any())).thenReturn(message);
         MvcResult mvcResult = this.mockMvc.perform(post("/admin/book")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson)).andReturn();
+                .content(toJson)
+                .headers(httpHeaders)).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Book Added Successfully"));
     }
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenDataInvalid_ShouldThrowException() throws Exception {
-
+        httpHeaders.set("token", "Rsafjvj213");
         bookDTO = new BookDTO("1234", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         String toJson = gson.toJson(bookDTO);
-        when(adminBookStoreService.saveBook(any())).thenThrow(new OnlineBookStoreException("Invalid Data!!!!! Please Enter Valid Data", OnlineBookStoreException.ExceptionType.INVALID_DATA));
+        when(adminBookStoreService.saveBook(any(), any())).thenThrow(new OnlineBookStoreException("Invalid Data!!!!! Please Enter Valid Data", OnlineBookStoreException.ExceptionType.INVALID_DATA));
         MvcResult mvcResult = this.mockMvc.perform(post("/admin/book")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJson)).andReturn();
+                .content(toJson)
+                .headers(httpHeaders)).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Invalid Data!!!!! Please Enter Valid Data"));
     }
 
     @Test
     public void givenBookDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
         bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         String toJson = gson.toJson(bookDTO);
         this.mockMvc.perform(post("/admin/book").content(toJson)
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders)).andExpect(status().isOk());
     }
 
     @Test
@@ -87,11 +101,13 @@ public class AdminControllerTest {
 
     @Test
     public void givenContentTypeOfAnotherType_ShouldReturnUnsupporteMediaType() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
         bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
         String toJson = gson.toJson(bookDetails);
         this.mockMvc.perform(post("/admin/book").content(toJson)
-                .contentType(MediaType.APPLICATION_ATOM_XML_VALUE)).andExpect(status().isUnsupportedMediaType());
+                .contentType(MediaType.APPLICATION_ATOM_XML_VALUE)
+                .headers(httpHeaders)).andExpect(status().isUnsupportedMediaType());
     }
 
     @Test
@@ -105,12 +121,33 @@ public class AdminControllerTest {
 
     @Test
     void givenImageAsMultipartFile_ShouldReturnCorrectImageURL() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
         MockMultipartFile imageFile = new MockMultipartFile("file", "abc.jpg",
                 "image/jpg", "Image".getBytes());
         MvcResult result = this.mockMvc.perform(multipart("/admin/book/image")
-                .file(imageFile))
+                .file(imageFile)
+                .headers(httpHeaders))
                 .andReturn();
-
         Assert.assertEquals(200, result.getResponse().getStatus());
     }
+
+    @Test
+    public void givenRequestToFetchListOfOrderDetailsFromDatabase_ShouldReturnListOfOrderDetailsInDatabase() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
+        OrderBookDetails orderBookDetails = new OrderBookDetails();
+        orderBookDetails.id = 1;
+        List orderDetailsList = new ArrayList();
+        orderDetailsList.add(orderBookDetails);
+        String jsonDto = gson.toJson(orderDetailsList);
+        ResponseDTO responseDTO = new ResponseDTO(orderDetailsList, "Response Successful");
+        String jsonResponseDTO = gson.toJson(responseDTO);
+        when(adminBookStoreService.getOrders(anyInt(), anyInt(), any())).thenReturn(orderDetailsList);
+        this.mockMvc.perform(get("/admin/orders/1")
+                .content(jsonDto)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
+                .andExpect(status().isOk())
+                .andExpect(content().json(jsonResponseDTO));
+    }
+
 }

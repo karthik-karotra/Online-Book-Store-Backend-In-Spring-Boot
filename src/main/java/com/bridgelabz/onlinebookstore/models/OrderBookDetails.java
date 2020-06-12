@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.models;
 
+import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class OrderBookDetails {
     public Integer orderId;
 
     public String orderDate;
+
+
+    public OrderStatus orderStatus;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

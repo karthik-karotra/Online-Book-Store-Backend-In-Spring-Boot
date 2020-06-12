@@ -46,7 +46,7 @@ public class CustomerDetailsServiceTest {
 
     public CustomerDetailsServiceTest() {
         customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400704", "Navratna Hotel", "Vashi", "HOME");
-        userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false);
+        userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false, UserRole.USER);
         userDetails = new UserDetails(userRegistrationDTO);
         customerDetails = new CustomerDetails(customerDTO);
         customerDetails.setUserDetails(userDetails);

@@ -76,7 +76,7 @@ public class OrderBookServiceTest {
         bookDetails.id = 1;
         customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400703", "Navratna Hotel", "Vashi", "HOME");
         customerDetails = new CustomerDetails(customerDTO);
-        userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false);
+        userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false, UserRole.USER);
         userDetails = new UserDetails(userRegistrationDTO);
         customerDetailsList = new ArrayList<>();
         customerDetailsList.add(customerDetails);
@@ -95,7 +95,7 @@ public class OrderBookServiceTest {
         when(orderProductRepository.save(any())).thenReturn(new OrderProduct());
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        String message = orderBookService.addOrderSummary("authorization");
+        String message = orderBookService.addOrderSummary(100.0,"authorization");
         Assert.assertEquals("Successfully Placed Order", message);
     }
 

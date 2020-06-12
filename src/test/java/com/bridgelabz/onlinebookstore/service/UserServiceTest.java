@@ -9,9 +9,11 @@ import com.bridgelabz.onlinebookstore.models.UserDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.UserRepository;
 import com.bridgelabz.onlinebookstore.service.implementations.UserService;
+import com.bridgelabz.onlinebookstore.utils.IEmailService;
 import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
@@ -43,14 +46,35 @@ public class UserServiceTest {
     JavaMailSender javaMailSender;
 
     @MockBean
+    IEmailService emailService;
+
+    @MockBean
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Mock
+    HttpServletRequest httpServletRequest;
 
     UserRegistrationDTO userRegistrationDTO;
     UserLoginDTO userLoginDTO;
 
     public UserServiceTest() {
-        userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+    }
+
+    @Test
+    void givenUserDetailsToRegisterUser_WhenUserRegisters_ShouldReturnCorrectMessage() {
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        userDetails.id=1;
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+        when(userRepository.save(any())).thenReturn(userDetails);
+        when(httpServletRequest.getHeader(any())).thenReturn("verify");
+        when(applicationProperties.getJwtVerificationExpiration()).thenReturn(600000);
+        when(tokenGenerator.generateToken(anyInt(), anyInt())).thenReturn("token1");
+        when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
+        String message = userService.addUser(userRegistrationDTO);
+        Assert.assertEquals("Registration Successfull !! Please Check Your Registered Email For Email Verification",message);
     }
 
     @Test
@@ -67,7 +91,7 @@ public class UserServiceTest {
 
     @Test
     void givenUserDetailsToLoginUser_WhenUserLoggedIn_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.status = true;
         UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
@@ -106,7 +130,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToVerifyUser_WhenUserVerified_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         when(tokenGenerator.getId(any())).thenReturn(1);
         when(userRepository.findById(anyInt())).thenReturn(java.util.Optional.of(userDetails));
@@ -117,7 +141,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToVerifyUser_WhenUserAlreadyVerifiedWithSameEmail_ShouldThrowException() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         try {
             when(tokenGenerator.getId(any())).thenReturn(1);
@@ -131,7 +155,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToResendVerificationLinkOfUser_WhenSuccessful_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.id = 1;
         when(userRepository.findByEmail(any())).thenReturn(java.util.Optional.of(userDetails));
@@ -151,6 +175,21 @@ public class UserServiceTest {
         }
     }
 
+    //
+    @Test
+    void givenRequestToResetPassword_WhenEmailAddressExistsInDatabase_ShouldReturnCorrectResponseMessage() {
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        userDetails.id = 1;
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(userDetails));
+        when(httpServletRequest.getHeader(any())).thenReturn("passwordforget");
+        when(applicationProperties.getJwtVerificationExpiration()).thenReturn(600000);
+        when(tokenGenerator.generateToken(anyInt(), anyInt())).thenReturn("token1");
+        when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
+        String existingBook = userService.forgotPassword("karthik@gmail.com", httpServletRequest);
+        Assert.assertEquals("We've Sent A Password Reset Link To Your Email Address", existingBook);
+    }
+
     @Test
     void givenRequestOfForgetPassword_WhenEmailNotFound_ShouldThrowException() {
         try {
@@ -164,7 +203,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToResetPassword_WhenPasswordResetted_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         ResetPasswordDTO resetPasswordDTO = new ResetPasswordDTO();
         when(tokenGenerator.getId(any())).thenReturn(1);

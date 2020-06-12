@@ -1,12 +1,23 @@
 package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
+import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
+import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
+import com.bridgelabz.onlinebookstore.models.UserDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.AdminRepository;
+import com.bridgelabz.onlinebookstore.repository.OrderBookRepository;
+import com.bridgelabz.onlinebookstore.repository.UserRepository;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
+import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AdminBookStoreService implements IAdminBookStoreService {
@@ -27,8 +38,24 @@ public class AdminBookStoreService implements IAdminBookStoreService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    OrderBookRepository orderBookRepository;
+
+    @Autowired
+    CartService cartService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    ITokenGenerator tokenGenerator;
+
     @Override
-    public String saveBook(BookDTO bookDTO) {
+    public String saveBook(String token, BookDTO bookDTO) {
+        cartService.isUserPresent(token);
         BookDetails bookDetails = new BookDetails(bookDTO);
         Optional<BookDetails> optionalBookDetails = adminRepository.findByIsbn(bookDTO.isbn);
         Optional<BookDetails> optionalBookDetails1 = adminRepository.findByBookNameAndAuthorName(bookDTO.bookName, bookDTO.authorName);
@@ -43,7 +70,8 @@ public class AdminBookStoreService implements IAdminBookStoreService {
     }
 
     @Override
-    public String uploadImage(MultipartFile file) {
+    public String uploadImage(MultipartFile file, String token) {
+        cartService.isUserPresent(token);
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String fileBasePath = System.getProperty("user.dir") + applicationProperties.getUploadDirectory();
         if (!(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png"))) {
@@ -61,4 +89,16 @@ public class AdminBookStoreService implements IAdminBookStoreService {
                 .toUriString();
         return imageResponse;
     }
+
+    @Override
+    public List<OrderBookDetails> getOrders(Integer pageNo, Integer pageSize, String token) {
+        cartService.isUserPresent(token);
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<OrderBookDetails> orders = orderBookRepository.findAll(paging);
+        if (!orders.hasContent())
+            throw new AdminException("No Orders", AdminException.ExceptionType.NO_ORDER_FOUND);
+        List<OrderBookDetails> orderBookDetailsList = orders.getContent();
+        return new ArrayList<>(Lists.reverse(orderBookDetailsList));
+    }
+
 }

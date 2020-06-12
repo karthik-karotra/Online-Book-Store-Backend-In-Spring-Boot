@@ -71,7 +71,8 @@ public class OnlineBookStoreServiceTest {
             List booksList = new ArrayList();
             Pageable paging = PageRequest.of(0, 10);
             Page<BookDetails> page = new PageImpl(booksList);
-            Mockito.when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(page);
+            Mockito.when(this.onlineBookStoreRepository.findAll(paging)).thenReturn(Page.empty());
+            onlineBookStoreService.getAllBooks(0, 10);
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.NO_BOOK_FOUND, ex.type);
         }

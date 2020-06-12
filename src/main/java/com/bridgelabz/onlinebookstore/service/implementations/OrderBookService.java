@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.exceptions.OrderException;
+import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
 import com.bridgelabz.onlinebookstore.models.*;
 import com.bridgelabz.onlinebookstore.repository.*;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
@@ -10,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderBookService implements IOrderBookService {
@@ -42,8 +46,9 @@ public class OrderBookService implements IOrderBookService {
     @Autowired
     OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
+
     @Override
-    public String addOrderSummary(String token) {
+    public String addOrderSummary(Double discountPrice,String token) {
         Integer orderId = getOrderId();
         UserDetails userDetails = cartService.isUserPresent(token);
         CartDetails cartDetails = cartRepository.findByUser(userDetails).get();
@@ -55,28 +60,29 @@ public class OrderBookService implements IOrderBookService {
         orderBookDetails.setCustomerDetails(customerDetails);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
+        orderBookDetails.setOrderStatus(OrderStatus.ORDERED);
         orderBookRepository.save(orderBookDetails);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
         updateQuantityOfBooks(bookCartList);
         Double totalPrice = calculateTotalPrice(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
-        sendOrderConfirmation(orderBookDetails, bookCartList, customerDetails, totalPrice);
+        sendOrderConfirmation(orderBookDetails,bookCartList,customerDetails,totalPrice,discountPrice);
         deleteBookCart(bookCartList);
         return "Successfully Placed Order";
     }
 
     private Double calculateTotalPrice(List<BookCart> bookCartList) {
-        Double totalPrice = 0.0;
-        for (int i = 0; i < bookCartList.size(); i++) {
-            Double amountOfOneBook = 0.0;
-            amountOfOneBook = bookCartList.get(i).getBook().bookPrice * bookCartList.get(i).getQuantity();
-            totalPrice = totalPrice + amountOfOneBook;
+        Double totalPrice=0.0;
+        for (int i=0;i<bookCartList.size();i++) {
+            Double amountOfOneBook=0.0;
+            amountOfOneBook=bookCartList.get(i).getBook().bookPrice * bookCartList.get(i).getQuantity();
+            totalPrice=totalPrice+amountOfOneBook;
         }
         return totalPrice;
     }
 
-    private void sendOrderConfirmation(OrderBookDetails orderBookDetails, List<BookCart> bookCartList, CustomerDetails customerDetails, Double totalPrice) {
-        String message = emailTemplateGenerator.getEmailTemplate(orderBookDetails.getUserDetails().getFullName(), bookCartList, customerDetails.getAddress() + " " + customerDetails.getLandmark() + " " + customerDetails.getLocality() + " " + customerDetails.getCity() + "-" + customerDetails.getPincode(), totalPrice, orderBookDetails.getOrderId());
+    private void sendOrderConfirmation(OrderBookDetails orderBookDetails, List<BookCart> bookCartList, CustomerDetails customerDetails, Double totalPrice,Double discountPrice) {
+        String message = emailTemplateGenerator.getEmailTemplate(orderBookDetails.getUserDetails().getFullName(),bookCartList,customerDetails.getAddress()+ " "+customerDetails.getLandmark()+" "+customerDetails.getLocality()+" "+customerDetails.getCity()+"-"+customerDetails.getPincode(),totalPrice,discountPrice,orderBookDetails.getOrderId());
         emailService.notifyThroughEmail(orderBookDetails.getUserDetails().email, "Order Confirmation", message);
     }
 
@@ -89,6 +95,7 @@ public class OrderBookService implements IOrderBookService {
             orderProductRepository.save(orderProduct);
         });
     }
+
 
     private void deleteBookCart(List<BookCart> bookCartList) {
         bookCartList.stream().forEach(value -> {

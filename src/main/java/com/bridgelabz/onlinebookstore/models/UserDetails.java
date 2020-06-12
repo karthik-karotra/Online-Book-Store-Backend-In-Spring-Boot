@@ -30,6 +30,9 @@ public class UserDetails {
     public String phoneNo;
     public boolean status;
 
+    @JsonIgnore
+    private UserRole userRole;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userDetails")
     private List<CustomerDetails> customerDetails;
 
@@ -39,6 +42,7 @@ public class UserDetails {
         this.password = userRegistrationDTO.password;
         this.phoneNo = userRegistrationDTO.phoneNo;
         this.status = userRegistrationDTO.status;
+        this.userRole=userRegistrationDTO.userRole;
     }
 
     public UserDetails(ResetPasswordDTO resetPasswordDTO) {

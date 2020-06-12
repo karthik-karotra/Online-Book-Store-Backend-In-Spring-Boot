@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,25 +38,32 @@ public class OrderBookControllerTest {
     @MockBean
     public ApplicationProperties applicationProperties;
 
+    @MockBean
+    CouponRepository couponRepository;
+
+    HttpHeaders httpHeaders=new HttpHeaders();
     Gson gson = new Gson();
 
     @Test
     public void givenRequestToAddOrderSummaryToAddInDatabase_WhenAdded_ShouldReturnCorrectDetails() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         String message = "Successfully Placed Order";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
         String jsonResponseDTO = gson.toJson(responseDTO);
-        when(orderBookService.addOrderSummary(any())).thenReturn(message);
-        this.mockMvc.perform(post("/bookstore/order")
+        when(orderBookService.addOrderSummary(any(),any())).thenReturn(message);
+        this.mockMvc.perform(post("/bookstore/order/?=discountPrice=100.0")
                 .content(jsonString)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(content().json(jsonResponseDTO));
     }
 
     @Test
     public void givenRequestToFetchListOfOrderDetailsFromDatabase_ShouldReturnListOfOrderDetailsInDatabase() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         List<OrderBookDetails> orderBookDetailsList = new ArrayList();
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         OrderBookDetails orderBookDetails = new OrderBookDetails();
         orderBookDetails.setUserDetails(userDetails);
@@ -66,7 +74,8 @@ public class OrderBookControllerTest {
         when(orderBookService.getOrders(any())).thenReturn(orderBookDetailsList);
         MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/order")
                 .content(jsonDto)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(status().isOk())
                 .andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("123456"));

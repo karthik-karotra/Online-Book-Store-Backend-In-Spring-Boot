@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 class OnlinebookstoreApplicationTests {
 
     @MockBean
-    ApplicationProperties applicationProperties;
+    public ApplicationProperties applicationProperties;
 
     @Test
     void contextLoads() {

@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.repository;
 
+import com.bridgelabz.onlinebookstore.models.CustomerDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
 import org.springframework.data.jpa.repository.JpaRepository;

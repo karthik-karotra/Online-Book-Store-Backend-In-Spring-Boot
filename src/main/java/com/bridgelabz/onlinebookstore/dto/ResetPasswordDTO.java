@@ -10,7 +10,7 @@ public class ResetPasswordDTO {
     public String password;
 
     public ResetPasswordDTO(String password) {
-        this.password = password;
+        this.password=password;
     }
 
     public ResetPasswordDTO() {

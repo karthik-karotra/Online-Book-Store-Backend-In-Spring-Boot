@@ -44,6 +44,9 @@ public class OnlineBookStoreControllerTest {
     @MockBean
     public ApplicationProperties applicationProperties;
 
+    @MockBean
+    CouponRepository couponRepository;
+
     BookDTO bookDTO;
     BookDetails bookDetails;
     Gson gson = new Gson();

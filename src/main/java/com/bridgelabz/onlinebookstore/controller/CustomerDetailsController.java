@@ -17,14 +17,14 @@ public class CustomerDetailsController {
     ICustomerDetailsService customerDetailsService;
 
     @PostMapping("/customer")
-    public ResponseEntity<ResponseDTO> addCustomerDetails(@RequestBody CustomerDTO customerDTO, @RequestHeader(value = "token", required = false) String token) {
+    public ResponseEntity<ResponseDTO> addCustomerDetails(@RequestBody CustomerDTO customerDTO, @RequestHeader(value = "token") String token) {
         String message = customerDetailsService.addCustomerDetails(customerDTO, token);
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/customer")
-    public ResponseEntity<ResponseDTO> getCustomerDetails(@RequestHeader(value = "token", required = false) String token) {
+    public ResponseEntity<ResponseDTO> getCustomerDetails(@RequestHeader(value = "token") String token) {
         UserDetails userDetails = customerDetailsService.getAllCustomers(token);
         ResponseDTO responseDTO = new ResponseDTO(userDetails, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

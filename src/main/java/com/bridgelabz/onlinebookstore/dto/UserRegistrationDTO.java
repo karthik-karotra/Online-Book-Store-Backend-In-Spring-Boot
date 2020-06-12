@@ -1,8 +1,11 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import lombok.AllArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@AllArgsConstructor
 public class UserRegistrationDTO {
 
     @NotNull
@@ -23,12 +26,6 @@ public class UserRegistrationDTO {
 
     public boolean status;
 
-    public UserRegistrationDTO(String fullName, String email, String password, String phoneNo, boolean status) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.phoneNo = phoneNo;
-        this.status = status;
-    }
+    public UserRole userRole;
 
 }

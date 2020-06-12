@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -34,12 +35,17 @@ public class CartControllerTest {
     ICartService cartService;
 
     @MockBean
+    CouponRepository couponRepository;
+
+    @MockBean
     public ApplicationProperties applicationProperties;
 
+    HttpHeaders httpHeaders=new HttpHeaders();
     Gson gson = new Gson();
 
     @Test
     public void givenBookDetailsAndCartDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectMessage() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         String message = "Book Successfully Added To Cart";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
@@ -47,23 +53,27 @@ public class CartControllerTest {
         when(cartService.saveBooksToCart(anyInt(), anyInt(), any())).thenReturn(message);
         this.mockMvc.perform(post("/cart/2/1")
                 .content(jsonString)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(content().json(jsonResponseDTO));
     }
 
     @Test
     public void givenBookDetailsAndCartDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         String message = "Book Successfully Added To Cart";
         String jsonString = gson.toJson(message);
         when(cartService.saveBooksToCart(anyInt(), anyInt(), any())).thenReturn(message);
         this.mockMvc.perform(post("/cart/2/1")
                 .content(jsonString)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void givenRequestToFetchListOfBookDetailsFromCart_ShouldReturnListOfBookDetailsInCart() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         List<BookCart> bookList = new ArrayList();
         BookDTO bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
@@ -73,7 +83,8 @@ public class CartControllerTest {
         when(cartService.getAllBooks(any())).thenReturn(bookList);
         MvcResult mvcResult = this.mockMvc.perform(get("/cart")
                 .content(jsonDto)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(status().isOk())
                 .andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("Mrutyunjay"));
@@ -81,6 +92,7 @@ public class CartControllerTest {
 
     @Test
     public void givenRequestToUpdateQuantityOfBookInCart_ShouldUpdateQuantityInCart() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         String message = "Cart Updated Successfully";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
@@ -88,12 +100,14 @@ public class CartControllerTest {
         when(cartService.updateQuantity(anyInt(), anyInt(), any())).thenReturn(message);
         this.mockMvc.perform(put("/cart/1/2")
                 .content(jsonString)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(content().json(jsonResponseDTO));
     }
 
     @Test
     public void givenRequestToDeleteBookFromCart_ShouldDeleteBookFromCart() throws Exception {
+        httpHeaders.set("token","Rsafjvj213");
         String message = "Deleted Successfully";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
@@ -101,7 +115,8 @@ public class CartControllerTest {
         when(cartService.deleteBookFromCart(anyInt(), any())).thenReturn(message);
         this.mockMvc.perform(delete("/cart/1")
                 .content(jsonString)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
                 .andExpect(content().json(jsonResponseDTO));
     }
 }

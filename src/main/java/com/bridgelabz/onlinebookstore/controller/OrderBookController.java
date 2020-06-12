@@ -18,14 +18,14 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order")
-    public ResponseEntity<ResponseDTO> addOrderedBooks(@RequestHeader(value = "token", required = false) String token) {
-        String message = orderBookService.addOrderSummary(token);
+    public ResponseEntity<ResponseDTO> addOrderedBooks(@RequestParam(name = "discountPrice") Double discountPrice,@RequestHeader(value = "token") String token) {
+        String message = orderBookService.addOrderSummary(discountPrice,token);
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/order")
-    public ResponseEntity<ResponseDTO> getOrderDetails(@RequestHeader(value = "token", required = false) String token) {
+    public ResponseEntity<ResponseDTO> getOrderDetails(@RequestHeader(value = "token") String token) {
         List<OrderBookDetails> orderBookDetailsList = orderBookService.getOrders(token);
         ResponseDTO responseDTO = new ResponseDTO(orderBookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
