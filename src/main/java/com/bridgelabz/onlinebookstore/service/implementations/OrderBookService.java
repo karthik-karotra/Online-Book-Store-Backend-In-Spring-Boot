@@ -119,14 +119,15 @@ public class OrderBookService implements IOrderBookService {
     }
 
     private Integer getOrderId() {
-        boolean isOrderIdUnique = false;
-        Integer orderId = 0;
-        while (!isOrderIdUnique) {
-            orderId = (int) Math.floor(100000 + Math.random() * 999999);
-            Optional<OrderBookDetails> booksById = orderBookRepository.findByOrderId(orderId);
-            if (!booksById.isPresent())
-                isOrderIdUnique = true;
+        List<OrderBookDetails> orderBookDetailsList = orderBookRepository.findAll();
+        if (orderBookDetailsList.size() == 0) {
+            return 100000;
         }
+        List<OrderBookDetails> allBooks = orderBookDetailsList.stream()
+                .sorted(Comparator.comparing(orderBookDetails -> orderBookDetails.orderId))
+                .collect(Collectors.toList());
+        Collections.reverse(allBooks);
+        Integer orderId = allBooks.get(0).orderId + 1;
         return orderId;
     }
 }
