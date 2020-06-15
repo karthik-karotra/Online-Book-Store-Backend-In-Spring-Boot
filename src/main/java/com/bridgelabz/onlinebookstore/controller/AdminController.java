@@ -5,6 +5,7 @@ import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
+import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,12 @@ public class AdminController {
         List<OrderBookDetails> orderBookDetailsList = adminBookStoreService.getOrders(pageNo, 12, token);
         ResponseDTO responseDTO = new ResponseDTO(orderBookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PutMapping("/order/status/{orderId}/{orderStatus}")
+    public ResponseEntity updateOrderStatus(@PathVariable Integer orderId, @PathVariable OrderStatus orderStatus, @RequestHeader(value = "token") String token) {
+        String message = adminBookStoreService.updateOrderStatus(orderId, orderStatus, token);
+        ResponseDTO responseDto = new ResponseDTO(message);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

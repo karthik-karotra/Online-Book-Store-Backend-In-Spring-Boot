@@ -4,6 +4,7 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
+import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -156,6 +157,30 @@ public class AdminBookStoreServiceTest {
             when(tokenGenerator.getId(any())).thenReturn(1);
             when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
             adminBookStoreService.getOrders(0, 10, "token");
+        } catch (AdminException ex) {
+            Assert.assertEquals(AdminException.ExceptionType.NO_ORDER_FOUND, ex.type);
+        }
+    }
+
+    @Test
+    void givenRequestToUpdateOrderStatus_WhenUpdated_ShouldReturnCorrectResponseMessage() {
+        OrderBookDetails orderBookDetails = new OrderBookDetails();
+        when(orderBookRepository.findById(1)).thenReturn(Optional.ofNullable(orderBookDetails));
+        when(orderBookRepository.save(any())).thenReturn(new OrderBookDetails());
+        when(tokenGenerator.getId(any())).thenReturn(1);
+        when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+        String message = adminBookStoreService.updateOrderStatus(1, OrderStatus.DELIVERED, "token");
+        Assert.assertEquals("Order Status Updated Successfully", message);
+    }
+
+    @Test
+    void givenRequestToUpdateOrderStatus_WhenNoOrdersWerePlaced_ShouldThrowException() {
+        try {
+            when(orderBookRepository.findById(1)).thenThrow(new AdminException("No Order Of Given Id Found", AdminException.ExceptionType.NO_ORDER_FOUND));
+            when(orderBookRepository.save(any())).thenReturn(new OrderBookDetails());
+            when(tokenGenerator.getId(any())).thenReturn(1);
+            when(userRepository.findById(any())).thenReturn(java.util.Optional.of(new UserDetails()));
+            adminBookStoreService.updateOrderStatus(1, OrderStatus.DELIVERED, "token");
         } catch (AdminException ex) {
             Assert.assertEquals(AdminException.ExceptionType.NO_ORDER_FOUND, ex.type);
         }

@@ -150,4 +150,19 @@ public class AdminControllerTest {
                 .andExpect(content().json(jsonResponseDTO));
     }
 
+    @Test
+    public void givenRequestToUpdateOrderStatus_ShouldUpdateOrderStatus() throws Exception {
+        httpHeaders.set("token", "Rsafjvj213");
+        String message = "Order Status Updated Successfully";
+        String jsonString = gson.toJson(message);
+        ResponseDTO responseDTO = new ResponseDTO(message);
+        String jsonResponseDTO = gson.toJson(responseDTO);
+        when(adminBookStoreService.updateOrderStatus(anyInt(), any(), any())).thenReturn(message);
+        this.mockMvc.perform(put("/admin/order/status/1/PACKED")
+                .content(jsonString)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(httpHeaders))
+                .andExpect(content().json(jsonResponseDTO));
+    }
+
 }

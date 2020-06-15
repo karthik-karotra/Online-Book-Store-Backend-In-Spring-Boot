@@ -3,6 +3,7 @@ package com.bridgelabz.onlinebookstore.service.implementations;
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
+import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -101,4 +102,16 @@ public class AdminBookStoreService implements IAdminBookStoreService {
         return new ArrayList<>(Lists.reverse(orderBookDetailsList));
     }
 
+    @Override
+    public String updateOrderStatus(Integer orderId, OrderStatus orderStatus, String token) {
+        cartService.isUserPresent(token);
+        Optional<OrderBookDetails> optionalOrderDetails = orderBookRepository.findById(orderId);
+        if (!optionalOrderDetails.isPresent()) {
+            throw new AdminException("No Order Of Given Id Found", AdminException.ExceptionType.NO_ORDER_FOUND);
+        }
+        OrderBookDetails orderBookDetails = optionalOrderDetails.get();
+        orderBookDetails.setOrderStatus(orderStatus);
+        orderBookRepository.save(orderBookDetails);
+        return "Order Status Updated Successfully";
+    }
 }
