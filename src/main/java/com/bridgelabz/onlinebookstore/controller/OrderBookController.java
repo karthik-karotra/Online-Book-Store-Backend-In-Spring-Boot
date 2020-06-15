@@ -18,7 +18,7 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order")
-    public ResponseEntity<ResponseDTO> addOrderedBooks(@RequestParam(name = "discountPrice") Double discountPrice,@RequestHeader(value = "token") String token) {
+    public ResponseEntity<ResponseDTO> addOrderedBooks(@PathVariable Double discountPrice,@RequestHeader(value = "token") String token) {
         String message = orderBookService.addOrderSummary(discountPrice,token);
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

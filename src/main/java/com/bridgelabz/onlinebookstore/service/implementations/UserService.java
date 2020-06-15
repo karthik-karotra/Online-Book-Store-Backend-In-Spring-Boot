@@ -61,7 +61,7 @@ public class UserService implements IUserService {
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.password = password;
         UserDetails userDetails1 = userRepository.save(userDetails);
-        sendEmail(userDetails1,httpServletRequest.getHeader("Referer"));
+        sendEmail(userDetails1,httpServletRequest.getHeader("origin"));
         return "Registration Successfull !! Please Check Your Registered Email For Email Verification";
     }
 
@@ -131,7 +131,7 @@ public class UserService implements IUserService {
 
     public void sendEmail(UserDetails userDetails, String urlAddress){
         String token = tokenGenerator.generateToken(userDetails.id,applicationProperties.getJwtVerificationExpiration());
-        urlAddress = urlAddress + "verification/?token=" + token;
+        urlAddress = urlAddress + "/verification/?token=" + token;
         String message = emailVerificationTemplate.getVerificationEmailTemplate(urlAddress, userDetails.fullName);
         emailService.notifyThroughEmail(userDetails.email,"Email Verification",message);
     }
