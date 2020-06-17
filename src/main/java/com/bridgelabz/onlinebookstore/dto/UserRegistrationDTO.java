@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import lombok.AllArgsConstructor;
 
 import javax.validation.constraints.NotNull;
