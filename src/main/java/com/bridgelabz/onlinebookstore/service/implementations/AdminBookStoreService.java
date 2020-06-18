@@ -4,6 +4,7 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
 import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -113,5 +114,19 @@ public class AdminBookStoreService implements IAdminBookStoreService {
         orderBookDetails.setOrderStatus(orderStatus);
         orderBookRepository.save(orderBookDetails);
         return "Order Status Updated Successfully";
+    }
+
+    @Override
+    public String adminLogin(UserLoginDTO userLoginDTO) {
+        Optional<UserDetails> userDetailsByEmail = userRepository.findByEmail(userLoginDTO.email);
+        if (userDetailsByEmail.get().getUserRole() == UserRole.ADMIN) {
+            boolean isPasswordMatched = bCryptPasswordEncoder.matches(userLoginDTO.password, userDetailsByEmail.get().getPassword());
+            if (isPasswordMatched) {
+                String token = tokenGenerator.generateToken(userDetailsByEmail.get().id, applicationProperties.getJwtLoginExpiration());
+                return token;
+            }
+            throw new AdminException("Invalid Password!!!Please Enter Correct Password", AdminException.ExceptionType.PASSWORD_INVALID);
+        }
+        throw new AdminException("You Have Not Been Given Admin Previlege", AdminException.ExceptionType.EMAIL_NOT_FOUND);
     }
 }

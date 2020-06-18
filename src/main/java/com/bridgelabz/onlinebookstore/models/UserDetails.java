@@ -3,6 +3,7 @@ package com.bridgelabz.onlinebookstore.models;
 import com.bridgelabz.onlinebookstore.dto.ResetPasswordDTO;
 import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

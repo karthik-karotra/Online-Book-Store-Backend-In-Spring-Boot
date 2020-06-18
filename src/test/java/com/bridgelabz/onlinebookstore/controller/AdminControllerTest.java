@@ -165,4 +165,18 @@ public class AdminControllerTest {
                 .andExpect(content().json(jsonResponseDTO));
     }
 
+    @Test
+    void givenUserLoginData_WhenAllValidationAreTrueAndEmailExists_ShouldReturnLoginSuccessfulMessage() throws Exception {
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        String stringConvertDTO = gson.toJson(userLoginDTO);
+        String message = "Login Successful";
+        when(adminBookStoreService.adminLogin(any())).thenReturn(message);
+        MvcResult mvcResult = this.mockMvc.perform(post("/admin/login").contentType(MediaType.APPLICATION_JSON)
+                .content(stringConvertDTO)).andReturn();
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 }

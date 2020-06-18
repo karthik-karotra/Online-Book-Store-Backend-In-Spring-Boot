@@ -5,6 +5,7 @@ import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.AdminException;
 import com.bridgelabz.onlinebookstore.filterenums.OrderStatus;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -185,4 +186,45 @@ public class AdminBookStoreServiceTest {
             Assert.assertEquals(AdminException.ExceptionType.NO_ORDER_FOUND, ex.type);
         }
     }
+
+    @Test
+    void givenAdminLoginDTO_WhenAllValidationAreTrue_ShouldReturnLoginSuccessfulMessage() {
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.ADMIN);
+        UserDetails userDetails = new UserDetails(userRegistrationDTO);
+        userDetails.id = 1;
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(userDetails));
+        when(bCryptPasswordEncoder.matches(any(), any())).thenReturn(true);
+        when(applicationProperties.getJwtVerificationExpiration()).thenReturn(600000);
+        when(tokenGenerator.generateToken(anyInt(), anyInt())).thenReturn("token");
+        String existingBook = adminBookStoreService.adminLogin(userLoginDTO);
+        Assert.assertEquals("token", existingBook);
+    }
+
+    @Test
+    void givenAdminLoginDTO_WhenEmailAddressIsNotExists_ShouldThrowUserException() {
+        UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+        try {
+            when(userRepository.findByEmail(any())).thenThrow(new AdminException("You Have Not Been Given Admin Previlege", AdminException.ExceptionType.EMAIL_NOT_FOUND));
+            adminBookStoreService.adminLogin(userLoginDTO);
+        } catch (AdminException ex) {
+            Assert.assertEquals(AdminException.ExceptionType.EMAIL_NOT_FOUND, ex.type);
+        }
+    }
+
+    @Test
+    void givenAdminLoginDTO_WhenEmailAddressIsExistsButRoleIsUser_ShouldThrowUserException() {
+        try {
+            UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
+            UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.ADMIN);
+            UserDetails userDetails = new UserDetails(userRegistrationDTO);
+            userDetails.setStatus(true);
+            when(userRepository.findByEmail(any())).thenReturn(Optional.of(userDetails));
+            when(bCryptPasswordEncoder.matches(any(), any())).thenReturn(false);
+            adminBookStoreService.adminLogin(userLoginDTO);
+        } catch (AdminException ex) {
+            Assert.assertEquals("Invalid Password!!!Please Enter Correct Password", ex.getMessage());
+        }
+    }
+
 }

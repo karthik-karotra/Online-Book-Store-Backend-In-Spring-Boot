@@ -55,4 +55,15 @@ public class AdminController {
         ResponseDTO responseDto = new ResponseDTO(message);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDTO> adminLogin(@Valid @RequestBody UserLoginDTO userLoginDTO, HttpServletResponse httpServletResponse, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA);
+        }
+        String token = adminBookStoreService.adminLogin(userLoginDTO);
+        httpServletResponse.setHeader("Authorization", token);
+        ResponseDTO responseDTO = new ResponseDTO("Admin", "Login Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
 }
