@@ -39,8 +39,10 @@ public class UserController {
             throw new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA);
         }
         String token = userService.userLogin(userLoginDTO);
+        String userName = userService.getUserName(token);
         httpServletResponse.setHeader("Authorization", token);
-        return new ResponseEntity("LOGIN SUCCESSFUL", HttpStatus.OK);
+        ResponseDTO responseDTO = new ResponseDTO(userName, "LOGIN SUCCESSFUL");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/register/confirmation")

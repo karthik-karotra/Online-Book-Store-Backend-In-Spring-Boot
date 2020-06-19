@@ -12,4 +12,5 @@ public interface IUserService {
     String resendConfirmation(String email);
     String forgotPassword(String email, HttpServletRequest httpServletRequest);
     String resetPassword(ResetPasswordDTO resetPasswordDTO, String token);
+    String getUserName(String token);
 }

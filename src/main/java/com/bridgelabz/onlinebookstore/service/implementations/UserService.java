@@ -129,6 +129,14 @@ public class UserService implements IUserService {
         return "Password Reseted Successfully";
     }
 
+    @Override
+    public String getUserName(String token) {
+        int id = tokenGenerator.getId(token);
+        String fullName = userRepository.findById(id).get().fullName;
+        return fullName;
+    }
+
+
     public void sendEmail(UserDetails userDetails, String urlAddress){
         String token = tokenGenerator.generateToken(userDetails.id,applicationProperties.getJwtVerificationExpiration());
         urlAddress = urlAddress + "/verification/?token=" + token;
