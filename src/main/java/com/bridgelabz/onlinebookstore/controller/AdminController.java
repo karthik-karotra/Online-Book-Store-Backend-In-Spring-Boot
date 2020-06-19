@@ -37,9 +37,10 @@ public class AdminController {
     }
 
     @PostMapping("/book/image")
-    public String uploadBookImageToLocalFileSystem(@RequestParam("file") MultipartFile file, @RequestHeader(value = "token") String token) {
+    public ResponseEntity uploadBookImageToLocalFileSystem(@RequestParam("file") MultipartFile file, @RequestHeader(value = "token") String token) {
         String message = adminBookStoreService.uploadImage(file, token);
-        return message;
+        ResponseDTO responseDTO = new ResponseDTO(message);
+        return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/orders/{pageNo}")
