@@ -38,7 +38,7 @@ public class OnlineBookStoreController {
         return onlineBookStoreService.getCountOfBooks();
     }
 
-    @GetMapping("/sort/{pageNo}/{searchText}/{filterAttributes}")
+    @GetMapping("/books/sort/{pageNo}/{searchText}/{filterAttributes}")
     public Page<BookDetails> sort(@PathVariable String searchText, @PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
         return onlineBookStoreService.findAllBooks(searchText, pageNo, filterAttributes);
     }
