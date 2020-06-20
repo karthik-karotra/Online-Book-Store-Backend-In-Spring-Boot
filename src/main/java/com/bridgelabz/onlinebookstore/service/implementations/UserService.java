@@ -99,6 +99,9 @@ public class UserService implements IUserService {
         if (!optionalUserDetails.isPresent()){
             throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
+        if(optionalUserDetails.get().status){
+            throw new UserException("User Already Verified", UserException.ExceptionType.ALREADY_VERIFIED);
+        }
         UserDetails userDetails = optionalUserDetails.get();
         String urlAddress = httpServletRequest.getHeader("origin");
         sendEmail(userDetails,urlAddress);
