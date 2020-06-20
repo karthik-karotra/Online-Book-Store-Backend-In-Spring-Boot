@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,10 +60,11 @@ public class OrderBookService implements IOrderBookService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
         orderBookDetails.setOrderStatus(OrderStatus.ORDERED);
-        orderBookRepository.save(orderBookDetails);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
-        updateQuantityOfBooks(bookCartList);
         Double totalPrice = calculateTotalPrice(bookCartList);
+        orderBookDetails.setTotalPrice(totalPrice);
+        orderBookRepository.save(orderBookDetails);
+        updateQuantityOfBooks(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
         sendOrderConfirmation(orderBookDetails,bookCartList,customerDetails,totalPrice,discountPrice);
         deleteBookCart(bookCartList);

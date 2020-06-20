@@ -18,7 +18,7 @@ public class OrderBookDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id;
     public Integer orderId;
-
+    public Double totalPrice;
     public String orderDate;
 
 
