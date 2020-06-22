@@ -35,9 +35,6 @@ public class CartControllerTest {
     ICartService cartService;
 
     @MockBean
-    CouponRepository couponRepository;
-
-    @MockBean
     public ApplicationProperties applicationProperties;
 
     HttpHeaders httpHeaders=new HttpHeaders();

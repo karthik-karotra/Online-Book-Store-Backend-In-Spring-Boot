@@ -5,6 +5,7 @@ import com.bridgelabz.onlinebookstore.dto.UserLoginDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.JWTException;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.UserRepository;
@@ -203,7 +204,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToResetPassword_WhenPasswordResetted_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         ResetPasswordDTO resetPasswordDTO = new ResetPasswordDTO();
         when(tokenGenerator.getId(any())).thenReturn(1);

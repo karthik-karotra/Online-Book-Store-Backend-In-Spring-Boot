@@ -4,6 +4,7 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.CustomerDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.OrderException;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.models.*;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
 import com.bridgelabz.onlinebookstore.repository.*;

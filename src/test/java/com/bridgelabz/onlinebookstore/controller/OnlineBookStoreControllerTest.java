@@ -44,9 +44,6 @@ public class OnlineBookStoreControllerTest {
     @MockBean
     public ApplicationProperties applicationProperties;
 
-    @MockBean
-    CouponRepository couponRepository;
-
     BookDTO bookDTO;
     BookDetails bookDetails;
     Gson gson = new Gson();
@@ -129,7 +126,7 @@ public class OnlineBookStoreControllerTest {
         Pageable paging = PageRequest.of(0, 10);
         Page<BookDetails> page = new PageImpl(bookList);
         when(onlineBookStoreService.findAllBooks(any(), anyInt(), any())).thenReturn(page);
-        MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8080/sort/0/Mrutyunjay/LOW_TO_HIGH")).andReturn();
+        MvcResult mvcResult = this.mockMvc.perform(get("http://localhost:8080/books/sort/0/Mrutyunjay/LOW_TO_HIGH")).andReturn();
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("1000"));
     }
 

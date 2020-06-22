@@ -2,6 +2,7 @@ package com.bridgelabz.onlinebookstore.controller;
 
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
+import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.models.CustomerDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
@@ -38,9 +39,6 @@ public class OrderBookControllerTest {
     @MockBean
     public ApplicationProperties applicationProperties;
 
-    @MockBean
-    CouponRepository couponRepository;
-
     HttpHeaders httpHeaders=new HttpHeaders();
     Gson gson = new Gson();
 
@@ -52,7 +50,7 @@ public class OrderBookControllerTest {
         ResponseDTO responseDTO = new ResponseDTO(message);
         String jsonResponseDTO = gson.toJson(responseDTO);
         when(orderBookService.addOrderSummary(any(),any())).thenReturn(message);
-        this.mockMvc.perform(post("/bookstore/order/?=discountPrice=100.0")
+        this.mockMvc.perform(post("/bookstore/order/100.0")
                 .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(httpHeaders))
@@ -72,7 +70,7 @@ public class OrderBookControllerTest {
         orderBookDetailsList.add(orderBookDetails);
         String jsonDto = gson.toJson(orderBookDetailsList);
         when(orderBookService.getOrders(any())).thenReturn(orderBookDetailsList);
-        MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/order")
+        MvcResult mvcResult = this.mockMvc.perform(get("/bookstore/orders")
                 .content(jsonDto)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(httpHeaders))

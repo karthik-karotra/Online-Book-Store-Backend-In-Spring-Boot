@@ -17,7 +17,7 @@ public class OrderBookController {
     @Autowired
     IOrderBookService orderBookService;
 
-    @PostMapping("/order")
+    @PostMapping("/order/{discountPrice}")
     public ResponseEntity<ResponseDTO> addOrderedBooks(@PathVariable Double discountPrice,@RequestHeader(value = "token") String token) {
         String message = orderBookService.addOrderSummary(discountPrice,token);
         ResponseDTO responseDTO = new ResponseDTO(message);
