@@ -1,4 +1,4 @@
-package com.bridgelabz.onlinebookstore.utils.implementation;
+package com.bridgelabz.onlinebookstore.utils.emailtemplates;
 
 import org.springframework.stereotype.Component;
 

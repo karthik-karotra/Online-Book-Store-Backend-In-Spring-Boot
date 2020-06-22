@@ -1,6 +1,7 @@
 package com.bridgelabz.onlinebookstore.utils.implementation;
 
 import com.bridgelabz.onlinebookstore.utils.IEmailService;
+import com.bridgelabz.onlinebookstore.utils.emailtemplates.OrderSuccessfulEmailTemplateGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

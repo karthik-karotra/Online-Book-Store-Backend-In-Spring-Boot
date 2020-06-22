@@ -6,7 +6,7 @@ import com.bridgelabz.onlinebookstore.models.*;
 import com.bridgelabz.onlinebookstore.repository.*;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import com.bridgelabz.onlinebookstore.utils.IEmailService;
-import com.bridgelabz.onlinebookstore.utils.implementation.OrderSuccessfulEmailTemplateGenerator;
+import com.bridgelabz.onlinebookstore.utils.emailtemplates.OrderSuccessfulEmailTemplateGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
