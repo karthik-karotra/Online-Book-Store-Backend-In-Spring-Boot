@@ -7,6 +7,7 @@ import com.bridgelabz.onlinebookstore.models.CustomerDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.models.UserDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
+import com.bridgelabz.onlinebookstore.repository.CouponRepository;
 import com.bridgelabz.onlinebookstore.service.IOrderBookService;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -38,6 +39,9 @@ public class OrderBookControllerTest {
 
     @MockBean
     public ApplicationProperties applicationProperties;
+
+    @MockBean
+    CouponRepository couponRepository;
 
     HttpHeaders httpHeaders=new HttpHeaders();
     Gson gson = new Gson();

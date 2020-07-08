@@ -7,6 +7,7 @@ import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.OrderBookDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
+import com.bridgelabz.onlinebookstore.repository.CouponRepository;
 import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -39,6 +40,9 @@ public class AdminControllerTest {
 
     @MockBean
     public ApplicationProperties applicationProperties;
+
+    @MockBean
+    CouponRepository couponRepository;
 
     HttpHeaders httpHeaders = new HttpHeaders();
     Gson gson = new Gson();

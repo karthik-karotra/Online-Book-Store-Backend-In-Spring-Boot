@@ -6,6 +6,7 @@ import com.bridgelabz.onlinebookstore.dto.UserRegistrationDTO;
 import com.bridgelabz.onlinebookstore.exceptions.UserException;
 import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
+import com.bridgelabz.onlinebookstore.repository.CouponRepository;
 import com.bridgelabz.onlinebookstore.service.implementations.UserService;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -32,6 +33,9 @@ public class UserControllerTest {
 
     @MockBean
     public ApplicationProperties applicationProperties;
+
+    @MockBean
+    CouponRepository couponRepository;
 
     Gson gson = new Gson();
 

@@ -37,4 +37,9 @@ public class OnlineBookStoreExceptionHandler {
     public ResponseEntity<Object> userExceptionHandler(UserException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
+
+    @ExceptionHandler(CouponException.class)
+    public ResponseEntity<Object> userExceptionHandler(CouponException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.ALREADY_REPORTED);
+    }
 }

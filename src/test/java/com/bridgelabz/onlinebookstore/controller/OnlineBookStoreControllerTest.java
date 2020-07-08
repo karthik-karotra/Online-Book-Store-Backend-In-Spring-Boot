@@ -4,6 +4,7 @@ import com.bridgelabz.onlinebookstore.dto.BookDTO;
 import com.bridgelabz.onlinebookstore.dto.ResponseDTO;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.properties.ApplicationProperties;
+import com.bridgelabz.onlinebookstore.repository.CouponRepository;
 import com.bridgelabz.onlinebookstore.service.implementations.OnlineBookStoreService;
 import com.google.gson.Gson;
 import org.junit.Assert;
@@ -43,6 +44,9 @@ public class OnlineBookStoreControllerTest {
 
     @MockBean
     public ApplicationProperties applicationProperties;
+
+    @MockBean
+    CouponRepository couponRepository;
 
     BookDTO bookDTO;
     BookDetails bookDetails;

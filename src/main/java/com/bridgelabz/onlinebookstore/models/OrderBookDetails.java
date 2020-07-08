@@ -20,8 +20,6 @@ public class OrderBookDetails {
     public Integer orderId;
     public Double totalPrice;
     public String orderDate;
-
-
     public OrderStatus orderStatus;
 
     @ManyToOne

@@ -21,7 +21,7 @@ public class Coupons {
 
     @JsonIgnore
     @OneToMany(mappedBy = "coupons")
-    public List<OrderBookDetails> orderBookDetails;
+    public List<CouponsDetails> couponsDetails;
 
     public Coupons() {
     }
