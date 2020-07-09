@@ -23,4 +23,11 @@ public class CouponController {
         ResponseDTO response = new ResponseDTO(orders, "Coupons Fetched Successfully");
         return new ResponseEntity(response, HttpStatus.OK);
     }
+
+    @PostMapping("/order/coupon")
+    public ResponseEntity addCoupon(@RequestHeader(value = "token") String token, @RequestParam(name = "discountCoupon", defaultValue = "0") String coupon, @RequestParam(name = "totalPrice") Double totalPrice) {
+        Double coupon1 = couponService.addCoupon(token, coupon, totalPrice);
+        ResponseDTO responseDTO = new ResponseDTO(coupon1, "Coupon added successfully");
+        return new ResponseEntity(responseDTO, HttpStatus.OK);
+    }
 }

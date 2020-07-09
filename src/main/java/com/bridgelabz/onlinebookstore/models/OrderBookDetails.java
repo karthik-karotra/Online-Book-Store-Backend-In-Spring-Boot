@@ -32,4 +32,8 @@ public class OrderBookDetails {
 
     @OneToMany(mappedBy = "orderBookDetails")
     private List<OrderProduct> orderProduct;
+
+    @ManyToOne
+    @JoinColumn(name = "couponId")
+    private Coupons coupons;
 }

@@ -18,8 +18,8 @@ public class OrderBookController {
     IOrderBookService orderBookService;
 
     @PostMapping("/order/{discountPrice}")
-    public ResponseEntity<ResponseDTO> addOrderedBooks(@PathVariable Double discountPrice,@RequestHeader(value = "token") String token) {
-        String message = orderBookService.addOrderSummary(discountPrice,token);
+    public ResponseEntity<ResponseDTO> addOrderedBooks(@PathVariable Double discountPrice,@RequestParam(name = "discountCoupon") String coupon,@RequestHeader(value = "token") String token) {
+        String message = orderBookService.addOrderSummary(discountPrice,coupon,token);
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

@@ -49,4 +49,16 @@ public class CouponService implements ICouponService {
             throw new CouponException("Coupons Not Available", CouponException.ExceptionType.COUPONS_NOT_AVAILABLE);
         return couponsList;
     }
+
+    @Override
+    public Double addCoupon(String token, String coupon, Double totalPrice) {
+        int userId = jwtToken.getId(token);
+        UserDetails user = userRepository.findById(userId).orElseThrow(() -> new CouponException("USER NOT FOUND", CouponException.ExceptionType.USER_NOT_FOUND));
+        Optional<Coupons> coupons = couponRepository.findByCouponsType(coupon);
+        CouponsDetails couponsDetails = new CouponsDetails(coupons.get(), user);
+        couponDetailsRepository.save(couponsDetails);
+        Double discountPrice = (totalPrice - coupons.get().discountPrice) < 0 ? 0 : (totalPrice - coupons.get().discountPrice);
+        return discountPrice;
+    }
+
 }

@@ -96,7 +96,7 @@ public class OrderBookServiceTest {
         when(orderProductRepository.save(any())).thenReturn(new OrderProduct());
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        String message = orderBookService.addOrderSummary(100.0,"authorization");
+        String message = orderBookService.addOrderSummary(100.0,"CB100","authorization");
         Assert.assertEquals("Successfully Placed Order", message);
     }
 

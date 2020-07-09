@@ -73,4 +73,20 @@ public class CouponsControllerTest {
         Assert.assertEquals(couponsList1, couponsList);
     }
 
+    @Test
+    void givenCoupon_WhenCouponAdded_ShouldReturnMessage() throws Exception {
+        httpHeaders.set("token", "Qwebst43Y");
+        String discountCoupon = "CB50";
+        String totalPrice = "200.0";
+        String message = "Coupon added successfully";
+        when(couponService.addCoupon(any(), anyString(), anyDouble())).thenReturn(200.0);
+        MvcResult mvcResult = this.mockMvc.perform(post("/order/coupon")
+                .param("discountCoupon", discountCoupon).param("totalPrice", totalPrice)
+                .contentType(MediaType.APPLICATION_JSON).headers(httpHeaders).characterEncoding("utf-8")).andReturn();
+        String response = mvcResult.getResponse().getContentAsString();
+        ResponseDTO responseDto = gson.fromJson(response, ResponseDTO.class);
+        String responseMessage = responseDto.message;
+        Assert.assertEquals(message, responseMessage);
+    }
+
 }

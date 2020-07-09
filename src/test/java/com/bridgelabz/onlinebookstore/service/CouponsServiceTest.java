@@ -97,4 +97,18 @@ public class CouponsServiceTest {
         Assert.assertEquals(couponsList.size() - 1, coupons1.size());
     }
 
+    @Test
+    void givenCoupon_WhenUserApplied100RsDisCountCoupon_ShouldReturnDiscountPrice() {
+        Coupons coupons = new Coupons("WEL100", 100.0, "10% Off upto Rs.100 on minimum purchase of Rs.699.0", "30-06-2020", 699.0);
+        UserLoginDTO userLoginDTO = new UserLoginDTO("gajanan@gmail.com", "Gajanan@123");
+        UserDetails userDetails = new UserDetails(userLoginDTO);
+        CouponsDetails couponsDetails = new CouponsDetails(coupons, userDetails);
+        when(jwtToken.getId(anyString())).thenReturn(1);
+        when(userRepository.findById(anyInt())).thenReturn(java.util.Optional.of(userDetails));
+        when(couponRepository.findByCouponsType(anyString())).thenReturn(java.util.Optional.of(coupons));
+        when(couponDetailsRepository.save(any())).thenReturn(couponsDetails);
+        Double token = couponService.addCoupon("token", coupons.couponsType, 200.0);
+        Assert.assertEquals(coupons.discountPrice, token);
+    }
+
 }

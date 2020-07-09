@@ -43,11 +43,14 @@ public class OrderBookService implements IOrderBookService {
     CustomerDetailsRepository customerDetailsRepository;
 
     @Autowired
+    CouponRepository couponRepository;
+
+    @Autowired
     OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
 
     @Override
-    public String addOrderSummary(Double discountPrice,String token) {
+    public String addOrderSummary(Double discountPrice,String coupons,String token) {
         Integer orderId = getOrderId();
         UserDetails userDetails = cartService.isUserPresent(token);
         CartDetails cartDetails = cartRepository.findByUser(userDetails).get();
@@ -61,8 +64,11 @@ public class OrderBookService implements IOrderBookService {
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
         orderBookDetails.setOrderStatus(OrderStatus.ORDERED);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
+        Coupons coupon = couponRepository.findByCouponsType(coupons).get();
+        orderBookDetails.setCoupons(coupon);
         Double totalPrice = calculateTotalPrice(bookCartList);
-        orderBookDetails.setTotalPrice(totalPrice);
+        Double discountedPrice = totalPrice - coupon.discountPrice;
+        orderBookDetails.setTotalPrice(discountedPrice);
         orderBookRepository.save(orderBookDetails);
         updateQuantityOfBooks(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);

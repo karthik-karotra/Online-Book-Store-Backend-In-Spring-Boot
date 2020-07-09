@@ -23,6 +23,10 @@ public class Coupons {
     @OneToMany(mappedBy = "coupons")
     public List<CouponsDetails> couponsDetails;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "coupons")
+    public List<OrderBookDetails> orderBookDetails;
+
     public Coupons() {
     }
 
