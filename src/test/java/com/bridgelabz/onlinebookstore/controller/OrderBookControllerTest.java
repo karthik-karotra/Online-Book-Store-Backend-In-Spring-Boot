@@ -54,7 +54,7 @@ public class OrderBookControllerTest {
         ResponseDTO responseDTO = new ResponseDTO(message);
         String jsonResponseDTO = gson.toJson(responseDTO);
         when(orderBookService.addOrderSummary(any(),any(),any())).thenReturn(message);
-        this.mockMvc.perform(post("/bookstore/order/100.0")
+        this.mockMvc.perform(post("/bookstore/order/100.0/?discountCoupon=CB100")
                 .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(httpHeaders))

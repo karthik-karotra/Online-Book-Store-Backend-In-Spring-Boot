@@ -44,6 +44,9 @@ public class OrderBookServiceTest {
     CustomerDetailsRepository customerDetailsRepository;
 
     @MockBean
+    CouponRepository couponRepository;
+
+    @MockBean
     JavaMailSender javaMailSender;
 
     @MockBean
@@ -70,6 +73,7 @@ public class OrderBookServiceTest {
     List<CustomerDetails> customerDetailsList;
     BookCart bookCart;
     List<BookCart> bookCartList;
+    Coupons coupons;
 
     public OrderBookServiceTest() {
         bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
@@ -84,6 +88,7 @@ public class OrderBookServiceTest {
         bookCart = new BookCart(bookDetails, 1);
         bookCartList = new ArrayList<>();
         bookCartList.add(bookCart);
+        coupons = new Coupons("CB100", 100.0, "10% Off upto Rs.100 on minimum purchase of Rs.699.0", "30-07-2020",699.0);
     }
 
     @Test
@@ -92,6 +97,7 @@ public class OrderBookServiceTest {
         when(userRepository.findById(any())).thenReturn(java.util.Optional.of(userDetails));
         when(cartRepository.findByUser(any())).thenReturn(java.util.Optional.of(new CartDetails()));
         when(customerDetailsRepository.findByUserDetailsOrderByIdDesc(any())).thenReturn(customerDetailsList);
+        when(couponRepository.findByCouponsType(any())).thenReturn(java.util.Optional.of(coupons));
         when(bookCartRepository.findAllByCart(any())).thenReturn(bookCartList);
         when(orderProductRepository.save(any())).thenReturn(new OrderProduct());
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
