@@ -13,4 +13,6 @@ public interface IAdminBookStoreService {
     List<OrderBookDetails> getOrders(Integer pageNo, Integer pageSize, String token);
     String updateOrderStatus(Integer orderId, OrderStatus orderStatus, String token);
     String adminLogin(UserLoginDTO userLoginDTO);
+
+    Integer getCountOfOrders();
 }

@@ -50,6 +50,13 @@ public class AdminController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/orders/count")
+    public ResponseEntity<ResponseDTO> getCount() {
+        Integer countOfOrders = adminBookStoreService.getCountOfOrders();
+        ResponseDTO responseDTO = new ResponseDTO(countOfOrders, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
     @PutMapping("/order/status/{orderId}/{orderStatus}")
     public ResponseEntity updateOrderStatus(@PathVariable Integer orderId, @PathVariable OrderStatus orderStatus, @RequestHeader(value = "token") String token) {
         String message = adminBookStoreService.updateOrderStatus(orderId, orderStatus, token);

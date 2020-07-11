@@ -131,4 +131,10 @@ public class AdminBookStoreService implements IAdminBookStoreService {
         }
         throw new AdminException("You Have Not Been Given Admin Previlege", AdminException.ExceptionType.EMAIL_NOT_FOUND);
     }
+
+    @Override
+    public Integer getCountOfOrders() {
+        List orderBookDetailsList = orderBookRepository.findAll();
+        return orderBookDetailsList.size();
+    }
 }
