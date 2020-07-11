@@ -34,13 +34,17 @@ public class OnlineBookStoreController {
     }
 
     @GetMapping("/books/count")
-    public Integer getCount() {
-        return onlineBookStoreService.getCountOfBooks();
+    public ResponseEntity<ResponseDTO> getCount() {
+        Integer countOfBooks = onlineBookStoreService.getCountOfBooks();
+        ResponseDTO responseDTO = new ResponseDTO(countOfBooks, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/books/sort/{pageNo}/{searchText}/{filterAttributes}")
-    public Page<BookDetails> sort(@PathVariable String searchText, @PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
-        return onlineBookStoreService.findAllBooks(searchText, pageNo, filterAttributes);
+    public ResponseEntity<ResponseDTO> sort(@PathVariable String searchText, @PathVariable int pageNo, @PathVariable FilterAttributes filterAttributes) {
+        Page<BookDetails> booksPerPage = onlineBookStoreService.findAllBooks(searchText, (pageNo - 1), filterAttributes);
+        ResponseDTO responseDTO = new ResponseDTO(booksPerPage, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/book/{fileName:.+}")
