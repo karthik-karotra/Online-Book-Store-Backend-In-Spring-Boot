@@ -226,5 +226,4 @@ public class AdminBookStoreServiceTest {
             Assert.assertEquals("Invalid Password!!!Please Enter Correct Password", ex.getMessage());
         }
     }
-
 }

@@ -17,7 +17,7 @@ public class CartController {
     ICartService cartService;
 
     @PostMapping("/cart/{quantity}/{bookId}")
-    public ResponseEntity<ResponseDTO> saveBook(@PathVariable Integer quantity, @PathVariable Integer bookId ,@RequestHeader(value = "token") String token) {
+    public ResponseEntity<ResponseDTO> saveBook(@PathVariable Integer quantity, @PathVariable Integer bookId, @RequestHeader(value = "token") String token) {
         String message = cartService.saveBooksToCart(quantity, bookId, token);
         ResponseDTO responseDTO = new ResponseDTO(message);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);

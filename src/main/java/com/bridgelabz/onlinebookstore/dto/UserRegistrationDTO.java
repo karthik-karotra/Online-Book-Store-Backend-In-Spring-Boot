@@ -2,7 +2,6 @@ package com.bridgelabz.onlinebookstore.dto;
 
 import com.bridgelabz.onlinebookstore.filterenums.UserRole;
 import lombok.AllArgsConstructor;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -26,7 +25,6 @@ public class UserRegistrationDTO {
     public String phoneNo;
 
     public boolean status;
-
     public UserRole userRole;
 
 }

@@ -1,8 +1,6 @@
 package com.bridgelabz.onlinebookstore.service;
 
-
 import com.bridgelabz.onlinebookstore.models.Coupons;
-
 import java.util.List;
 
 public interface ICouponService {

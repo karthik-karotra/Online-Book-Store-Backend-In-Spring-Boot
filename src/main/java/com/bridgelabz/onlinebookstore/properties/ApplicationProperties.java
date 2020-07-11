@@ -12,5 +12,4 @@ public class ApplicationProperties {
     private String jwtSecret;
     private Integer jwtLoginExpiration;
     private Integer jwtVerificationExpiration;
-
 }

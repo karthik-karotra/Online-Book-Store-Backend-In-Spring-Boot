@@ -11,7 +11,6 @@ import com.bridgelabz.onlinebookstore.service.ICouponService;
 import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,5 +59,4 @@ public class CouponService implements ICouponService {
         Double discountPrice = (totalPrice - coupons.get().discountPrice) < 0 ? 0 : (totalPrice - coupons.get().discountPrice);
         return discountPrice;
     }
-
 }

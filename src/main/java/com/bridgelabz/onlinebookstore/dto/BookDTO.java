@@ -1,6 +1,8 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -9,6 +11,8 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookDTO {
 
     @NotNull
@@ -42,17 +46,4 @@ public class BookDTO {
     @Range(min = 1000, message = "Publishing Year Should Be Greater Than 999")
     public int publishingYear;
 
-    public BookDTO(String isbn, String bookName, String authorName, double bookPrice, Integer quantity, String bookDetails, String bookImageSource, int publishingYear) {
-        this.isbn = isbn;
-        this.bookName = bookName;
-        this.authorName = authorName;
-        this.bookPrice = bookPrice;
-        this.quantity = quantity;
-        this.bookDetails = bookDetails;
-        this.bookImageSource = bookImageSource;
-        this.publishingYear = publishingYear;
-    }
-
-    public BookDTO() {
-    }
 }

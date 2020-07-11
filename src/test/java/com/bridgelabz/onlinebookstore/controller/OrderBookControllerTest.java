@@ -43,17 +43,17 @@ public class OrderBookControllerTest {
     @MockBean
     CouponRepository couponRepository;
 
-    HttpHeaders httpHeaders=new HttpHeaders();
+    HttpHeaders httpHeaders = new HttpHeaders();
     Gson gson = new Gson();
 
     @Test
     public void givenRequestToAddOrderSummaryToAddInDatabase_WhenAdded_ShouldReturnCorrectDetails() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         String message = "Successfully Placed Order";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
         String jsonResponseDTO = gson.toJson(responseDTO);
-        when(orderBookService.addOrderSummary(any(),any(),any())).thenReturn(message);
+        when(orderBookService.addOrderSummary(any(), any(), any())).thenReturn(message);
         this.mockMvc.perform(post("/bookstore/order/100.0/?discountCoupon=CB100")
                 .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +63,7 @@ public class OrderBookControllerTest {
 
     @Test
     public void givenRequestToFetchListOfOrderDetailsFromDatabase_ShouldReturnListOfOrderDetailsInDatabase() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         List<OrderBookDetails> orderBookDetailsList = new ArrayList();
         UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);

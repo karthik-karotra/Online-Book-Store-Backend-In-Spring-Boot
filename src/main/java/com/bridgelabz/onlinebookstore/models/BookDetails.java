@@ -1,17 +1,20 @@
 package com.bridgelabz.onlinebookstore.models;
 
 import com.bridgelabz.onlinebookstore.dto.BookDTO;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table
+@NoArgsConstructor
 public class BookDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id;
+
     public String isbn;
     public String bookName;
     public String authorName;
@@ -33,8 +36,5 @@ public class BookDetails {
         this.bookDetails = bookDTO.bookDetails;
         this.bookImage = bookDTO.bookImageSource;
         this.publishingYear = bookDTO.publishingYear;
-    }
-
-    public BookDetails() {
     }
 }

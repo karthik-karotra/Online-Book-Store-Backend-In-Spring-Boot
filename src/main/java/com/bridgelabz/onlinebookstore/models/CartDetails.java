@@ -3,17 +3,17 @@ package com.bridgelabz.onlinebookstore.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Table
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartDetails {
 
     @Id
@@ -28,11 +28,4 @@ public class CartDetails {
     @JoinColumn(name = "user_id")
     private UserDetails user;
 
-    public CartDetails(BookCart... bookCarts) {
-        for (BookCart bookCart : bookCarts) bookCart.setCart(this);
-        this.bookCarts = Stream.of(bookCarts).collect(Collectors.toList());
-    }
-
-    public CartDetails() {
-    }
 }

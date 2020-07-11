@@ -37,7 +37,7 @@ public class CustomerDetails {
         this.address = customerDTO.address;
         this.city = customerDTO.city;
         this.pincode = customerDTO.pincode;
-        this.landmark=customerDTO.landmark;
-        this.locality=customerDTO.locality;
+        this.landmark = customerDTO.landmark;
+        this.locality = customerDTO.locality;
     }
 }

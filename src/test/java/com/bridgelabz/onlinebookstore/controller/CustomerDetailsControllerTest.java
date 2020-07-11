@@ -41,13 +41,13 @@ public class CustomerDetailsControllerTest {
     @MockBean
     CouponRepository couponRepository;
 
-    HttpHeaders httpHeaders=new HttpHeaders();
+    HttpHeaders httpHeaders = new HttpHeaders();
     Gson gson = new Gson();
     CustomerDTO customerDTO;
 
     @Test
     public void givenCustomerDetailsToAddInDatabase_WhenAdded_ThenShouldReturnCorrectMessage() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400703", "Navratna Hotel", "Vashi", "HOME");
         String toJson = gson.toJson(customerDTO);
         String message = "Customer Details Added Successfully";
@@ -61,7 +61,7 @@ public class CustomerDetailsControllerTest {
 
     @Test
     public void givenRequestToFetchCustomerDetailsFromDatabase_ShouldReturnCorrectData() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "8754212154", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         CustomerDTO customerDTO = new CustomerDTO("Sai Prerah Apt", "Mumbai", "400704", "Navratna Hotel", "Vashi", "HOME");

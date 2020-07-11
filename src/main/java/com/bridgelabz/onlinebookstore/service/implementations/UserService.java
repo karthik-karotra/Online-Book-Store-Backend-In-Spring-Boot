@@ -60,7 +60,7 @@ public class UserService implements IUserService {
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.password = password;
         UserDetails userDetails1 = userRepository.save(userDetails);
-        sendEmail(userDetails1,httpServletRequest.getHeader("origin"));
+        sendEmail(userDetails1, httpServletRequest.getHeader("origin"));
         return "Registration Successfull !! Please Check Your Registered Email For Email Verification";
     }
 
@@ -82,7 +82,7 @@ public class UserService implements IUserService {
     public String emailVerification(String token) {
         int id = tokenGenerator.getId(token);
         Optional<UserDetails> userDetailsById = userRepository.findById(id);
-        if (!userDetailsById.isPresent()){
+        if (!userDetailsById.isPresent()) {
             throw new JWTException("User With Same Email Id Already Exists", JWTException.ExceptionType.USER_NOT_FOUND);
         }
         UserDetails userDetails = userDetailsById.get();
@@ -95,15 +95,15 @@ public class UserService implements IUserService {
     @Override
     public String resendConfirmation(String email) {
         Optional<UserDetails> optionalUserDetails = userRepository.findByEmail(email);
-        if (!optionalUserDetails.isPresent()){
+        if (!optionalUserDetails.isPresent()) {
             throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
         }
-        if(optionalUserDetails.get().status){
+        if (optionalUserDetails.get().status) {
             throw new UserException("User Already Verified", UserException.ExceptionType.ALREADY_VERIFIED);
         }
         UserDetails userDetails = optionalUserDetails.get();
         String urlAddress = httpServletRequest.getHeader("origin");
-        sendEmail(userDetails,urlAddress);
+        sendEmail(userDetails, urlAddress);
         return "Verification Link Has Been Sent To Your Account";
     }
 
@@ -138,11 +138,10 @@ public class UserService implements IUserService {
         return fullName;
     }
 
-
-    public void sendEmail(UserDetails userDetails, String urlAddress){
-        String token = tokenGenerator.generateToken(userDetails.id,applicationProperties.getJwtVerificationExpiration());
+    public void sendEmail(UserDetails userDetails, String urlAddress) {
+        String token = tokenGenerator.generateToken(userDetails.id, applicationProperties.getJwtVerificationExpiration());
         urlAddress = urlAddress + "/verification/?token=" + token;
         String message = emailVerificationTemplate.getVerificationEmailTemplate(urlAddress, userDetails.fullName);
-        emailService.notifyThroughEmail(userDetails.email,"Email Verification",message);
+        emailService.notifyThroughEmail(userDetails.email, "Email Verification", message);
     }
 }

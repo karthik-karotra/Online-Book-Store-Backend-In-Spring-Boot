@@ -53,7 +53,7 @@ public class UserControllerTest {
 
     @Test
     public void givenUserDetailsToRegisterUser_WhenInvalidData_ShouldThrowException() throws Exception {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik", "karthikpatel54@gmail.com", "Karthik@123", "9874521478", false, UserRole.USER);
         String toJson = gson.toJson(userRegistrationDTO);
         when(userService.addUser(any())).thenThrow(new UserException("Invalid Data!!!!! Please Enter Valid Data", UserException.ExceptionType.INVALID_DATA));
         MvcResult mvcResult = this.mockMvc.perform(post("/user/register")

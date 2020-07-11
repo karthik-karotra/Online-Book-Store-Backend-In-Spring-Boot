@@ -1,9 +1,15 @@
 package com.bridgelabz.onlinebookstore.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
 @Table
+@NoArgsConstructor
+@Getter
+@Setter
 public class CouponsDetails {
 
     @Id
@@ -18,19 +24,8 @@ public class CouponsDetails {
     @JoinColumn(name = "userId")
     public UserDetails user;
 
-    public CouponsDetails() {
-    }
-
     public CouponsDetails(Coupons coupons, UserDetails userDetails) {
         this.coupons = coupons;
         this.user = userDetails;
-    }
-
-    public UserDetails getUser() {
-        return user;
-    }
-
-    public void setUser(UserDetails user) {
-        this.user = user;
     }
 }

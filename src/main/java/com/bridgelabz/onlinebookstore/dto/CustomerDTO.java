@@ -1,5 +1,6 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerDTO {
 
     @NotNull
@@ -32,12 +34,4 @@ public class CustomerDTO {
 
     public String type;
 
-    public CustomerDTO(String address, String city, String pincode,String landmark,String locality, String type) {
-        this.address = address;
-        this.city = city;
-        this.pincode = pincode;
-        this.landmark=landmark;
-        this.locality=locality;
-        this.type = type;
-    }
 }

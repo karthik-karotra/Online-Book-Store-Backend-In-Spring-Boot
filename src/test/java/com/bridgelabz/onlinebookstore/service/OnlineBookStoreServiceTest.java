@@ -108,6 +108,5 @@ public class OnlineBookStoreServiceTest {
         } catch (OnlineBookStoreException ex) {
             Assert.assertEquals(OnlineBookStoreException.ExceptionType.FILE_NOT_FOUND, ex.type);
         }
-
     }
 }

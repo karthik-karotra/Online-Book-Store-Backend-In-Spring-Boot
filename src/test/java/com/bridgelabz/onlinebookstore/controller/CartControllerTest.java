@@ -41,12 +41,12 @@ public class CartControllerTest {
     @MockBean
     CouponRepository couponRepository;
 
-    HttpHeaders httpHeaders=new HttpHeaders();
+    HttpHeaders httpHeaders = new HttpHeaders();
     Gson gson = new Gson();
 
     @Test
     public void givenBookDetailsAndCartDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectMessage() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         String message = "Book Successfully Added To Cart";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
@@ -61,7 +61,7 @@ public class CartControllerTest {
 
     @Test
     public void givenBookDetailsAndCartDetailsToAddInDatabase_WhenAdded_ThenReturnCorrectStatus() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         String message = "Book Successfully Added To Cart";
         String jsonString = gson.toJson(message);
         when(cartService.saveBooksToCart(anyInt(), anyInt(), any())).thenReturn(message);
@@ -74,7 +74,7 @@ public class CartControllerTest {
 
     @Test
     public void givenRequestToFetchListOfBookDetailsFromCart_ShouldReturnListOfBookDetailsInCart() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         List<BookCart> bookList = new ArrayList();
         BookDTO bookDTO = new BookDTO("1234567890", "Mrutyunjay", "Shivaji Sawant", 400.0, 10, "Devotional", "book image", 2002);
         BookDetails bookDetails = new BookDetails(bookDTO);
@@ -93,7 +93,7 @@ public class CartControllerTest {
 
     @Test
     public void givenRequestToUpdateQuantityOfBookInCart_ShouldUpdateQuantityInCart() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         String message = "Cart Updated Successfully";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);
@@ -108,7 +108,7 @@ public class CartControllerTest {
 
     @Test
     public void givenRequestToDeleteBookFromCart_ShouldDeleteBookFromCart() throws Exception {
-        httpHeaders.set("token","Rsafjvj213");
+        httpHeaders.set("token", "Rsafjvj213");
         String message = "Deleted Successfully";
         String jsonString = gson.toJson(message);
         ResponseDTO responseDTO = new ResponseDTO(message);

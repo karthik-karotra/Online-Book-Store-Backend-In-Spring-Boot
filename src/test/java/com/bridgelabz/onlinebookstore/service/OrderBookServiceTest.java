@@ -88,7 +88,7 @@ public class OrderBookServiceTest {
         bookCart = new BookCart(bookDetails, 1);
         bookCartList = new ArrayList<>();
         bookCartList.add(bookCart);
-        coupons = new Coupons("CB100", 100.0, "10% Off upto Rs.100 on minimum purchase of Rs.699.0", "30-07-2020",699.0);
+        coupons = new Coupons("CB100", 100.0, "10% Off upto Rs.100 on minimum purchase of Rs.699.0", "30-07-2020", 699.0);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class OrderBookServiceTest {
         when(orderProductRepository.save(any())).thenReturn(new OrderProduct());
         doNothing().when(onlineBookStoreRepository).updateStock(anyInt(), anyInt());
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        String message = orderBookService.addOrderSummary(100.0,"CB100","authorization");
+        String message = orderBookService.addOrderSummary(100.0, "CB100", "authorization");
         Assert.assertEquals("Successfully Placed Order", message);
     }
 

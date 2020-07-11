@@ -46,26 +46,26 @@ public class UserController {
     }
 
     @GetMapping("/register/confirmation")
-    public ResponseEntity accountConfirmation(@RequestParam("token") String token){
+    public ResponseEntity accountConfirmation(@RequestParam("token") String token) {
         String message = userService.emailVerification(token);
-        return new ResponseEntity(message,HttpStatus.OK);
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 
     @PostMapping("/register/resend/confirmation/{email}")
-    public ResponseEntity resendConfirmation(@PathVariable String email){
+    public ResponseEntity resendConfirmation(@PathVariable String email) {
         String message = userService.resendConfirmation(email);
-        return new ResponseEntity(message,HttpStatus.OK);
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 
     @PostMapping("/forgot/password/{email}")
-    public ResponseEntity forgotPassword(@PathVariable String email, HttpServletRequest httpServletRequest){
+    public ResponseEntity forgotPassword(@PathVariable String email, HttpServletRequest httpServletRequest) {
         String message = userService.forgotPassword(email, httpServletRequest);
         return new ResponseEntity(message, HttpStatus.OK);
     }
 
     @PostMapping("/reset/password")
-    public ResponseEntity resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @RequestParam("token") String token){
+    public ResponseEntity resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @RequestParam("token") String token) {
         String message = userService.resetPassword(resetPasswordDTO, token);
-        return new ResponseEntity(message,HttpStatus.OK);
+        return new ResponseEntity(message, HttpStatus.OK);
     }
 }

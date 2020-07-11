@@ -182,5 +182,4 @@ public class AdminControllerTest {
         String responseMessage = responseDto.message;
         Assert.assertEquals(message, responseMessage);
     }
-
 }

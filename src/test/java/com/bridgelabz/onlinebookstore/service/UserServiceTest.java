@@ -65,9 +65,9 @@ public class UserServiceTest {
 
     @Test
     void givenUserDetailsToRegisterUser_WhenUserRegisters_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
-        userDetails.id=1;
+        userDetails.id = 1;
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
         when(userRepository.save(any())).thenReturn(userDetails);
         when(httpServletRequest.getHeader(any())).thenReturn("verify");
@@ -75,7 +75,7 @@ public class UserServiceTest {
         when(tokenGenerator.generateToken(anyInt(), anyInt())).thenReturn("token1");
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
         String message = userService.addUser(userRegistrationDTO);
-        Assert.assertEquals("Registration Successfull !! Please Check Your Registered Email For Email Verification",message);
+        Assert.assertEquals("Registration Successfull !! Please Check Your Registered Email For Email Verification", message);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class UserServiceTest {
 
     @Test
     void givenUserDetailsToLoginUser_WhenUserLoggedIn_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.status = true;
         UserLoginDTO userLoginDTO = new UserLoginDTO("karthik@gmail.com", "Karthik@123");
@@ -131,7 +131,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToVerifyUser_WhenUserVerified_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         when(tokenGenerator.getId(any())).thenReturn(1);
         when(userRepository.findById(anyInt())).thenReturn(java.util.Optional.of(userDetails));
@@ -156,7 +156,7 @@ public class UserServiceTest {
 
     @Test
     void givenRequestToResendVerificationLinkOfUser_WhenSuccessful_ShouldReturnCorrectMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.id = 1;
         when(userRepository.findByEmail(any())).thenReturn(java.util.Optional.of(userDetails));
@@ -176,10 +176,9 @@ public class UserServiceTest {
         }
     }
 
-    //
     @Test
     void givenRequestToResetPassword_WhenEmailAddressExistsInDatabase_ShouldReturnCorrectResponseMessage() {
-        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false,UserRole.USER);
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO("Karthik Karotra", "karthik@gmail.com", "Karthik@123", "8745124578", false, UserRole.USER);
         UserDetails userDetails = new UserDetails(userRegistrationDTO);
         userDetails.id = 1;
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(userDetails));

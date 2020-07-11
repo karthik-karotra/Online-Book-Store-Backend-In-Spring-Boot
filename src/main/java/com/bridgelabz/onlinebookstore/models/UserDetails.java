@@ -22,6 +22,7 @@ public class UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     public Integer id;
+
     public String fullName;
     public String email;
 
@@ -43,11 +44,11 @@ public class UserDetails {
         this.password = userRegistrationDTO.password;
         this.phoneNo = userRegistrationDTO.phoneNo;
         this.status = userRegistrationDTO.status;
-        this.userRole=userRegistrationDTO.userRole;
+        this.userRole = userRegistrationDTO.userRole;
     }
 
     public UserDetails(ResetPasswordDTO resetPasswordDTO) {
-        this.password=resetPasswordDTO.password;
+        this.password = resetPasswordDTO.password;
     }
 
     public UserDetails(UserLoginDTO userLoginDTO) {

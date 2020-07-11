@@ -2,7 +2,6 @@ package com.bridgelabz.onlinebookstore.service.implementations;
 
 import com.bridgelabz.onlinebookstore.exceptions.CartException;
 import com.bridgelabz.onlinebookstore.exceptions.JWTException;
-import com.bridgelabz.onlinebookstore.exceptions.OnlineBookStoreException;
 import com.bridgelabz.onlinebookstore.models.BookCart;
 import com.bridgelabz.onlinebookstore.models.BookDetails;
 import com.bridgelabz.onlinebookstore.models.CartDetails;

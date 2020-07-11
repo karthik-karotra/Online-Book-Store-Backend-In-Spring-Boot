@@ -1,8 +1,10 @@
 package com.bridgelabz.onlinebookstore.dto;
 
+import lombok.AllArgsConstructor;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@AllArgsConstructor
 public class UserLoginDTO {
 
     @NotNull
@@ -13,8 +15,4 @@ public class UserLoginDTO {
     @Pattern(regexp = "^((?=[^@|#|&|%|$]*[@|&|#|%|$][^@|#|&|%|$]*$)*(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9#@$?]{8,})$")
     public String password;
 
-    public UserLoginDTO(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }
