@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(exposedHeaders = "Authorization")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -39,22 +39,20 @@ public class AdminController {
     @PostMapping("/book/image")
     public ResponseEntity uploadBookImageToLocalFileSystem(@RequestParam("file") MultipartFile file, @RequestHeader(value = "token") String token) {
         String message = adminBookStoreService.uploadImage(file, token);
-        ResponseDTO responseDTO = new ResponseDTO(message);
+        ResponseDTO responseDTO = new ResponseDTO(message,"Image Uploaded Successfully");
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/orders/{pageNo}")
     public ResponseEntity<ResponseDTO> getOrderDetails(@PathVariable Integer pageNo, @RequestHeader(value = "token") String token) {
-        List<OrderBookDetails> orderBookDetailsList = adminBookStoreService.getOrders(pageNo, 12, token);
+        List<OrderBookDetails> orderBookDetailsList = adminBookStoreService.getOrders((pageNo-1), 12, token);
         ResponseDTO responseDTO = new ResponseDTO(orderBookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/orders/count")
-    public ResponseEntity<ResponseDTO> getCount() {
-        Integer countOfOrders = adminBookStoreService.getCountOfOrders();
-        ResponseDTO responseDTO = new ResponseDTO(countOfOrders, "Response Successful");
-        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    public Integer getCount() {
+        return adminBookStoreService.getCountOfOrders();
     }
 
     @PutMapping("/order/status/{orderId}/{orderStatus}")
