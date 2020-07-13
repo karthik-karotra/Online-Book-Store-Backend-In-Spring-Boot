@@ -16,6 +16,7 @@ import com.bridgelabz.onlinebookstore.service.IAdminBookStoreService;
 import com.bridgelabz.onlinebookstore.utils.ITokenGenerator;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,12 +99,15 @@ public class AdminBookStoreService implements IAdminBookStoreService {
     @Override
     public List<OrderBookDetails> getOrders(Integer pageNo, Integer pageSize, String token) {
         cartService.isUserPresent(token);
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<OrderBookDetails> orders = orderBookRepository.findAll(paging);
-        if (!orders.hasContent())
+        List<OrderBookDetails> orderDetailsList = orderBookRepository.findAll();
+        if (orderDetailsList.size() == 0) {
             throw new AdminException("No Orders", AdminException.ExceptionType.NO_ORDER_FOUND);
-        List<OrderBookDetails> orderBookDetailsList = orders.getContent();
-        return new ArrayList<>(Lists.reverse(orderBookDetailsList));
+        }
+        Collections.reverse(orderDetailsList);
+        PagedListHolder page = new PagedListHolder(orderDetailsList);
+        page.setPageSize(12);
+        page.setPage(pageNo);
+        return page.getPageList();
     }
 
     @Override
