@@ -43,7 +43,7 @@ public class OrderSuccessfulEmailTemplateGenerator {
                 "\t\t\t</table>\n" +
                 "\t\t\t<table style='width:100%;height:37px;font-family: calibri,Garamond,Comic Sans MS;font-weight:bold'>\n" +
                 "\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t<td>Hello " + fullName + "</td>\n" +
+                "\t\t\t\t\t<td>Hello "+ fullName +"</td>\n" +
                 "\t\t\t\t</tr>\n" +
                 "\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t<td>Congratulations, you have selected a perfect book !!</td>\n" +
@@ -57,7 +57,7 @@ public class OrderSuccessfulEmailTemplateGenerator {
                 "\t\t\t\t\t<td style='font-weight:bold;font-family:Candara;'>Order Confirmation</td>\n" +
                 "\t\t\t\t</tr>\n" +
                 "\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t<td style='font-weight:bold;font-family:Candara;'>Order ID: <strong style='color:#00e6e6'>" + orderId + "</strong></td>\n" +
+                "\t\t\t\t\t<td style='font-weight:bold;font-family:Candara;'>Order ID: <strong style='color:#00e6e6'>"+ orderId +"</strong></td>\n" +
                 "\t\t\t\t</tr>\n" +
                 "\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t<td style='font-weight:bold;font-family:Candara;text-align:left;font-size:20px'>Shipping To<hr/></td>\n" +
@@ -65,7 +65,7 @@ public class OrderSuccessfulEmailTemplateGenerator {
                 "\t\t\t</table>\n" +
                 "\t\t\t<table style='width:250px;height:35px;text-align:left'>\n" +
                 "\t\t\t\t<tr style='font-family:Comic Sans MS'>\n" +
-                "\t\t\t\t\t<td>" + address + "</td>\n" +
+                "\t\t\t\t\t<td>"+ address +"</td>\n" +
                 "\t\t\t\t</tr>\n" +
                 "\t\t\t</table>\n" +
                 "\t\t\t<table style='width:100%;min-height:35px'>\n" +
@@ -82,8 +82,16 @@ public class OrderSuccessfulEmailTemplateGenerator {
                 "  \t\t\t\t</tr>\n" +
                 generateTable(bookCartList) +
                 "  \t\t\t\t<tr class='book-details'>\n" +
-                "    \t\t\t\t\t<td class='details' colspan='3'>Order Total</td>\n" +
-                "\t\t\t\t\t<td class='details'>Rs. " + totalPrice + "</td>\n" +
+                "    \t\t\t\t\t<td class='details' colspan='3'>Sub Total</td>\n" +
+                "\t\t\t\t\t<td class='details'>Rs. "+ totalPrice +"</td>\n" +
+                "  \t\t\t\t</tr>\n" +
+                "  \t\t\t\t<tr class='book-details'>\n" +
+                "    \t\t\t\t\t<td class='details' colspan='3'>Discount Price</td>\n" +
+                "\t\t\t\t\t<td class='details'>Rs. -"+ (totalPrice-discountPrice) +"</td>\n" +
+                "  \t\t\t\t</tr>\n" +
+                "  \t\t\t\t<tr class='book-details'>\n" +
+                "    \t\t\t\t\t<td class='details' colspan='3'>Total Price</td>\n" +
+                "\t\t\t\t\t<td class='details'>Rs. "+ discountPrice +"</td>\n" +
                 "  \t\t\t\t</tr>\n" +
                 "\t\t\t</table>\n" +
                 "\t\t\t\n" +
