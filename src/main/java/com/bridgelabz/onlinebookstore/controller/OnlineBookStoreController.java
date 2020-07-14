@@ -28,7 +28,7 @@ public class OnlineBookStoreController {
 
     @GetMapping("/books/{pageNo}")
     public ResponseEntity<ResponseDTO> getBook(@PathVariable Integer pageNo) {
-        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks(pageNo, 12);
+        List<BookDetails> bookDetailsList = onlineBookStoreService.getAllBooks((pageNo-1), 12);
         ResponseDTO responseDTO = new ResponseDTO(bookDetailsList, "Response Successful");
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }

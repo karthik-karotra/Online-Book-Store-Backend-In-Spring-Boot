@@ -51,8 +51,10 @@ public class AdminController {
     }
 
     @GetMapping("/orders/count")
-    public Integer getCount() {
-        return adminBookStoreService.getCountOfOrders();
+    public ResponseEntity<ResponseDTO> getCount() {
+        Integer countOfOrders = adminBookStoreService.getCountOfOrders();
+        ResponseDTO responseDTO = new ResponseDTO(countOfOrders, "Response Successful");
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @PutMapping("/order/status/{orderId}/{orderStatus}")

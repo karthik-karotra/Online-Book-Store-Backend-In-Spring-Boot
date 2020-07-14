@@ -54,6 +54,9 @@ public class CouponService implements ICouponService {
         int userId = jwtToken.getId(token);
         UserDetails user = userRepository.findById(userId).orElseThrow(() -> new CouponException("USER NOT FOUND", CouponException.ExceptionType.USER_NOT_FOUND));
         Optional<Coupons> coupons = couponRepository.findByCouponsType(coupon);
+        if(!coupons.isPresent()){
+           return 0.0;
+        }
         CouponsDetails couponsDetails = new CouponsDetails(coupons.get(), user);
         couponDetailsRepository.save(couponsDetails);
         Double discountPrice = (totalPrice - coupons.get().discountPrice) < 0 ? 0 : (totalPrice - coupons.get().discountPrice);

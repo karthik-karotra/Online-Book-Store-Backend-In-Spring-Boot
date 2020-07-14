@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +50,8 @@ public class OrderBookService implements IOrderBookService {
     OrderSuccessfulEmailTemplateGenerator emailTemplateGenerator;
 
     @Override
-    public String addOrderSummary(Double discountPrice, String coupons, String token) {
+    public Integer addOrderSummary(Double discountPrice, String coupons, String token) {
+        Double discount=0.0;
         Integer orderId = getOrderId();
         UserDetails userDetails = cartService.isUserPresent(token);
         CartDetails cartDetails = cartRepository.findByUser(userDetails).get();
@@ -63,17 +65,23 @@ public class OrderBookService implements IOrderBookService {
         orderBookDetails.setOrderDate(LocalDate.now().format(dateTimeFormatter));
         orderBookDetails.setOrderStatus(OrderStatus.ORDERED);
         List<BookCart> bookCartList = bookCartRepository.findAllByCart(cartDetails);
-        Coupons coupon = couponRepository.findByCouponsType(coupons).get();
-        orderBookDetails.setCoupons(coupon);
+        Optional<Coupons> coupon = couponRepository.findByCouponsType(coupons);
+        if(!coupon.isPresent()){
+            discount = 0.0;
+        }
+        if(coupon.isPresent()){
+            orderBookDetails.setCoupons(coupon.get());
+            discount = coupon.get().discountPrice;
+        }
         Double totalPrice = calculateTotalPrice(bookCartList);
-        Double discountedPrice = totalPrice - coupon.discountPrice;
+        Double discountedPrice = totalPrice - discount;
         orderBookDetails.setTotalPrice(discountedPrice);
         orderBookRepository.save(orderBookDetails);
         updateQuantityOfBooks(bookCartList);
         addOrderProduct(bookCartList, orderBookDetails);
         sendOrderConfirmation(orderBookDetails, bookCartList, customerDetails, totalPrice, discountPrice);
         deleteBookCart(bookCartList);
-        return "Successfully Placed Order";
+        return orderId;
     }
 
     private Double calculateTotalPrice(List<BookCart> bookCartList) {
