@@ -67,13 +67,16 @@ public class UserService implements IUserService {
     @Override
     public String userLogin(UserLoginDTO userLoginDTO) {
         Optional<UserDetails> userDetailsByEmail = userRepository.findByEmail(userLoginDTO.email);
-        if (userDetailsByEmail.isPresent() && userDetailsByEmail.get().status) {
-            boolean password = bCryptPasswordEncoder.matches(userLoginDTO.password, userDetailsByEmail.get().password);
-            if (!password) {
+        if(userDetailsByEmail.isPresent()) {
+            if (userDetailsByEmail.get().status) {
+                boolean password = bCryptPasswordEncoder.matches(userLoginDTO.password, userDetailsByEmail.get().password);
+                if (password) {
+                    String token = tokenGenerator.generateToken(userDetailsByEmail.get().id, applicationProperties.getJwtLoginExpiration());
+                    return token;
+                }
                 throw new UserException("Invalid Password!!!Please Enter Correct Password", UserException.ExceptionType.PASSWORD_INVALID);
             }
-            String token = tokenGenerator.generateToken(userDetailsByEmail.get().id, applicationProperties.getJwtLoginExpiration());
-            return token;
+            throw new UserException("Please verify your email before proceeding", UserException.ExceptionType.PASSWORD_INVALID);
         }
         throw new UserException("Enter Registered Email", UserException.ExceptionType.EMAIL_NOT_FOUND);
     }
